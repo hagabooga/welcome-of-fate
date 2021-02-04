@@ -1,0 +1,24 @@
+{
+  "slay the worms": {
+    "ask": [
+      "Hey, I need you to kill those Worms.",
+      "There should be a lot on the right side.",
+      "Complete this quest and I'll reward you."
+    ],
+    "accept": [
+      "OK. Let me teach you how to fight.",
+      "Equip a tool or a weapon and press the left mouse button to attack!!"
+    ],
+    "decline": ["Come back anytime."],
+    "in_prog": ["Go kill the Worms then come back to me."],
+    "complete": [
+      "Nice job!",
+      "Here's your reward",
+      "Thank you for playing the demo!",
+      "A new update will be coming soon!"
+    ],
+    "reward": "500 Cash / 50 EXP",
+    "memory": "Princess Booga wants me to slay the Worms around here.",
+    "goals": [["worm", 8, 0, "Slay 5 Worms"]]
+  }
+}
