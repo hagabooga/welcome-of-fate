@@ -5,6 +5,7 @@ var port = 1909
 var max_players = 100
 
 var peers_dict = {}
+var player_state_dict = {}
 
 
 func _ready():
@@ -23,15 +24,18 @@ func start_server():
 func peer_connected(player_id):
 	print("User " + str(player_id) + " connected.")
 	rpc_id(0, "spawn_new_player", player_id, Vector2(100, 100))
-	peers_dict[player_id] = 0
 
 
 func peer_disconnected(player_id):
 	var str_player_id = str(player_id)
 	print("User " + str_player_id + " disconnected.")
-	if peers_dict.has(player_id):
-		peers_dict.erase(player_id)
+	if player_state_dict.has(player_id):
+		player_state_dict.erase(player_id)
 		rpc_id(0, "despawn_player", player_id)
+
+
+func send_world_state(world_state):
+	rpc_unreliable_id(0, "recieve_world_state", world_state)
 
 
 remote func fetch_skill(skill_name, requester):
@@ -39,3 +43,11 @@ remote func fetch_skill(skill_name, requester):
 	var skill = ServerData.get_skill(skill_name)
 	rpc_id(player_id, "return_skill", skill, requester)
 	print("Sending " + str(skill) + " to player.")
+
+remote func recieve_player_state(player_state):
+	var player_id = get_tree().get_rpc_sender_id()
+	if player_id in player_state_dict:
+		if player_state_dict[player_id].t < player_state.t:
+			player_state_dict[player_id] = player_state
+	else:
+		player_state_dict[player_id] = player_state

@@ -6,6 +6,5 @@
 [node name="Map" instance=ExtResource( 2 )]
 
 [node name="icon" type="Sprite" parent="." index="0"]
-position = Vector2( 495.78, 193 )
 scale = Vector2( 31.1514, 19.6532 )
 texture = ExtResource( 1 )

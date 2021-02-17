@@ -16,12 +16,16 @@ _global_script_class_icons={
 [application]
 
 config/name="Fate Server"
-run/main_scene="res://Scenes/Main/Server.tscn"
+run/main_scene="res://Server/Server.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-ServerData="*res://Scenes/Singletons/ServerData.gd"
+ServerData="*res://Singletons/ServerData.gd"
+
+[physics]
+
+common/physics_fps=20
 
 [rendering]
 
