@@ -1,0 +1,70 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://font32.tres" type="DynamicFont" id=1]
+[ext_resource path="res://font64.tres" type="DynamicFont" id=2]
+[ext_resource path="res://font48.tres" type="DynamicFont" id=3]
+[ext_resource path="res://UI/EnterIPScreen.gd" type="Script" id=4]
+
+[node name="EnterIPScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -280.5
+margin_top = -300.0
+margin_right = 280.5
+margin_bottom = 300.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+margin_top = 190.0
+margin_right = 561.0
+margin_bottom = 277.0
+custom_fonts/font = ExtResource( 2 )
+text = "Join a Server"
+align = 1
+
+[node name="IPAddress" type="LineEdit" parent="VBoxContainer"]
+margin_top = 281.0
+margin_right = 561.0
+margin_bottom = 335.0
+custom_fonts/font = ExtResource( 1 )
+placeholder_text = "Enter an IP address..."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 339.0
+margin_right = 561.0
+margin_bottom = 410.0
+custom_constants/separation = 50
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OKButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 160.0
+margin_right = 234.0
+margin_bottom = 71.0
+custom_fonts/font = ExtResource( 3 )
+text = "OK"
+
+[node name="ClearButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 284.0
+margin_right = 400.0
+margin_bottom = 71.0
+custom_fonts/font = ExtResource( 3 )
+text = "Clear"

@@ -1,22 +1,31 @@
 extends Node
 
-var network = NetworkedMultiplayerENet.new()
-var ip = "127.0.0.1"
+onready var test_map = preload("res://Map/TestMap.tscn")
+
+var network
 var port = 1909
 
+var waiting_for_connection = false
+var successfully_connected = false
 
-func _ready():
-	connect_to_server()
 
-
-func connect_to_server():
+func connect_to_server(ip = "127.0.0.1"):
+	network = NetworkedMultiplayerENet.new()
 	network.create_client(ip, port)
-	get_tree().set_network_peer(network)
+	get_tree().network_peer = network
 	network.connect("connection_succeeded", self, "connection_succeeded")
 	network.connect("connection_failed", self, "connection_failed")
+	waiting_for_connection = true
+	yield(get_tree().create_timer(5.0), "timeout")
+	if not successfully_connected:
+		print("Connection Timed Out")
+		waiting_for_connection = false
 
 
 func connection_succeeded():
+	waiting_for_connection = false
+	successfully_connected = true
+	get_tree().change_scene_to(test_map)
 	print("Successfully connected.")
 
 

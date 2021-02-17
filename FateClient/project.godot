@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Fate Client"
-run/main_scene="res://Map/TestMap.tscn"
+run/main_scene="res://UI/EnterIPScreen.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -26,6 +26,9 @@ Server="*res://Singletons/Server.gd"
 [debug]
 
 settings/fps/force_fps=150
+gdscript/warnings/unused_variable=false
+gdscript/warnings/unused_argument=false
+gdscript/warnings/return_value_discarded=false
 
 [display]
 
