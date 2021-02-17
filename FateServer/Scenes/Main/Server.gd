@@ -4,6 +4,8 @@ var network = NetworkedMultiplayerENet.new()
 var port = 1909
 var max_players = 100
 
+var peers_dict = {}
+
 
 func _ready():
 	start_server()
@@ -20,10 +22,16 @@ func start_server():
 
 func peer_connected(player_id):
 	print("User " + str(player_id) + " connected.")
+	rpc_id(0, "spawn_new_player", player_id, Vector2(100, 100))
+	peers_dict[player_id] = 0
 
 
 func peer_disconnected(player_id):
-	print("User " + str(player_id) + " disconnected.")
+	var str_player_id = str(player_id)
+	print("User " + str_player_id + " disconnected.")
+	if peers_dict.has(player_id):
+		peers_dict.erase(player_id)
+		rpc_id(0, "despawn_player", player_id)
 
 
 remote func fetch_skill(skill_name, requester):

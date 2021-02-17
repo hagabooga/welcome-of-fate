@@ -4,6 +4,7 @@ var network = NetworkedMultiplayerENet.new()
 var ip = "127.0.0.1"
 var port = 1909
 
+
 func _ready():
 	connect_to_server()
 
@@ -22,6 +23,14 @@ func connection_succeeded():
 func connection_failed():
 	print("Failed to connect.")
 
+
+remote func spawn_new_player(player_id, spawn_position):
+	get_tree().current_scene.spawn_player(player_id, spawn_position)
+	# print("spawning player ", player_id, spawn_position)
+
+remote func despawn_player(player_id):
+	print("despawning player ", player_id)
+	get_tree().current_scene.despawn_player(player_id)
 
 # Fetch from server
 # Calls function on server
