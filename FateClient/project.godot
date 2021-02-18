@@ -8,9 +8,26 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Reference",
+"class": "BasicPlayerInfo",
+"language": "GDScript",
+"path": "res://Player/BasicPlayerInfo.gd"
+}, {
+"base": "PlayerTemplate",
+"class": "Player",
+"language": "GDScript",
+"path": "res://Player/Player.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "PlayerTemplate",
+"language": "GDScript",
+"path": "res://Player/PlayerTemplate.gd"
+} ]
 _global_script_class_icons={
-
+"BasicPlayerInfo": "",
+"Player": "",
+"PlayerTemplate": ""
 }
 
 [application]
@@ -22,6 +39,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Server="*res://Singletons/Server.gd"
+AllPlayersInfo="*res://Singletons/AllPlayersInfo.gd"
 
 [debug]
 

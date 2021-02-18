@@ -4,8 +4,8 @@ var network = NetworkedMultiplayerENet.new()
 var port = 1909
 var max_players = 100
 
-var peers_dict = {}
 var player_state_dict = {}
+var player_info_dict = {}
 
 
 func _ready():
@@ -16,14 +16,14 @@ func start_server():
 	network.create_server(port, max_players)
 	get_tree().set_network_peer(network)
 	print("Server Started")
-
 	network.connect("peer_connected", self, "peer_connected")
 	network.connect("peer_disconnected", self, "peer_disconnected")
 
 
 func peer_connected(player_id):
 	print("User " + str(player_id) + " connected.")
-	rpc_id(0, "spawn_new_player", player_id, Vector2(100, 100))
+	# Obtain player info
+	rpc_id(0, "send_basic_player_info", player_id)
 
 
 func peer_disconnected(player_id):
@@ -51,3 +51,8 @@ remote func recieve_player_state(player_state):
 			player_state_dict[player_id] = player_state
 	else:
 		player_state_dict[player_id] = player_state
+
+remote func recieve_basic_player_info(player_info):
+	var player_id = get_tree().get_rpc_sender_id()
+	player_info_dict[player_id] = player_info
+	rpc_id(0, "spawn_player", player_id, Vector2(randi() % 50, randi() % 50), player_info)

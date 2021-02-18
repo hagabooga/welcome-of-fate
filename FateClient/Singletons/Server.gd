@@ -9,7 +9,8 @@ var waiting_for_connection = false
 var successfully_connected = false
 
 
-func connect_to_server(ip = "127.0.0.1"):
+func connect_to_server(display_name, color, ip = "127.0.0.1"):
+	AllPlayersInfo.user_basic = BasicPlayerInfo.new(display_name, color)
 	network = NetworkedMultiplayerENet.new()
 	network.create_client(ip, port)
 	get_tree().network_peer = network
@@ -47,7 +48,8 @@ func send_player_state(player_state):
 	rpc_unreliable_id(1, "recieve_player_state", player_state)
 
 
-remote func spawn_new_player(player_id, spawn_position):
+remote func spawn_player(player_id, spawn_position, basic_player_info):
+	AllPlayersInfo.basics[player_id] = BasicPlayerInfo.new(basic_player_info.n, basic_player_info.c)
 	get_tree().current_scene.spawn_player(player_id, spawn_position)
 	# print("spawning player ", player_id, spawn_position)
 
@@ -63,3 +65,10 @@ remote func return_skill(s_skill, requester):
 remote func recieve_world_state(world_state):
 	# print(world_state)
 	get_tree().current_scene.update_world_state(world_state)
+
+remote func send_basic_player_info(player_id):
+	rpc_id(
+		1,
+		"recieve_basic_player_info",
+		{"n": AllPlayersInfo.user_basic.display_name, "c": AllPlayersInfo.user_basic.color}
+	)

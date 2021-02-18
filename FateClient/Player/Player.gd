@@ -1,4 +1,6 @@
-extends KinematicBody2D
+extends PlayerTemplate
+
+class_name Player
 
 var velocity = Vector2.ZERO
 var speed = 300

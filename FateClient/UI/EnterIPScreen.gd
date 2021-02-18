@@ -1,8 +1,10 @@
 extends Control
 
-onready var ip_address = $VBoxContainer/IPAddress
-onready var ok_button = $VBoxContainer/HBoxContainer/OKButton
-onready var clear_button = $VBoxContainer/HBoxContainer/ClearButton
+onready var ip_address = $HBoxContainer/VBoxContainer/IPAddress
+onready var ok_button = $HBoxContainer/VBoxContainer/HBoxContainer/OKButton
+onready var clear_button = $HBoxContainer/VBoxContainer/HBoxContainer/ClearButton
+onready var display_name = $HBoxContainer/VBoxContainer/DisplayName
+onready var color_picker = $HBoxContainer/ColorPicker
 
 
 func _ready():
@@ -23,12 +25,12 @@ func ip_address_text_entered(text):
 
 func ok_button_pressed():
 	if ip_address.text == "":
-		Server.connect_to_server()
+		Server.connect_to_server(display_name.text, color_picker.color)
 		return
 	if not ip_address.text.is_valid_ip_address():
 		print("not valid ip")
 		return
-	Server.connect_to_server(ip_address.text)
+	Server.connect_to_server(display_name.text, color_picker.color, ip_address.text)
 
 
 func clear_button_pressed():

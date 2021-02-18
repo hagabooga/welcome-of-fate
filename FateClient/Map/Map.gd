@@ -18,7 +18,6 @@ func _physics_process(delta):
 	if world_state_buffer.size() > 1:
 		while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].t:
 			world_state_buffer.remove(0)
-
 		if world_state_buffer.size() > 2:  # We have a future state
 			world_state_buffer_interpolate(render_time)
 		elif render_time > world_state_buffer[1].t:  # We have no future state
@@ -29,26 +28,24 @@ func _physics_process(delta):
 # world_state_buffer = [pastpast, past, future, futurefuture]
 
 
-func update_world_state(world_state):
-	if world_state.t > last_world_state:
-		last_world_state = world_state.t
-		world_state_buffer.append(world_state)
-
-
 func spawn_player(player_id, spawn_position):
-	if get_tree().get_network_unique_id() == player_id:
+	if get_tree().get_network_unique_id() == player_id and not player_id in players_dict:
 		# The client user 
-		players.add_child(player_actual.instance())
 		print("Spawning client user")
+		instance_player(player_id, spawn_position, player_actual)
 	else:
 		# Spawn other players
 		if not player_id in players_dict:
 			print("spawning ", player_id)
-			var new_player = player_template.instance()
-			new_player.position = spawn_position
-			new_player.name = str(player_id)
-			players.add_child(new_player)
-			players_dict[player_id] = new_player
+			instance_player(player_id, spawn_position, player_template)
+
+
+func instance_player(player_id, spawn_position, scene):
+	var player = scene.instance()
+	var basic = AllPlayersInfo.basics[player_id]
+	player.init(player_id, spawn_position, basic)
+	players.add_child(player)
+	players_dict[player_id] = player
 
 
 func despawn_player(player_id):
@@ -58,6 +55,12 @@ func despawn_player(player_id):
 	for world_state in world_state_buffer:
 		if player_id in world_state:
 			world_state.erase(player_id)
+
+
+func update_world_state(world_state):
+	if world_state.t > last_world_state:
+		last_world_state = world_state.t
+		world_state_buffer.append(world_state)
 
 
 func world_state_buffer_interpolate(render_time):
@@ -87,7 +90,7 @@ func world_state_buffer_extrapolate(render_time):
 	var extrapolation_factor = (
 		(
 			float(render_time - world_state_buffer[0].t)
-			/ (float(world_state_buffer[1].t - world_state_buffer[1].t) + 0.00000000000001)
+			/ (float(world_state_buffer[1].t - world_state_buffer[0].t))
 		)
 		- 1.0
 	)
@@ -103,5 +106,8 @@ func world_state_buffer_extrapolate(render_time):
 				world_state_buffer[1][player_id].p
 				- world_state_buffer[0][player_id].p
 			)
-			var position = world_state_buffer[1][player_id].p + (position * extrapolation_factor)
+			var position = (
+				world_state_buffer[1][player_id].p
+				+ (position_delta * extrapolation_factor)
+			)
 			players_dict[player_id].move_player(position)
