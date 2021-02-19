@@ -1,8 +1,11 @@
 class_name PlayerTemplate
 extends Entity
 
-var ming
 var color
+
+
+func take_damage(damage):
+	Server.entity_hit(get_tree().get_network_unique_id(), damage, "player")
 
 
 func init(player_id, spawn_position, basic):

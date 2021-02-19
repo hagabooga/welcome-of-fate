@@ -7,6 +7,7 @@ var max_players = 100
 var player_state_dict = {}
 var player_info_dict = {}
 
+onready var map = $Map
 
 func _ready():
 	start_server()
@@ -64,3 +65,6 @@ remote func recieve_player_state(player_state):
 			player_state_dict[player_id] = player_state
 	else:
 		player_state_dict[player_id] = player_state
+
+remote func send_enemy_hit(enemy_id, damage):
+	map.enemy_hit(enemy_id, damage)

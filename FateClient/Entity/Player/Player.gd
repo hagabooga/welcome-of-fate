@@ -5,8 +5,13 @@ var velocity = Vector2.ZERO
 
 # onready var camera = $Camera2D
 
+
 # func _ready():
 # 	set_physics_process(false)
+func _ready():
+	self.hp = self.max_hp
+	connect("on_hp_change", self, "update_hp_bar")
+	full_hp()
 
 
 func _process(delta):

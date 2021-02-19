@@ -10,6 +10,15 @@ var world_state_buffer = []
 onready var player_actual = preload("res://Entity/Player/Player.tscn")
 onready var player_template = preload("res://Entity/Player/PlayerTemplate.tscn")
 onready var players = $Objects/Players
+onready var enemies_node = $Objects/Enemies
+
+onready var worm = preload("res://Entity/Enemy/SmallWorm/SmallWorm.tscn")
+
+var enemies = {}
+
+
+func erase_enemy(id):
+	enemies.erase(id)
 
 
 func _physics_process(delta):
@@ -26,6 +35,14 @@ func _physics_process(delta):
 
 # world_state: t=time, p=position
 # world_state_buffer = [pastpast, past, future, futurefuture]
+
+
+func spawn_enemy(enemy_id, enemy_data):
+	var enemy = worm.instance()
+	enemy.id = enemy_id
+	enemy.position = enemy_data.loc
+	enemies_node.add_child(enemy)
+	enemies[enemy_id] = enemy
 
 
 func spawn_player(player_id, spawn_position):
@@ -72,7 +89,7 @@ func world_state_buffer_interpolate(render_time):
 	)
 	for player_id in world_state_buffer[2]:
 		if (
-			str(player_id) == "t"
+			str(player_id) in ["t", "enemies"]
 			or player_id == get_tree().get_network_unique_id()
 			or not world_state_buffer[0].has(player_id)
 		):
@@ -86,6 +103,21 @@ func world_state_buffer_interpolate(render_time):
 			players_dict[player_id].move_player(position)
 		else:
 			spawn_player(player_id, world_state_buffer[2][player_id].p)
+	for enemy_id in world_state_buffer[2].enemies:
+		if not enemy_id in world_state_buffer[1].enemies:
+			continue
+		if enemy_id in enemies:
+			var new_position = lerp(
+				world_state_buffer[1].enemies[enemy_id].loc,
+				world_state_buffer[2].enemies[enemy_id].loc,
+				interpolation_factor
+			)
+			# move enemy and add health
+			if enemies[enemy_id].hp > 0:
+				if enemies[enemy_id].hp != world_state_buffer[1].enemies[enemy_id].hp:
+					enemies[enemy_id].hp = world_state_buffer[1].enemies[enemy_id].hp
+		else:
+			spawn_enemy(enemy_id, world_state_buffer[2].enemies[enemy_id])
 
 
 func world_state_buffer_extrapolate(render_time):
@@ -98,7 +130,7 @@ func world_state_buffer_extrapolate(render_time):
 	)
 	for player_id in world_state_buffer[1]:
 		if (
-			str(player_id) == "t"
+			str(player_id) in ["t", "enemies"]
 			or player_id == get_tree().get_network_unique_id()
 			or not world_state_buffer[0].has(player_id)
 		):

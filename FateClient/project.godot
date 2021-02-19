@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entity/Player/BasicPlayerInfo.gd"
 }, {
+"base": "Entity",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://Entity/Enemy/Enemy.gd"
+}, {
 "base": "Attributes",
 "class": "Entity",
 "language": "GDScript",
@@ -58,6 +63,7 @@ _global_script_class_icons={
 "Attributes": "",
 "BaseStat": "",
 "BasicPlayerInfo": "",
+"Enemy": "",
 "Entity": "",
 "Mage": "",
 "Player": "",

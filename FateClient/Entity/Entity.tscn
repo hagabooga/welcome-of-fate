@@ -1,14 +1,32 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://segoeuil16outline.tres" type="DynamicFont" id=1]
+[ext_resource path="res://segoeuil12outline.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Entity/Entity.gd" type="Script" id=2]
 [ext_resource path="res://UI/HealthBar/out.png" type="Texture" id=3]
 [ext_resource path="res://UI/HealthBar/in.png" type="Texture" id=4]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Die"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 180.0 ]
+}
 
 [node name="Entity" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
+anims/Die = SubResource( 1 )
 
 [node name="Collisionbox" type="CollisionShape2D" parent="."]
 
@@ -25,6 +43,7 @@ margin_left = -93.0
 margin_top = -49.0
 margin_right = 93.0
 margin_bottom = 49.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -32,9 +51,11 @@ __meta__ = {
 [node name="HPBar" type="TextureProgress" parent="EntityUI"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -51.0
-margin_right = 51.0
-margin_bottom = 20.0
+margin_left = -25.5
+margin_right = 25.5
+margin_bottom = 10.0
+rect_min_size = Vector2( 51, 10 )
+mouse_filter = 2
 step = 0.0
 value = 50.0
 texture_under = ExtResource( 4 )
@@ -42,9 +63,12 @@ texture_over = ExtResource( 3 )
 texture_progress = ExtResource( 4 )
 tint_under = Color( 0.168627, 0.168627, 0.168627, 1 )
 tint_progress = Color( 0, 1, 0, 1 )
+nine_patch_stretch = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Tween" type="Tween" parent="EntityUI/HPBar"]
 
 [node name="DisplayName" type="Label" parent="EntityUI"]
 anchor_left = 0.5
@@ -52,7 +76,7 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -66.0
-margin_top = -33.0
+margin_top = -17.0
 margin_right = 66.0
 custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )

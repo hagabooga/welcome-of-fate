@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/SmallWorm.png-855eacb947e51890f232560ed4574ed6.stex"
+path="res://.import/SmallWormMovement.png-bd3dc1f1a32a5686ae6ac3245e240e27.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Entity/Enemy/SmallWorm/SmallWorm.png"
-dest_files=[ "res://.import/SmallWorm.png-855eacb947e51890f232560ed4574ed6.stex" ]
+source_file="res://Entity/Enemy/SmallWorm/SmallWormMovement.png"
+dest_files=[ "res://.import/SmallWormMovement.png-bd3dc1f1a32a5686ae6ac3245e240e27.stex" ]
 
 [params]
 

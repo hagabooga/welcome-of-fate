@@ -10,11 +10,15 @@ onready var hp_bar_tween = $EntityUI/HPBar/Tween
 
 var move_speed = 100
 
+var ming
+var id
 
-func _ready():
-	full_hp()
-	connect("on_hp_change", self, "update_hp_bar")
-	full_hp()
+# func _ready():
+# 	self.hp = self.max_hp
+# 	connect("on_hp_change", self, "update_hp_bar")
+# 	full_hp()
+# 	# check state because player might have just logged in and its dead 
+
 
 func update_hp_bar(max_hp, hp):
 	var percentage = int((float(hp) / max_hp) * 100)
@@ -32,6 +36,8 @@ func update_hp_bar(max_hp, hp):
 
 
 func take_damage(damage):
-	self.hp -= damage
-	if self.hp <= 0:
-		print("dead")
+	pass
+	# Server.entity_hit(get_tree().get_network_unique_id(), damage, "player")
+	# # self.hp -= damage
+	# # if self.hp <= 0:
+	# # 	print("dead")

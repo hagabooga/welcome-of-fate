@@ -5,10 +5,10 @@
 [ext_resource path="res://Entity/Player/Sprites/sara.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 22.4609
+radius = 8.89231
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 17.79
+radius = 10.3738
 
 [node name="PlayerTemplate" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -20,12 +20,12 @@ hframes = 13
 frame = 26
 
 [node name="Collisionbox" parent="." index="1"]
-position = Vector2( 2.66968, 1.66856 )
+position = Vector2( -0.326932, 19.461 )
 shape = SubResource( 1 )
 
 [node name="HurtboxShape" parent="Hurtbox" index="0"]
 modulate = Color( 1, 0.447059, 0, 1 )
-position = Vector2( 4.00453, 2.33597 )
+position = Vector2( 0.446051, 2.52326 )
 shape = SubResource( 2 )
 
 [node name="EntityUI" parent="." index="3"]
@@ -35,12 +35,7 @@ margin_right = 70.0
 margin_bottom = 48.0
 
 [node name="HPBar" parent="EntityUI" index="0"]
-margin_left = -25.5
-margin_right = 25.5
-margin_bottom = 10.0
-nine_patch_stretch = true
-
-[node name="Tween" type="Tween" parent="EntityUI/HPBar" index="0"]
+value = 100.0
 
 [node name="DisplayName" parent="EntityUI" index="1"]
 margin_top = -23.0
