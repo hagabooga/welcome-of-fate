@@ -1,8 +1,5 @@
-extends KinematicBody2D
-
 class_name PlayerTemplate
-
-onready var display_name = $Control/DisplayName
+extends Entity
 
 var ming
 var color
@@ -20,7 +17,7 @@ func _ready():
 
 
 func change_color(color):
-	modulate = color
+	display_name.modulate = color
 
 
 func set_display_name(ming):

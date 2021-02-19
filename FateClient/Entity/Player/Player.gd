@@ -1,14 +1,17 @@
+class_name Player
 extends PlayerTemplate
 
-class_name Player
-
 var velocity = Vector2.ZERO
-var speed = 300
 
-onready var sprite = $Sprite
+# onready var camera = $Camera2D
 
 # func _ready():
 # 	set_physics_process(false)
+
+
+func _process(delta):
+	if Input.is_action_just_pressed("ui_accept"):
+		take_damage(10)
 
 
 func _physics_process(delta):
@@ -27,10 +30,10 @@ func movement_loop(delta):
 	if Input.is_action_pressed("ui_down"):
 		velocity.y += 1
 
-	if velocity.x != 0:
-		sprite.flip_h = velocity.x < 0
+	# if velocity.x != 0:
+	# 	sprite.flip_h = velocity.x < 0
 
-	velocity = move_and_slide(velocity.normalized() * speed)
+	velocity = move_and_slide(velocity.normalized() * move_speed)
 
 
 func send_player_state_to_server():

@@ -9,25 +9,61 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Attributes",
+"language": "GDScript",
+"path": "res://Entity/Attributes.gd"
+}, {
+"base": "Node",
+"class": "BaseStat",
+"language": "GDScript",
+"path": "res://Entity/BaseStat.gd"
+}, {
 "base": "Reference",
 "class": "BasicPlayerInfo",
 "language": "GDScript",
-"path": "res://Player/BasicPlayerInfo.gd"
+"path": "res://Entity/Player/BasicPlayerInfo.gd"
+}, {
+"base": "Attributes",
+"class": "Entity",
+"language": "GDScript",
+"path": "res://Entity/Entity.gd"
+}, {
+"base": "Player",
+"class": "Mage",
+"language": "GDScript",
+"path": "res://Entity/Mage.gd"
 }, {
 "base": "PlayerTemplate",
 "class": "Player",
 "language": "GDScript",
-"path": "res://Player/Player.gd"
+"path": "res://Entity/Player/Player.gd"
 }, {
-"base": "KinematicBody2D",
+"base": "Entity",
 "class": "PlayerTemplate",
 "language": "GDScript",
-"path": "res://Player/PlayerTemplate.gd"
+"path": "res://Entity/Player/PlayerTemplate.gd"
+}, {
+"base": "Player",
+"class": "Rogue",
+"language": "GDScript",
+"path": "res://Entity/Rogue.gd"
+}, {
+"base": "Player",
+"class": "Warrior",
+"language": "GDScript",
+"path": "res://Entity/Warrior.gd"
 } ]
 _global_script_class_icons={
+"Attributes": "",
+"BaseStat": "",
 "BasicPlayerInfo": "",
+"Entity": "",
+"Mage": "",
 "Player": "",
-"PlayerTemplate": ""
+"PlayerTemplate": "",
+"Rogue": "",
+"Warrior": ""
 }
 
 [application]
@@ -40,6 +76,7 @@ config/icon="res://icon.png"
 
 Server="*res://Singletons/Server.gd"
 AllPlayersInfo="*res://Singletons/AllPlayersInfo.gd"
+InputToggles="*res://Singletons/InputToggles.gd"
 
 [debug]
 
@@ -50,6 +87,8 @@ gdscript/warnings/return_value_discarded=false
 
 [display]
 
+window/size/width=960
+window/size/height=540
 window/vsync/use_vsync=false
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
@@ -105,6 +144,16 @@ ui_down={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777234,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":13,"pressure":0.0,"pressed":false,"script":null)
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
+ ]
+}
+fullscreen={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":true,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777221,"unicode":0,"echo":false,"script":null)
+ ]
+}
+scroll_up={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":4,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
 

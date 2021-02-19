@@ -8,3 +8,5 @@ script = ExtResource( 1 )
 [node name="Objects" type="YSort" parent="."]
 
 [node name="Players" type="YSort" parent="Objects"]
+
+[node name="Spawners" type="Node2D" parent="."]

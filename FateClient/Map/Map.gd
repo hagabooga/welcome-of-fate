@@ -7,13 +7,13 @@ var players_dict = {}
 var last_world_state = 0
 var world_state_buffer = []
 
-onready var player_actual = preload("res://Player/Player.tscn")
-onready var player_template = preload("res://Player/PlayerTemplate.tscn")
+onready var player_actual = preload("res://Entity/Player/Player.tscn")
+onready var player_template = preload("res://Entity/Player/PlayerTemplate.tscn")
 onready var players = $Objects/Players
 
 
 func _physics_process(delta):
-	var render_time = OS.get_system_time_msecs() - INTERPOLATION_OFFSET
+	var render_time = Server.client_clock - INTERPOLATION_OFFSET
 	# print(world_state_buffer)
 	if world_state_buffer.size() > 1:
 		while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].t:
@@ -42,6 +42,7 @@ func spawn_player(player_id, spawn_position):
 
 func instance_player(player_id, spawn_position, scene):
 	var player = scene.instance()
+	player.set_script(load("res://Entity/Mage.gd"))
 	var basic = AllPlayersInfo.basics[player_id]
 	player.init(player_id, spawn_position, basic)
 	players.add_child(player)
