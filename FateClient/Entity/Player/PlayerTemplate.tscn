@@ -40,5 +40,7 @@ margin_right = 25.5
 margin_bottom = 10.0
 nine_patch_stretch = true
 
+[node name="Tween" type="Tween" parent="EntityUI/HPBar" index="0"]
+
 [node name="DisplayName" parent="EntityUI" index="1"]
 margin_top = -23.0

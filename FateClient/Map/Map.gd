@@ -42,7 +42,8 @@ func spawn_player(player_id, spawn_position):
 
 func instance_player(player_id, spawn_position, scene):
 	var player = scene.instance()
-	player.set_script(load("res://Entity/Mage.gd"))
+	if scene == player_actual:
+		player.set_script(load("res://Entity/Mage.gd"))
 	var basic = AllPlayersInfo.basics[player_id]
 	player.init(player_id, spawn_position, basic)
 	players.add_child(player)
