@@ -5,3 +5,13 @@
 
 [node name="Enemy" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+
+[node name="HPBar" parent="EntityUI" index="0"]
+value = 100.0
+
+[node name="DisplayNamePanel" parent="EntityUI" index="1"]
+margin_left = -30.0
+margin_right = 27.0
+
+[node name="DisplayName" parent="EntityUI/DisplayNamePanel" index="0"]
+margin_right = 57.0

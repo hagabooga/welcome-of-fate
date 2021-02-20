@@ -4,14 +4,38 @@ extends Attributes
 onready var sprite = $Sprite
 onready var collisionbox = $Collisionbox
 onready var hurtbox = $Hurtbox
-onready var display_name = $EntityUI/DisplayName
+onready var display_name_panel = $EntityUI/DisplayNamePanel
+onready var display_name = $EntityUI/DisplayNamePanel/DisplayName
 onready var hp_bar = $EntityUI/HPBar
 onready var hp_bar_tween = $EntityUI/HPBar/Tween
 
-var move_speed = 100
+# var move_speed = 100
 
 var ming
 var id
+
+
+func change_color(color):
+	display_name.add_color_override("font_color", color)
+
+
+func set_display_name(ming):
+	display_name.text = ming
+	yield(get_tree().create_timer(.00000001), "timeout")
+	display_name_panel.rect_size = display_name_panel.rect_min_size
+	display_name_panel.set_anchors_and_margins_preset(Control.PRESET_CENTER_BOTTOM)
+	display_name_panel.margin_left -= 3
+	display_name_panel.margin_right += 3
+	# hp_bar.rect_size = hp_bar.rect_min_size
+	# yield(get_tree().create_timer(.00000001), "timeout")
+	print(hp_bar.rect_size)
+	hp_bar.rect_size = hp_bar.rect_min_size
+	print(hp_bar.rect_size)
+	yield(get_tree().create_timer(0.00000001), "timeout")
+	print("OKFOSAKDO")
+	hp_bar.set_anchors_and_margins_preset(Control.PRESET_CENTER_TOP)
+	hp_bar.margin_left -= int(hp_bar.rect_size.x / 2)
+
 
 # func _ready():
 # 	self.hp = self.max_hp

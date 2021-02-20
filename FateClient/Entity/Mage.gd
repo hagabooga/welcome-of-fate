@@ -15,7 +15,7 @@ func _init():
 	hp = self.max_hp
 	mp = self.max_mp
 	energy = self.max_energy
-	move_speed = 150
+	acceleration = 1200
 	xp = 0
 	# check_load_hotkey()
 

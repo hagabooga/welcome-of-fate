@@ -1,8 +1,6 @@
 class_name Enemy
 extends Entity
 
-var dead = false
-
 
 func _ready():
 	# var regex = RegEx.new()
@@ -13,6 +11,7 @@ func _ready():
 	hurtbox.connect("input_event", self, "clicked")
 	connect("on_hp_change", self, "check_hp")
 	check_hp(max_hp, hp)
+	set_display_name(ming.capitalize())
 
 
 func check_hp(max_hp, hp):
@@ -21,9 +20,6 @@ func check_hp(max_hp, hp):
 
 
 func die():
-	if dead:
-		return
-	dead = true
 	hurtbox.disconnect("input_event", self, "clicked")
 	collisionbox.set_deferred("disabled", true)
 	hurtbox.get_child(0).set_deferred("disabled", true)

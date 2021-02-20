@@ -31,9 +31,14 @@ func spawn_enemy():
 		var location = spawn_locations[open_locations[random_location_index]]
 		occupied_locations[enemy_count] = open_locations[random_location_index]
 		open_locations.remove(random_location_index)
-		enemies[enemy_count] = {"ming": enemy, "loc": location + (Vector2.ONE * (randi()%50)), "hp": 100, "time_out": 1}
+		enemies[enemy_count] = {
+			"ming": enemy,
+			"loc": location + (Vector2.ONE * (randi() % 50)),
+			"hp": 100,
+			"time_out": 1
+		}
 		enemy_count += 1
-	print(enemies)
+	# print(enemies)
 	for key in enemies:
 		var enemy = enemies[key]
 		if enemy.hp <= 0:  # == "Dead":

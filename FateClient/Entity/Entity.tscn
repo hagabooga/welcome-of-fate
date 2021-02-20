@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://segoeuil12outline.tres" type="DynamicFont" id=1]
+[ext_resource path="res://SegoeUIRegular8.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Entity/Entity.gd" type="Script" id=2]
 [ext_resource path="res://UI/HealthBar/out.png" type="Texture" id=3]
 [ext_resource path="res://UI/HealthBar/in.png" type="Texture" id=4]
@@ -19,6 +19,9 @@ tracks/0/keys = {
 "update": 0,
 "values": [ 0.0, 180.0 ]
 }
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0, 0, 0.231373 )
 
 [node name="Entity" type="KinematicBody2D"]
 script = ExtResource( 2 )
@@ -40,7 +43,7 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -93.0
-margin_top = -49.0
+margin_top = -18.0
 margin_right = 93.0
 margin_bottom = 49.0
 mouse_filter = 2
@@ -51,10 +54,10 @@ __meta__ = {
 [node name="HPBar" type="TextureProgress" parent="EntityUI"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -25.5
-margin_right = 25.5
-margin_bottom = 10.0
-rect_min_size = Vector2( 51, 10 )
+margin_left = -15.0
+margin_right = 15.0
+margin_bottom = 5.0
+rect_min_size = Vector2( 30, 5 )
 mouse_filter = 2
 step = 0.0
 value = 50.0
@@ -70,17 +73,26 @@ __meta__ = {
 
 [node name="Tween" type="Tween" parent="EntityUI/HPBar"]
 
-[node name="DisplayName" type="Label" parent="EntityUI"]
+[node name="DisplayNamePanel" type="PanelContainer" parent="EntityUI"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -66.0
+margin_left = -8.0
 margin_top = -17.0
-margin_right = 66.0
+margin_right = 40.0
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DisplayName" type="Label" parent="EntityUI/DisplayNamePanel"]
+margin_top = 2.0
+margin_right = 48.0
+margin_bottom = 14.0
 custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "DisplayName"
+text = "GGsdfsdf"
 align = 1
 valign = 1
 __meta__ = {

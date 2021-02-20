@@ -2,7 +2,7 @@ extends Enemy
 
 
 func _init():
-	ming = "SmallWorm"
+	ming = "Small Worm"
 	self.max_hp = 100
 	self.physical = 25
 	# item_drops = {"gator skin": 50}

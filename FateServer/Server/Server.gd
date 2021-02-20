@@ -9,6 +9,7 @@ var player_info_dict = {}
 
 onready var map = $Map
 
+
 func _ready():
 	start_server()
 

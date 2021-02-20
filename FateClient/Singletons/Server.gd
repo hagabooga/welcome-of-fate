@@ -125,8 +125,8 @@ remote func return_latency(client_time):
 				total_latency += latency_array[i]
 		latency_delta = (total_latency / latency_array.size()) - latency
 		latency = total_latency / latency_array.size()
-		print("New Latency: ", latency)
-		print("Latency Delta: ", latency_delta)
+		# print("New Latency: ", latency)
+		# print("Latency Delta: ", latency_delta)
 		latency_array.clear()
 
 remote func return_server_time(server_time, client_time):

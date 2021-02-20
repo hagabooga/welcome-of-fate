@@ -117,7 +117,9 @@ func world_state_buffer_interpolate(render_time):
 				if enemies[enemy_id].hp != world_state_buffer[1].enemies[enemy_id].hp:
 					enemies[enemy_id].hp = world_state_buffer[1].enemies[enemy_id].hp
 		else:
-			spawn_enemy(enemy_id, world_state_buffer[2].enemies[enemy_id])
+			if world_state_buffer[2].enemies[enemy_id].hp > 0:
+				print("spawning enemy in interpolation... ")
+				spawn_enemy(enemy_id, world_state_buffer[2].enemies[enemy_id])
 
 
 func world_state_buffer_extrapolate(render_time):

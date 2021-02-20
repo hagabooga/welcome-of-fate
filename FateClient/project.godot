@@ -54,6 +54,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entity/Rogue.gd"
 }, {
+"base": "Sprite",
+"class": "SpriteWithBodyAnimation",
+"language": "GDScript",
+"path": "res://Entity/Player/Sprites/SpriteWithBodyAnimation.gd"
+}, {
 "base": "Player",
 "class": "Warrior",
 "language": "GDScript",
@@ -69,6 +74,7 @@ _global_script_class_icons={
 "Player": "",
 "PlayerTemplate": "",
 "Rogue": "",
+"SpriteWithBodyAnimation": "",
 "Warrior": ""
 }
 
