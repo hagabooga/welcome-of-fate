@@ -100,7 +100,8 @@ func world_state_buffer_interpolate(render_time):
 				world_state_buffer[2][player_id].p,
 				interpolation_factor
 			)
-			players_dict[player_id].move_player(position)
+			var animation_data = world_state_buffer[2][player_id].a
+			players_dict[player_id].move_player(position, animation_data)
 		else:
 			spawn_player(player_id, world_state_buffer[2][player_id].p)
 	for enemy_id in world_state_buffer[2].enemies:
@@ -146,4 +147,5 @@ func world_state_buffer_extrapolate(render_time):
 				world_state_buffer[1][player_id].p
 				+ (position_delta * extrapolation_factor)
 			)
-			players_dict[player_id].move_player(position)
+			var animation_data = world_state_buffer[1][player_id].a
+			players_dict[player_id].move_player(position, animation_data)

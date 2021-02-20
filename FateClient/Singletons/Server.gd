@@ -78,6 +78,10 @@ func fetch_skill(skill_name, requester):
 	rpc_id(1, "fetch_skill", skill_name, requester)
 
 
+func send_attack(position, direction_vector, animation_state):
+	rpc_id(1, "attack", position, direction_vector, animation_state, client_clock)
+
+
 func send_player_state(player_state):
 	# print("Sending player state to server: ", player_state)
 	rpc_unreliable_id(1, "recieve_player_state", player_state)
@@ -91,6 +95,16 @@ remote func spawn_player(player_id, spawn_position, basic_player_info):
 remote func despawn_player(player_id):
 	print("despawning player ", player_id)
 	get_tree().current_scene.despawn_player(player_id)
+
+remote func recieve_attack(player_id, position, direction_vector, animation_state, spawn_time):
+	if player_id == get_tree().get_network_unique_id():
+		pass  # Corect client side predictions
+	else:
+		get_tree().current_scene.players_dict[player_id].attack_dict[spawn_time] = {}
+		var attack_dict = get_tree().current_scene.players_dict[player_id].attack_dict[spawn_time]
+		attack_dict.position = position
+		attack_dict.direction_vector = direction_vector
+		attack_dict.animation_state = animation_state
 
 remote func recieve_world_state(world_state):
 	# print(world_state)
