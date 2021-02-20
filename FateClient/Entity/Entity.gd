@@ -26,13 +26,7 @@ func set_display_name(ming):
 	display_name_panel.set_anchors_and_margins_preset(Control.PRESET_CENTER_BOTTOM)
 	display_name_panel.margin_left -= 3
 	display_name_panel.margin_right += 3
-	# hp_bar.rect_size = hp_bar.rect_min_size
-	# yield(get_tree().create_timer(.00000001), "timeout")
-	print(hp_bar.rect_size)
 	hp_bar.rect_size = hp_bar.rect_min_size
-	print(hp_bar.rect_size)
-	yield(get_tree().create_timer(0.00000001), "timeout")
-	print("OKFOSAKDO")
 	hp_bar.set_anchors_and_margins_preset(Control.PRESET_CENTER_TOP)
 	hp_bar.margin_left -= int(hp_bar.rect_size.x / 2)
 

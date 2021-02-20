@@ -21,7 +21,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0, 0, 0, 0.231373 )
+bg_color = Color( 0, 0, 0, 0.352941 )
 
 [node name="Entity" type="KinematicBody2D"]
 script = ExtResource( 2 )
