@@ -48,12 +48,12 @@ func spawn_enemy(enemy_id, enemy_data):
 func spawn_player(player_id, spawn_position):
 	if get_tree().get_network_unique_id() == player_id and not player_id in players_dict:
 		# The client user 
-		print("Spawning client user")
+		#print("Spawning client user")
 		instance_player(player_id, spawn_position, player_actual)
 	else:
 		# Spawn other players
 		if not player_id in players_dict:
-			print("spawning ", player_id)
+			#print("spawning ", player_id)
 			instance_player(player_id, spawn_position, player_template)
 
 
@@ -68,7 +68,7 @@ func instance_player(player_id, spawn_position, scene):
 
 
 func despawn_player(player_id):
-	print("despawning ", player_id)
+	#print("despawning ", player_id)
 	players_dict[player_id].queue_free()
 	players_dict.erase(player_id)
 	for world_state in world_state_buffer:
@@ -119,7 +119,7 @@ func world_state_buffer_interpolate(render_time):
 					enemies[enemy_id].hp = world_state_buffer[1].enemies[enemy_id].hp
 		else:
 			if world_state_buffer[2].enemies[enemy_id].hp > 0:
-				print("spawning enemy in interpolation... ")
+				#print("spawning enemy in interpolation... ")
 				spawn_enemy(enemy_id, world_state_buffer[2].enemies[enemy_id])
 
 

@@ -36,7 +36,7 @@ func attack():
 			var direction_vector = attack.direction_vector
 			var animation_state = attack.animation_state
 			facing = attack.animation_state.f
-			instance_projectile(snake_bite, spawn_position, direction_vector)
+			instance_projectile(snake_bite, spawn_position, direction_vector, false)
 			attack_dict.erase(time_stamp)
 
 
@@ -58,10 +58,12 @@ func move_player(position, animation_data):
 	play_all_body_anims(animation_data.a, animation_data.f)
 
 
-func instance_projectile(proj, position, direction_vector):
+func instance_projectile(proj, position, direction_vector, real = true):
 	proj = proj.instance()
 	var angle = self.position.angle_to(position)
+	proj.direction = facing
 	proj.direction_vector = direction_vector
 	proj.global_position = position
 	proj.direction = facing
+	proj.real = real
 	get_tree().current_scene.add_child(proj)

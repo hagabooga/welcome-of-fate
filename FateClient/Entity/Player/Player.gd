@@ -22,16 +22,13 @@ func _ready():
 
 
 func _process(delta):
+	turn_towards_mouse()
 	if Input.is_action_just_pressed("Attack"):
 		var angle = turn_towards_mouse()
 		var direction_vector = Vector2(cos(angle), sin(angle))
 		turn_axis.rotation = get_angle_to(get_global_mouse_position())
-		var proj = snake_bite.instance()
-		proj.direction_vector = direction_vector
-		proj.position = cast_point.global_position
-		proj.direction = facing
-		Server.send_attack(proj.position, direction_vector, get_animation_state())
-		get_tree().current_scene.add_child(proj)
+		instance_projectile(snake_bite, cast_point.global_position, direction_vector)
+		Server.send_attack(cast_point.global_position, direction_vector, get_animation_state())
 
 
 func _physics_process(delta):
