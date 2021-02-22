@@ -2,13 +2,22 @@ class_name SpriteWithBodyAnimation
 extends Sprite
 
 var current_anim
-var current_dir = DOWN
+var current_dir = Enums.DIRECTION_DOWN
 # var current_anim = "idle"
-enum { UP, DOWN, LEFT, RIGHT }
-enum { IDLE, WALK, HACK, SLASH, CAST, DIE }
-var direction_to_string = {UP: "up", DOWN: "down", LEFT: "left", RIGHT: "right"}
+
+var direction_to_string = {
+	Enums.DIRECTION_UP: "up",
+	Enums.DIRECTION_DOWN: "down",
+	Enums.DIRECTION_LEFT: "left",
+	Enums.DIRECTION_RIGHT: "right"
+}
 var animation_to_string = {
-	IDLE: "idle", WALK: "walk", HACK: "hack", SLASH: "slash", CAST: "cast", DIE: "die"
+	Enums.ANIMATION_IDLE: "idle",
+	Enums.ANIMATION_WALK: "walk",
+	Enums.ANIMATION_HACK: "hack",
+	Enums.ANIMATION_SLASH: "slash",
+	Enums.ANIMATION_CAST: "cast",
+	Enums.ANIMATION_DIE: "die"
 }
 
 # 5 / 5 = 1.6

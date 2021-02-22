@@ -8,9 +8,14 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Projectile",
+"language": "GDScript",
+"path": "res://Projectile/Projectile.gd"
+} ]
 _global_script_class_icons={
-
+"Projectile": ""
 }
 
 [application]
@@ -22,10 +27,7 @@ config/icon="res://icon.png"
 [autoload]
 
 ServerData="*res://Singletons/ServerData.gd"
-
-[physics]
-
-common/physics_fps=40
+Enums="*res://Singletons/Enums.gd"
 
 [rendering]
 

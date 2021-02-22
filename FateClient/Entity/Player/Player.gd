@@ -49,18 +49,18 @@ func movement_loop(delta):
 
 	if move_direction == Vector2.ZERO:
 		speed = 0
-		play_all_body_anims(SpriteWithBodyAnimation.IDLE, facing)
+		play_all_body_anims(Enums.ANIMATION_IDLE, facing)
 		return
 
 	if move_direction.x < 0:
-		facing = SpriteWithBodyAnimation.LEFT
+		facing = Enums.DIRECTION_LEFT
 	elif move_direction.x > 0:
-		facing = SpriteWithBodyAnimation.RIGHT
+		facing = Enums.DIRECTION_RIGHT
 	if move_direction.x == 0 and move_direction.y < 0:
-		facing = SpriteWithBodyAnimation.UP
+		facing = Enums.DIRECTION_UP
 	elif move_direction.x == 0 and move_direction.y > 0:
-		facing = SpriteWithBodyAnimation.DOWN
-	play_all_body_anims(SpriteWithBodyAnimation.WALK, facing)
+		facing = Enums.DIRECTION_DOWN
+	play_all_body_anims(Enums.ANIMATION_WALK, facing)
 	speed += acceleration * delta
 	speed = min(speed, max_speed)
 	# if velocity.x != 0:
@@ -83,13 +83,13 @@ func turn_towards_mouse() -> float:
 	var cutoff = 55
 	var opp = 180 - cutoff
 	if -cutoff < angle and angle < cutoff:
-		self.facing = SpriteWithBodyAnimation.LEFT
+		self.facing = Enums.DIRECTION_LEFT
 	elif -opp < angle and angle <= -cutoff:
-		self.facing = SpriteWithBodyAnimation.DOWN
+		self.facing = Enums.DIRECTION_DOWN
 	elif (-180 <= angle and angle <= -opp) or (opp < angle and angle <= 180):
-		self.facing = SpriteWithBodyAnimation.RIGHT
+		self.facing = Enums.DIRECTION_RIGHT
 	elif cutoff <= angle and angle <= opp:
-		self.facing = SpriteWithBodyAnimation.UP
+		self.facing = Enums.DIRECTION_UP
 	return rad_angle + PI
 
 

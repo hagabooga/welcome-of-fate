@@ -95,6 +95,7 @@ config/icon="res://icon.png"
 Server="*res://Singletons/Server.gd"
 AllPlayersInfo="*res://Singletons/AllPlayersInfo.gd"
 InputToggles="*res://Singletons/InputToggles.gd"
+Enums="*res://Singletons/Enums.gd"
 
 [debug]
 

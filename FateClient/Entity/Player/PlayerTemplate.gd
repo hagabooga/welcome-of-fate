@@ -3,7 +3,7 @@ extends Entity
 
 var color
 
-var facing = SpriteWithBodyAnimation.DOWN
+var facing = Enums.DIRECTION_DOWN
 var attack_dict = {}
 
 onready var snake_bite = preload("res://Projectile/SnakeBite/SnakeBite.tscn")

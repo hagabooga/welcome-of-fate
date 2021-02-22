@@ -29,14 +29,11 @@ func spawn_enemy():
 		var enemy = enemy_names[randi() % enemy_names.size()]
 		var random_location_index = randi() % open_locations.size()
 		var location = spawn_locations[open_locations[random_location_index]]
+		location += (Vector2.ONE * (randi() % 50))
 		occupied_locations[enemy_count] = open_locations[random_location_index]
 		open_locations.remove(random_location_index)
-		enemies[enemy_count] = {
-			"ming": enemy,
-			"loc": location + (Vector2.ONE * (randi() % 50)),
-			"hp": 100,
-			"time_out": 1
-		}
+		enemies[enemy_count] = {"ming": enemy, "loc": location, "hp": 100, "time_out": 1}
+		get_parent().test_map.spawn_enemy(enemy_count, location)
 		enemy_count += 1
 	# print(enemies)
 	for key in enemies:

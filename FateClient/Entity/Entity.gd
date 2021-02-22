@@ -25,7 +25,7 @@ func set_display_name(ming):
 	display_name_panel.rect_size = display_name_panel.rect_min_size
 	display_name_panel.set_anchors_and_margins_preset(Control.PRESET_CENTER_BOTTOM)
 	display_name_panel.margin_left -= 3
-	display_name_panel.margin_right += 3
+	display_name_panel.margin_right += 2
 	hp_bar.rect_size = hp_bar.rect_min_size
 	hp_bar.set_anchors_and_margins_preset(Control.PRESET_CENTER_TOP)
 	hp_bar.margin_left -= int(hp_bar.rect_size.x / 2)

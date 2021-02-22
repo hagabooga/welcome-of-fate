@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Projectile/SnakeBite/Side.tres" type="Animation" id=1]
+[ext_resource path="res://Projectile/SnakeBite/Up.tres" type="Animation" id=2]
+[ext_resource path="res://Projectile/SnakeBite/Down.tres" type="Animation" id=3]
+
+[node name="SnakeBiteAnimationPlayer" type="AnimationPlayer"]
+anims/Down = ExtResource( 3 )
+anims/Side = ExtResource( 1 )
+anims/Up = ExtResource( 2 )

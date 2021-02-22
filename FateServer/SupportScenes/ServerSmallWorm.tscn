@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 7.50222
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 4.40502
+
+[node name="SmallWorm" type="KinematicBody2D"]
+input_pickable = true
+
+[node name="Collisionbox" type="CollisionShape2D" parent="."]
+position = Vector2( 0.26487, 5.29732 )
+shape = SubResource( 1 )
+
+[node name="Hurtbox" type="Area2D" parent="."]
+
+[node name="HurtboxShape" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource( 2 )
