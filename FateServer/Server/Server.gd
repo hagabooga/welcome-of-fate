@@ -8,7 +8,7 @@ var player_state_dict = {}
 var player_info_dict = {}
 
 onready var map = $Map
-onready var test_map = $ServerTestMap
+# onready var test_map = $ServerTestMap
 
 
 # rpc_id(0, ...) calls function to all clients
@@ -44,9 +44,7 @@ func send_world_state(world_state):
 
 remote func attack(position, direction_vector, animation_state, spawn_time):
 	var player_id = get_tree().get_rpc_sender_id()
-	$ServerTestMap.spawn_projectile(
-		player_id, position, direction_vector, animation_state, spawn_time
-	)
+	map.spawn_projectile(player_id, position, direction_vector, animation_state, spawn_time)
 	rpc_id(0, "recieve_attack", player_id, position, direction_vector, animation_state, spawn_time)
 
 remote func determine_latency(client_time):
@@ -76,5 +74,5 @@ remote func recieve_player_state(player_state):
 	else:
 		player_state_dict[player_id] = player_state
 
-remote func send_enemy_hit(enemy_id, damage):
-	map.enemy_hit(enemy_id, damage)
+# remote func send_enemy_hit(enemy_id, damage):
+# 	map.enemy_hit(enemy_id, damage)

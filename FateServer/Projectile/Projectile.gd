@@ -8,6 +8,7 @@ var duration_multiplier = 0.8
 var velocity
 var real
 var player_id
+var damage
 
 onready var hitbox = $Body/Hitbox
 onready var body = $Body
@@ -15,6 +16,7 @@ onready var animation_player = $Body/AnimationPlayer
 
 
 func _ready():
+	damage = 23
 	animation_player.playback_speed = duration_multiplier
 	animation_player.connect("animation_finished", self, "_on_animation_finished")
 	var anim
@@ -41,6 +43,8 @@ func _physics_process(delta):
 func _on_animation_finished(anim_name):
 	queue_free()
 
-# func hit_entity(body):
-# 	if body.get_parent() is Enemy:
-# 		body.get_parent().take_damage(23)
+
+func hit_entity(body):
+	var entity = body.get_parent()
+	if entity.is_in_group("Enemies"):
+		get_parent().enemy_hit(entity.get_meta("id"), damage)

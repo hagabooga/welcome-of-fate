@@ -9,13 +9,85 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Attributes",
+"language": "GDScript",
+"path": "res://Entity/Attributes.gd"
+}, {
+"base": "Node",
+"class": "BaseStat",
+"language": "GDScript",
+"path": "res://Entity/BaseStat.gd"
+}, {
+"base": "Reference",
+"class": "BasicPlayerInfo",
+"language": "GDScript",
+"path": "res://Entity/Player/BasicPlayerInfo.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://Enemies/Enemy.gd"
+}, {
+"base": "Reference",
+"class": "EnemyDatabase",
+"language": "GDScript",
+"path": "res://Singletons/Database/EnemyDatabase.gd"
+}, {
+"base": "Attributes",
+"class": "Entity",
+"language": "GDScript",
+"path": "res://Entity/Entity.gd"
+}, {
+"base": "Player",
+"class": "Mage",
+"language": "GDScript",
+"path": "res://Entity/Mage.gd"
+}, {
+"base": "Node2D",
+"class": "Map",
+"language": "GDScript",
+"path": "res://Server/Map.gd"
+}, {
+"base": "PlayerTemplate",
+"class": "Player",
+"language": "GDScript",
+"path": "res://Entity/Player/Player.gd"
+}, {
+"base": "Entity",
+"class": "PlayerTemplate",
+"language": "GDScript",
+"path": "res://Entity/Player/PlayerTemplate.gd"
+}, {
 "base": "Node2D",
 "class": "Projectile",
 "language": "GDScript",
 "path": "res://Projectile/Projectile.gd"
+}, {
+"base": "Player",
+"class": "Rogue",
+"language": "GDScript",
+"path": "res://Entity/Rogue.gd"
+}, {
+"base": "Player",
+"class": "Warrior",
+"language": "GDScript",
+"path": "res://Entity/Warrior.gd"
 } ]
 _global_script_class_icons={
-"Projectile": ""
+"Attributes": "",
+"BaseStat": "",
+"BasicPlayerInfo": "",
+"Enemy": "",
+"EnemyDatabase": "",
+"Entity": "",
+"Mage": "",
+"Map": "",
+"Player": "",
+"PlayerTemplate": "",
+"Projectile": "",
+"Rogue": "",
+"Warrior": ""
 }
 
 [application]
@@ -28,6 +100,12 @@ config/icon="res://icon.png"
 
 ServerData="*res://Singletons/ServerData.gd"
 Enums="*res://Singletons/Enums.gd"
+StateProcessing="*res://Singletons/StateProcessing.gd"
+Database="*res://Singletons/Database/Database.gd"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "godot-sqlite" )
 
 [rendering]
 

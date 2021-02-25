@@ -1,4 +1,5 @@
-extends Node
+class_name Map
+extends Node2D
 
 var enemy_names = ["SmallWorm"]
 var enemy_maximum = 3
@@ -50,7 +51,7 @@ func enemy_hit(enemy_id, damage):
 	if enemy.hp > 0:
 		enemy.hp -= damage
 		if enemy.hp <= 0:
+			enemy.queue_free()
 			# now dead
-			# enemies.enemy.state = "dead"
 			open_locations.append(occupied_locations[enemy_id])
 			occupied_locations.erase(enemy_id)

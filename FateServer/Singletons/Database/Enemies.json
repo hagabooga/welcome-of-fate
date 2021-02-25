@@ -1,0 +1,16 @@
+[
+    {
+        "ming": "Small Worm",
+        "hp": 100,
+        "armor": 5,
+        "resist": 2,
+        "damage": 23
+    },
+    {
+        "ming": "Round Eyeball",
+        "hp": 150,
+        "armor": 15,
+        "resist": 15,
+        "damage": 20
+    }
+]

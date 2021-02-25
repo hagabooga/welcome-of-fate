@@ -31,13 +31,6 @@ func set_display_name(ming):
 	hp_bar.margin_left -= int(hp_bar.rect_size.x / 2)
 
 
-# func _ready():
-# 	self.hp = self.max_hp
-# 	connect("on_hp_change", self, "update_hp_bar")
-# 	full_hp()
-# 	# check state because player might have just logged in and its dead 
-
-
 func update_hp_bar(max_hp, hp):
 	var percentage = int((float(hp) / max_hp) * 100)
 	hp_bar_tween.interpolate_property(

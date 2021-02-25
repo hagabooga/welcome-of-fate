@@ -61,13 +61,12 @@ func connection_failed():
 # Calls function on server
 # server calls return method
 
-
-func entity_take_damage(id, damage, type):
-	match type:
-		"player":
-			rpc_id(1, "send_player_hit", id, damage)
-		"enemy":
-			rpc_id(1, "send_enemy_hit", id, damage)
+# func entity_take_damage(id, damage, type):
+# 	match type:
+# 		"player":
+# 			rpc_id(1, "send_player_hit", id, damage)
+# 		"enemy":
+# 			rpc_id(1, "send_enemy_hit", id, damage)
 
 
 func determine_latency():
