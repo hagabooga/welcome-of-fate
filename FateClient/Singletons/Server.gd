@@ -1,6 +1,7 @@
 extends Node
 
-onready var test_map = preload("res://Map/TestMap.tscn")
+signal account_creation_received(error)
+signal login_received(error)
 
 var network
 var port = 1909
@@ -14,6 +15,9 @@ var latency_array = []
 var latency = 0
 var latency_delta = 0
 
+onready var test_map = preload("res://Map/TestMap.tscn")
+var logged_in = false
+
 
 func _physics_process(delta):  #0.01667
 	client_clock += int(delta * 1000) + latency_delta
@@ -24,20 +28,16 @@ func _physics_process(delta):  #0.01667
 		decimal_collector -= 1.00
 
 
-func connect_to_server(display_name, color, ip = "127.0.0.1"):
-	AllPlayersInfo.user_basic = BasicPlayerInfo.new(display_name, color)
+func connect_to_server(enter_ip_screen, ip = "127.0.0.1"):
+	# AllPlayersInfo.user_basic = BasicPlayerInfo.new(display_name, color)
 	network = NetworkedMultiplayerENet.new()
 	network.create_client(ip, port)
 	get_tree().network_peer = network
+	network.connect("connection_succeeded", enter_ip_screen, "on_successful_connect_to_server")
+	network.connect("connection_failed", enter_ip_screen, "on_failed_connect_to_server")
 	network.connect("connection_succeeded", self, "connection_succeeded")
 	network.connect("connection_failed", self, "connection_failed")
 	waiting_for_connection = true
-	yield(get_tree().create_timer(5.0), "timeout")
-	if not successfully_connected:
-		print("Connection Timed Out")
-		waiting_for_connection = false
-		network.disconnect("connection_succeeded", self, "connection_succeeded")
-		network.disconnect("connection_failed", self, "connection_failed")
 
 
 func connection_succeeded():
@@ -49,7 +49,6 @@ func connection_succeeded():
 	timer.autostart = true
 	timer.connect("timeout", self, "determine_latency")
 	add_child(timer)
-	get_tree().change_scene_to(test_map)
 	print("Successfully connected.")
 
 
@@ -76,20 +75,37 @@ func send_attack(position, direction_vector, animation_state):
 
 func send_player_state(player_state):
 	# print("Sending player state to server: ", player_state)
-	rpc_unreliable_id(1, "recieve_player_state", player_state)
+	rpc_unreliable_id(1, "receive_player_state", player_state)
 
 
-remote func spawn_player(player_id, spawn_position, basic_player_info):
-	AllPlayersInfo.basics[player_id] = BasicPlayerInfo.new(basic_player_info.n, basic_player_info.c)
-	get_tree().current_scene.spawn_player(player_id, spawn_position)
+func try_create_new_account(enter_ip_screen, username, color):
+	if not is_connected(
+		"account_creation_received", enter_ip_screen, "on_account_creation_received"
+	):
+		connect("account_creation_received", enter_ip_screen, "on_account_creation_received")
+	rpc_id(1, "create_new_account", username, color.to_html(false))
+
+
+func try_login(enter_ip_screen, username):
+	if not is_connected("login_received", enter_ip_screen, "on_login_received"):
+		connect("login_received", enter_ip_screen, "on_login_received")
+	rpc_id(1, "login", username)
+
+
+remote func spawn_player(player_id, data):
+	yield(get_tree().create_timer(0.00000000000001), "timeout")
+	get_tree().current_scene.spawn_player(player_id, data.loc)
 	# print("spawning player ", player_id, spawn_position)
 
 remote func despawn_player(player_id):
 	print("despawning player ", player_id)
 	get_tree().current_scene.despawn_player(player_id)
 
+remote func receive_account_creation(error):
+	emit_signal("account_creation_received", error)
+
 # Spawn Other player's attack
-remote func recieve_attack(player_id, position, direction_vector, animation_state, spawn_time):
+remote func receive_attack(player_id, position, direction_vector, animation_state, spawn_time):
 	if player_id == get_tree().get_network_unique_id():
 		pass  # Corect client side predictions
 	else:
@@ -99,28 +115,29 @@ remote func recieve_attack(player_id, position, direction_vector, animation_stat
 		attack_dict.direction_vector = direction_vector
 		attack_dict.animation_state = animation_state
 
-remote func recieve_world_state(world_state):
+remote func receive_login(player_id, other_infos):
+	print(other_infos)
+	if other_infos == null:
+		emit_signal("login_received", FAILED)
+	else:
+		emit_signal("login_received", OK)
+		for player_id in other_infos:
+			AllPlayersInfo.basics[player_id] = BasicPlayerInfo.new(
+				other_infos[player_id].n, other_infos[player_id].c
+			)
+		if player_id == get_tree().get_network_unique_id():
+			logged_in = true
+			get_tree().change_scene_to(test_map)
+
+remote func receive_world_state(world_state):
 	# print(world_state)
-	get_tree().current_scene.update_world_state(world_state)
+	if logged_in:
+		get_tree().current_scene.update_world_state(world_state)
 
 remote func return_skill(s_skill, requester):
 	print(s_skill)
 	# This is the object that called fetch skill
 	print(instance_from_id(requester).name)  #.set_skill(s_skill)
-
-remote func return_basic_player_info(player_id, other_player_basic_info):
-	for player_id in other_player_basic_info:
-		AllPlayersInfo.basics[player_id] = BasicPlayerInfo.new(
-			other_player_basic_info[player_id].n, other_player_basic_info[player_id].c
-		)
-	rpc_id(
-		1,
-		"recieve_basic_player_info",
-		{
-			"n": AllPlayersInfo.user_basic.display_name,
-			"c": AllPlayersInfo.user_basic.color.to_html(false)
-		}
-	)
 
 remote func return_latency(client_time):
 	latency_array.append((OS.get_system_time_msecs() - client_time) / 2)

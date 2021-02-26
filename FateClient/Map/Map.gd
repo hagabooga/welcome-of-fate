@@ -38,6 +38,8 @@ func _physics_process(delta):
 
 
 func spawn_enemy(enemy_id, enemy_data):
+	if not Server.logged_in:
+		return
 	var enemy = worm.instance()
 	enemy.init(enemy_data)
 	enemy.id = enemy_id

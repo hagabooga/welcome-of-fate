@@ -14,6 +14,7 @@ func _ready():
 	db.path = db_name
 	db.open_db()
 	db.verbose_mode = true
+	db.foreign_keys = true
 	db.create_table(
 		"enemies",
 		{

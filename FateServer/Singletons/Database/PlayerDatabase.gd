@@ -15,11 +15,10 @@ func get_player(ming):
 	return stats[0]
 
 
-func create_account(player_info):
-	print(player_info)
+func create_account(ming, color):
 	var info = {}
-	info.n = player_info.n
-	info.c = player_info.c
+	info.ming = ming
+	info.color = color
 	info.max_hp = 100
 	info.hp = 100
 	info.armor = 10
