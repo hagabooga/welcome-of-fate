@@ -39,6 +39,7 @@ func _physics_process(delta):
 
 func spawn_enemy(enemy_id, enemy_data):
 	var enemy = worm.instance()
+	enemy.init(enemy_data)
 	enemy.id = enemy_id
 	enemy.position = enemy_data.loc
 	enemies_node.add_child(enemy)
@@ -60,7 +61,8 @@ func spawn_player(player_id, spawn_position):
 func instance_player(player_id, spawn_position, scene):
 	var player = scene.instance()
 	if scene == player_actual:
-		player.set_script(load("res://Entity/Mage.gd"))
+		pass
+		# player.set_script(load("res://Entity/Mage.gd"))
 	var basic = AllPlayersInfo.basics[player_id]
 	player.init(player_id, spawn_position, basic)
 	players.add_child(player)

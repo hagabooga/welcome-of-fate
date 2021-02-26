@@ -44,11 +44,3 @@ func update_hp_bar(max_hp, hp):
 		hp_bar.tint_progress = Color("e1be32")
 	else:
 		hp_bar.tint_progress = Color("e11e1e")
-
-
-func take_damage(damage):
-	pass
-	# Server.entity_hit(get_tree().get_network_unique_id(), damage, "player")
-	# # self.hp -= damage
-	# # if self.hp <= 0:
-	# # 	print("dead")

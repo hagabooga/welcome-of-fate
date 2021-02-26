@@ -7,15 +7,12 @@ var acceleration = 1000
 var max_speed = 150
 
 # onready var camera = $Camera2D
-
 onready var turn_axis = $TurnAxis
 onready var cast_point = $TurnAxis/CastPoint
 
 
-# func _ready():
-# 	set_physics_process(false)
 func _ready():
-	# print("player", name)
+	self.max_hp = 100
 	self.hp = self.max_hp
 	connect("on_hp_change", self, "update_hp_bar")
 	full_hp()
@@ -63,8 +60,6 @@ func movement_loop(delta):
 	play_all_body_anims(Enums.ANIMATION_WALK, facing)
 	speed += acceleration * delta
 	speed = min(speed, max_speed)
-	# if velocity.x != 0:
-	# 	sprite.flip_h = velocity.x < 0
 	move_direction = move_and_slide(move_direction.normalized() * speed)
 
 
@@ -75,6 +70,13 @@ func send_player_state_to_server():
 	player_state.p = global_position
 	player_state.a = get_animation_state()
 	Server.send_player_state(player_state)
+
+
+func get_animation_state():
+	var animation_state = {}
+	animation_state.f = facing
+	animation_state.a = body_animations.get_child(0).current_anim
+	return animation_state
 
 
 func turn_towards_mouse() -> float:
@@ -91,10 +93,3 @@ func turn_towards_mouse() -> float:
 	elif cutoff <= angle and angle <= opp:
 		self.facing = Enums.DIRECTION_UP
 	return rad_angle + PI
-
-
-func get_animation_state():
-	var animation_state = {}
-	animation_state.f = facing
-	animation_state.a = body_animations.get_child(0).current_anim
-	return animation_state

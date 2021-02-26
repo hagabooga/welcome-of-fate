@@ -61,13 +61,6 @@ func connection_failed():
 # Calls function on server
 # server calls return method
 
-# func entity_take_damage(id, damage, type):
-# 	match type:
-# 		"player":
-# 			rpc_id(1, "send_player_hit", id, damage)
-# 		"enemy":
-# 			rpc_id(1, "send_enemy_hit", id, damage)
-
 
 func determine_latency():
 	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
@@ -95,6 +88,7 @@ remote func despawn_player(player_id):
 	print("despawning player ", player_id)
 	get_tree().current_scene.despawn_player(player_id)
 
+# Spawn Other player's attack
 remote func recieve_attack(player_id, position, direction_vector, animation_state, spawn_time):
 	if player_id == get_tree().get_network_unique_id():
 		pass  # Corect client side predictions
@@ -122,7 +116,10 @@ remote func return_basic_player_info(player_id, other_player_basic_info):
 	rpc_id(
 		1,
 		"recieve_basic_player_info",
-		{"n": AllPlayersInfo.user_basic.display_name, "c": AllPlayersInfo.user_basic.color}
+		{
+			"n": AllPlayersInfo.user_basic.display_name,
+			"c": AllPlayersInfo.user_basic.color.to_html(false)
+		}
 	)
 
 remote func return_latency(client_time):

@@ -34,11 +34,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entity/Entity.gd"
 }, {
-"base": "Player",
-"class": "Mage",
-"language": "GDScript",
-"path": "res://Entity/Mage.gd"
-}, {
 "base": "PlayerTemplate",
 "class": "Player",
 "language": "GDScript",
@@ -54,20 +49,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Projectile/Projectile.gd"
 }, {
-"base": "Player",
-"class": "Rogue",
-"language": "GDScript",
-"path": "res://Entity/Rogue.gd"
-}, {
 "base": "Sprite",
 "class": "SpriteWithBodyAnimation",
 "language": "GDScript",
 "path": "res://Entity/Player/Sprites/SpriteWithBodyAnimation.gd"
-}, {
-"base": "Player",
-"class": "Warrior",
-"language": "GDScript",
-"path": "res://Entity/Warrior.gd"
 } ]
 _global_script_class_icons={
 "Attributes": "",
@@ -75,13 +60,10 @@ _global_script_class_icons={
 "BasicPlayerInfo": "",
 "Enemy": "",
 "Entity": "",
-"Mage": "",
 "Player": "",
 "PlayerTemplate": "",
 "Projectile": "",
-"Rogue": "",
-"SpriteWithBodyAnimation": "",
-"Warrior": ""
+"SpriteWithBodyAnimation": ""
 }
 
 [application]

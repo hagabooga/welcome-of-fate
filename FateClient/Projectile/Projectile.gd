@@ -31,8 +31,6 @@ func _ready():
 	if direction == Enums.DIRECTION_RIGHT:
 		scale.x = -scale.x
 	velocity = Vector2.ONE * direction_vector * speed
-	# else:
-	# 	hitbox.connect("area_entered", self, "hit_entity")
 
 
 func _physics_process(delta):
@@ -41,7 +39,3 @@ func _physics_process(delta):
 
 func _on_animation_finished(anim_name):
 	queue_free()
-
-# func hit_entity(body):
-# 	if body.get_parent() is Enemy:
-# 		body.get_parent().take_damage(23)

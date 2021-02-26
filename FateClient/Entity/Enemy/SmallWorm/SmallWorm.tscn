@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Entity/Enemy/Enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Entity/Enemy/SmallWorm/SmallWormMovement.png" type="Texture" id=2]
-[ext_resource path="res://Entity/Enemy/SmallWorm/SmallWorm.gd" type="Script" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 7.50222
@@ -12,7 +11,6 @@ radius = 4.40502
 
 [node name="SmallWorm" instance=ExtResource( 1 )]
 input_pickable = true
-script = ExtResource( 3 )
 
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource( 2 )

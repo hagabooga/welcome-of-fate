@@ -46,7 +46,6 @@ func play_all_body_anims(anim, dir = null, speed_ratio = 1, can_mv = true):
 			x.play_anim(anim, x.current_dir, speed_ratio)
 		else:
 			x.play_anim(anim, dir, speed_ratio)
-	# self.can_move = can_mv
 
 
 func take_damage(damage):

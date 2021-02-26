@@ -64,7 +64,15 @@ remote func fetch_server_time(client_time):
 remote func recieve_basic_player_info(player_info):
 	var player_id = get_tree().get_rpc_sender_id()
 	player_info_dict[player_id] = player_info
-	rpc_id(0, "spawn_player", player_id, Vector2(randi() % 50, randi() % 50), player_info)
+	var player_from_database = Database.players.get_player(player_info.n)
+	if player_from_database == null:
+		Database.players.create_account(player_info)
+	player_from_database = Database.players.get_player(player_info.n)
+	player_from_database.n = player_from_database.ming
+	player_from_database.c = player_from_database.color
+	player_from_database.erase("ming")
+	player_from_database.erase("color")
+	rpc_id(0, "spawn_player", player_id, Vector2(randi() % 50, randi() % 50), player_from_database)
 
 remote func recieve_player_state(player_state):
 	var player_id = get_tree().get_rpc_sender_id()

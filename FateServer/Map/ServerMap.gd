@@ -79,6 +79,7 @@ func instance_enemy(enemy_id, location):
 	enemy_datas[enemy_id] = Database.enemies.get_enemy(enemy.id)
 	enemy_datas[enemy_id].loc = location
 	enemy_datas[enemy_id].time_out = 1
+	enemy_datas[enemy_id].id = enemy_id
 	# enemy.init(enemy_id, location)
 	enemy.position = location
 	enemy.name = str(enemy_id)

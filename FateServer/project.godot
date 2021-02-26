@@ -29,7 +29,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Enemies/Enemy.gd"
 }, {
-"base": "Reference",
+"base": "SpecificDatabase",
 "class": "EnemyDatabase",
 "language": "GDScript",
 "path": "res://Singletons/Database/EnemyDatabase.gd"
@@ -54,6 +54,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entity/Player/Player.gd"
 }, {
+"base": "SpecificDatabase",
+"class": "PlayerDatabase",
+"language": "GDScript",
+"path": "res://Singletons/Database/PlayerDatabase.gd"
+}, {
 "base": "Entity",
 "class": "PlayerTemplate",
 "language": "GDScript",
@@ -68,6 +73,11 @@ _global_script_classes=[ {
 "class": "Rogue",
 "language": "GDScript",
 "path": "res://Entity/Rogue.gd"
+}, {
+"base": "Node",
+"class": "SpecificDatabase",
+"language": "GDScript",
+"path": "res://Singletons/Database/SpecificDatabase.gd"
 }, {
 "base": "Player",
 "class": "Warrior",
@@ -84,9 +94,11 @@ _global_script_class_icons={
 "Mage": "",
 "Map": "",
 "Player": "",
+"PlayerDatabase": "",
 "PlayerTemplate": "",
 "Projectile": "",
 "Rogue": "",
+"SpecificDatabase": "",
 "Warrior": ""
 }
 
