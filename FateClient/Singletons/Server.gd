@@ -15,8 +15,10 @@ var latency_array = []
 var latency = 0
 var latency_delta = 0
 
-onready var test_map = preload("res://Map/TestMap.tscn")
 var logged_in = false
+var token
+
+onready var test_map = preload("res://Map/TestMap.tscn")
 
 
 func _physics_process(delta):  #0.01667
@@ -69,6 +71,20 @@ func fetch_skill(skill_name, requester):
 	rpc_id(1, "fetch_skill", skill_name, requester)
 
 
+remote func fetch_token():
+	rpc_id(1, "return_token", token)
+
+remote func return_token_verification_results(good):
+	if good:
+		# delete login screen
+		print("WE IN BOIZ")
+		get_tree().change_scene_to(test_map)
+
+	else:
+		# try again
+		print("try again")
+
+
 func send_attack(position, direction_vector, animation_state):
 	rpc_id(1, "attack", position, direction_vector, animation_state, client_clock)
 
@@ -86,14 +102,11 @@ func try_create_new_account(enter_ip_screen, username, color):
 	rpc_id(1, "create_new_account", username, color.to_html(false))
 
 
-func try_login(enter_ip_screen, username):
-	if not is_connected("login_received", enter_ip_screen, "on_login_received"):
-		connect("login_received", enter_ip_screen, "on_login_received")
-	rpc_id(1, "login", username)
-
+# func try_login(enter_ip_screen, username):
+# 	rpc_id(1, "login", username)
 
 remote func spawn_player(player_id, data):
-	yield(get_tree().create_timer(0.00000000000001), "timeout")
+	yield(get_tree().create_timer(0.0000001), "timeout")
 	get_tree().current_scene.spawn_player(player_id, data.loc)
 	# print("spawning player ", player_id, spawn_position)
 
@@ -115,19 +128,19 @@ remote func receive_attack(player_id, position, direction_vector, animation_stat
 		attack_dict.direction_vector = direction_vector
 		attack_dict.animation_state = animation_state
 
-remote func receive_login(player_id, other_infos):
-	print(other_infos)
-	if other_infos == null:
-		emit_signal("login_received", FAILED)
-	else:
-		emit_signal("login_received", OK)
-		for player_id in other_infos:
-			AllPlayersInfo.basics[player_id] = BasicPlayerInfo.new(
-				other_infos[player_id].n, other_infos[player_id].c
-			)
-		if player_id == get_tree().get_network_unique_id():
-			logged_in = true
-			get_tree().change_scene_to(test_map)
+# remote func receive_login(player_id, other_infos):
+# 	# print(other_infos)
+# 	if other_infos == null:
+# 		emit_signal("login_received", FAILED)
+# 	else:
+# 		emit_signal("login_received", OK)
+# 		for player_id in other_infos:
+# 			AllPlayersInfo.basics[player_id] = BasicPlayerInfo.new(
+# 				other_infos[player_id].n, other_infos[player_id].c
+# 			)
+# 		if player_id == get_tree().get_network_unique_id():
+# 			logged_in = true
+# 			get_tree().change_scene_to(test_map)
 
 remote func receive_world_state(world_state):
 	# print(world_state)

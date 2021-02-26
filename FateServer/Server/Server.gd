@@ -7,7 +7,10 @@ var max_players = 100
 var player_state_dict = {}
 var player_info_dict = {}
 
+var expected_tokens = []
+
 onready var map = $Map
+onready var token_expiration_timer = $TokenExpiration
 # onready var test_map = $ServerTestMap
 
 
@@ -22,10 +25,25 @@ func start_server():
 	print("Server Started")
 	network.connect("peer_connected", self, "peer_connected")
 	network.connect("peer_disconnected", self, "peer_disconnected")
+	token_expiration_timer.connect("timeout", self, "on_token_expiration_timeout")
+
+
+func on_token_expiration_timeout():
+	var current_time = OS.get_unix_time()
+	var token_time
+	if expected_tokens == []:
+		pass
+	else:
+		for i in range(expected_tokens.size() - 1, -1, -1):
+			token_time = int(expected_tokens[i].right(64))
+			if current_time - token_time >= 30:
+				expected_tokens.remove(i)
+	print("Expected tokens: ", expected_tokens)
 
 
 func peer_connected(player_id):
 	print("User " + str(player_id) + " connected.")
+	PlayerVerification.start(player_id)
 	# Obtain player info
 	# rpc_id(0, "return_basic_player_info", player_id, player_info_dict)
 
@@ -36,6 +54,20 @@ func peer_disconnected(player_id):
 	if player_state_dict.has(player_id):
 		player_state_dict.erase(player_id)
 		rpc_id(0, "despawn_player", player_id)
+
+
+func fetch_token(player_id):
+	rpc_id(player_id, "fetch_token")
+
+
+func return_token_verification_results(player_id, good):
+	rpc_id(player_id, "return_token_verification_results", good)
+
+
+remote func return_token(token):
+	var player_id = get_tree().get_rpc_sender_id()
+	PlayerVerification.verify(player_id, token)
+	print("verifying: ", player_id, " with token: ", token)
 
 
 func send_world_state(world_state):
@@ -70,21 +102,21 @@ remote func fetch_server_time(client_time):
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "return_server_time", OS.get_system_time_msecs(), client_time)
 
-remote func login(username):
-	var player_id = get_tree().get_rpc_sender_id()
-	print(username)
-	var player_from_database = Database.players.get_player(username)
-	if player_from_database == null:
-		rpc_id(0, "receive_login", player_id, null)
-	else:
-		player_from_database.n = player_from_database.ming
-		player_from_database.c = player_from_database.color
-		player_from_database.erase("ming")
-		player_from_database.erase("color")
-		player_from_database.loc = Vector2(randi() % 50, randi() % 50)
-		player_info_dict[player_id] = player_from_database
-		rpc_id(0, "receive_login", player_id, player_info_dict)
-		rpc_id(0, "spawn_player", player_id, player_from_database)
+# remote func login(username):
+# 	var player_id = get_tree().get_rpc_sender_id()
+# 	print(username)
+# 	var player_from_database = Database.players.get_player(username)
+# 	if player_from_database == null:
+# 		rpc_id(0, "receive_login", player_id, null)
+# 	else:
+# 		player_from_database.n = player_from_database.ming
+# 		player_from_database.c = player_from_database.color
+# 		player_from_database.erase("ming")
+# 		player_from_database.erase("color")
+# 		player_from_database.loc = Vector2(randi() % 50, randi() % 50)
+# 		player_info_dict[player_id] = player_from_database
+# 		rpc_id(0, "receive_login", player_id, player_info_dict)
+# 		rpc_id(0, "spawn_player", player_id, player_from_database)
 
 remote func receive_basic_player_info(player_info):
 	var player_id = get_tree().get_rpc_sender_id()

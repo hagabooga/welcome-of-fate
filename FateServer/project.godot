@@ -114,6 +114,8 @@ ServerData="*res://Singletons/ServerData.gd"
 Enums="*res://Singletons/Enums.gd"
 StateProcessing="*res://Singletons/StateProcessing.gd"
 Database="*res://Singletons/Database/Database.gd"
+HubConnection="*res://Singletons/HubConnection.gd"
+PlayerVerification="*res://Singletons/PlayerVerification.gd"
 
 [editor_plugins]
 

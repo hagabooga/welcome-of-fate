@@ -7,3 +7,7 @@
 script = ExtResource( 2 )
 
 [node name="Map" parent="." instance=ExtResource( 4 )]
+
+[node name="TokenExpiration" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true

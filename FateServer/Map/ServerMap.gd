@@ -27,10 +27,10 @@ func _ready():
 
 
 func spawn_enemy():
-	print(enemy_datas)
+	# print(enemy_datas)
 	if enemy_datas.size() < spawn_locations.size() and open_locations.size() > 0:
 		randomize()
-		print(open_locations)
+		# print(open_locations)
 		var enemy_id = enemy_ids[randi() % enemy_ids.size()]
 		var random_location_index = randi() % open_locations.size()
 		var location = spawn_locations[open_locations[random_location_index]]

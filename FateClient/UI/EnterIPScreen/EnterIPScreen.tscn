@@ -30,9 +30,9 @@ __meta__ = {
 }
 
 [node name="Title" type="Label" parent="HBoxContainer/VBoxContainer"]
-margin_top = 195.0
+margin_top = 158.0
 margin_right = 450.0
-margin_bottom = 228.0
+margin_bottom = 191.0
 custom_fonts/font = ExtResource( 2 )
 text = "Join a Server"
 align = 1
@@ -41,10 +41,9 @@ align = 1
 wait_time = 3.0
 
 [node name="Username" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
-visible = false
-margin_top = 213.0
-margin_right = 245.0
-margin_bottom = 246.0
+margin_top = 195.0
+margin_right = 450.0
+margin_bottom = 228.0
 custom_fonts/font = ExtResource( 3 )
 align = 1
 max_length = 16
@@ -53,10 +52,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="IPAddress" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
+[node name="Password" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
 margin_top = 232.0
 margin_right = 450.0
 margin_bottom = 265.0
+custom_fonts/font = ExtResource( 3 )
+align = 1
+max_length = 16
+secret = true
+placeholder_text = "Password"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IPAddress" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
+margin_top = 269.0
+margin_right = 450.0
+margin_bottom = 302.0
 custom_fonts/font = ExtResource( 3 )
 align = 1
 placeholder_text = "Server IP Address"
@@ -65,9 +77,9 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 269.0
+margin_top = 306.0
 margin_right = 450.0
-margin_bottom = 308.0
+margin_bottom = 345.0
 custom_constants/separation = 10
 alignment = 1
 __meta__ = {
@@ -75,8 +87,8 @@ __meta__ = {
 }
 
 [node name="OKButton" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 166.0
-margin_right = 209.0
+margin_left = 102.0
+margin_right = 145.0
 margin_bottom = 39.0
 custom_fonts/font = ExtResource( 2 )
 text = "OK"
@@ -86,24 +98,23 @@ wait_time = 1.5
 one_shot = true
 
 [node name="ResetButton" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 219.0
-margin_right = 284.0
+margin_left = 155.0
+margin_right = 220.0
 margin_bottom = 39.0
 custom_fonts/font = ExtResource( 2 )
 text = "Reset"
 
 [node name="NewAccountCheck" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-visible = false
-margin_left = 128.0
-margin_right = 246.0
+margin_left = 230.0
+margin_right = 348.0
 margin_bottom = 39.0
 custom_fonts/font = ExtResource( 3 )
 text = "New Account"
 
 [node name="ErrorDisplay" type="Label" parent="HBoxContainer/VBoxContainer"]
-margin_top = 312.0
+margin_top = 349.0
 margin_right = 450.0
-margin_bottom = 345.0
+margin_bottom = 382.0
 rect_min_size = Vector2( 450, 0 )
 custom_fonts/font = ExtResource( 2 )
 align = 1
