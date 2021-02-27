@@ -38,6 +38,7 @@ func ok_button_pressed():
 	if not logged_in:
 		if username.text == "" or password.text == "":
 			show_error("Please enter a valid username/password")
+			return
 		else:
 			if ip_address.text == "":
 				Gateway.connect_to_server(self, username.text, password.text)
@@ -47,23 +48,7 @@ func ok_button_pressed():
 
 			else:
 				Gateway.connect_to_server(self, username.text, password.text, ip_address.text)
-			disable_ui(true)
 			title_timer.start()
-	# if not connected_to_server:
-	# 	if ip_address.text == "":
-	# 		Server.connect_to_server(self)
-	# 		title_timer.start()
-	# 	elif not ip_address.text.is_valid_ip_address():
-	# 		show_error("Not a valid IP adrress!")
-	# 		return
-	# 	else:
-	# 		Server.connect_to_server(self, ip_address.text)
-	# 		title_timer.start()
-	# else:
-	# 	if new_account_check.pressed:
-	# 		Server.try_create_new_account(self, username.text, color_picker.color)
-	# 	else:
-	# 		Server.try_login(self, username.text)
 	disable_ui(true)
 
 

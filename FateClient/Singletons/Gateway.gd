@@ -10,6 +10,8 @@ var port = 1910
 var username
 var password
 
+var cert = load("res://Certificate/X509Certificate.crt")
+
 
 func _ready():
 	pass
@@ -26,6 +28,11 @@ func _process(delta):
 func connect_to_server(login_screen, username, password, ip = "127.0.0.1"):
 	network = NetworkedMultiplayerENet.new()
 	gateway_api = MultiplayerAPI.new()
+
+	network.use_dtls = true
+	network.dtls_verify = false # Set to true when using signed cert 
+	network.set_dtls_certificate(cert)
+
 	self.username = username
 	self.password = password
 	network.create_client(ip, port)
