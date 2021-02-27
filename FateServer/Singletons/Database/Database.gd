@@ -12,9 +12,10 @@ var players: PlayerDatabase
 func _ready():
 	db = SQLite.new()
 	db.path = db_name
-	db.open_db()
 	db.verbose_mode = true
 	db.foreign_keys = true
+	db.open_db()
+
 	db.create_table(
 		"enemies",
 		{

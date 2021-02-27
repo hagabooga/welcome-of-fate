@@ -32,10 +32,10 @@ remote func authenticate_player(username, password, player_id):
 	var result = OK
 	var token = null
 	print("Starting authentication...")
-	if not PlayerData.data.has(username):
+	if not AccountDatabase.exists(username):
 		print("User not recognized")
 		result = FAILED
-	elif not PlayerData.data[username].password == password:
+	elif not AccountDatabase.get(username).password == password:
 		print("Incorrect password")
 		result = FAILED
 	else:
@@ -50,8 +50,11 @@ remote func authenticate_player(username, password, player_id):
 	print(username, ": authentication results now sending to gateway server.")
 	rpc_id(gateway_id, "authentication_results", result, player_id, token)
 
-# remote func fetch_skill(skill_name, requester):
-# 	var player_id = get_tree().get_rpc_sender_id()
-# 	var skill = ServerData.get_skill(skill_name)
-# 	rpc_id(player_id, "return_skill", skill, requester)
-# 	print("Sending " + str(skill) + " to player.")
+remote func create_account(player_id, username, password):
+	var gateway_id = get_tree().get_rpc_sender_id()
+	var result = OK
+	if AccountDatabase.exists(username):
+		result = ERR_ALREADY_EXISTS
+	else:
+		AccountDatabase.create(username, password)
+	rpc_id(gateway_id, "create_account_results", player_id, result)

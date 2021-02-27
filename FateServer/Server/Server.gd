@@ -64,12 +64,6 @@ func return_token_verification_results(player_id, good):
 	rpc_id(player_id, "return_token_verification_results", good)
 
 
-remote func return_token(token):
-	var player_id = get_tree().get_rpc_sender_id()
-	PlayerVerification.verify(player_id, token)
-	print("verifying: ", player_id, " with token: ", token)
-
-
 func send_world_state(world_state):
 	rpc_unreliable_id(0, "receive_world_state", world_state)
 
@@ -79,14 +73,14 @@ remote func attack(position, direction_vector, animation_state, spawn_time):
 	map.spawn_projectile(player_id, position, direction_vector, animation_state, spawn_time)
 	rpc_id(0, "receive_attack", player_id, position, direction_vector, animation_state, spawn_time)
 
-remote func create_new_account(username, color):
-	var player_id = get_tree().get_rpc_sender_id()
-	var player_from_database = Database.players.get_player(username)
-	if player_from_database == null:
-		Database.players.create_account(username, color)
-		rpc_id(player_id, "receive_account_creation", OK)
-	else:
-		rpc_id(player_id, "receive_account_creation", FAILED)
+# remote func create_new_account(username, color):
+# 	var player_id = get_tree().get_rpc_sender_id()
+# 	var player_from_database = Database.players.get_player(username)
+# 	if player_from_database == null:
+# 		Database.players.create_account(username, color)
+# 		rpc_id(player_id, "receive_account_creation", OK)
+# 	else:
+# 		rpc_id(player_id, "receive_account_creation", FAILED)
 
 remote func determine_latency(client_time):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -102,34 +96,23 @@ remote func fetch_server_time(client_time):
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "return_server_time", OS.get_system_time_msecs(), client_time)
 
-# remote func login(username):
-# 	var player_id = get_tree().get_rpc_sender_id()
-# 	print(username)
-# 	var player_from_database = Database.players.get_player(username)
-# 	if player_from_database == null:
-# 		rpc_id(0, "receive_login", player_id, null)
-# 	else:
-# 		player_from_database.n = player_from_database.ming
-# 		player_from_database.c = player_from_database.color
-# 		player_from_database.erase("ming")
-# 		player_from_database.erase("color")
-# 		player_from_database.loc = Vector2(randi() % 50, randi() % 50)
-# 		player_info_dict[player_id] = player_from_database
-# 		rpc_id(0, "receive_login", player_id, player_info_dict)
-# 		rpc_id(0, "spawn_player", player_id, player_from_database)
-
-remote func receive_basic_player_info(player_info):
+remote func return_token(token):
 	var player_id = get_tree().get_rpc_sender_id()
-	player_info_dict[player_id] = player_info
-	var player_from_database = Database.players.get_player(player_info.n)
-	if player_from_database == null:
-		Database.players.create_account(player_info.n, player_info.c)
-	player_from_database = Database.players.get_player(player_info.n)
-	player_from_database.n = player_from_database.ming
-	player_from_database.c = player_from_database.color
-	player_from_database.erase("ming")
-	player_from_database.erase("color")
-	rpc_id(0, "spawn_player", player_id, Vector2(randi() % 50, randi() % 50), player_from_database)
+	PlayerVerification.verify(player_id, token)
+	print("verifying: ", player_id, " with token: ", token)
+
+# remote func receive_basic_player_info(player_info):
+# 	var player_id = get_tree().get_rpc_sender_id()
+# 	player_info_dict[player_id] = player_info
+# 	var player_from_database = Database.players.get_player(player_info.n)
+# 	if player_from_database == null:
+# 		Database.players.create_account(player_info.n, player_info.c)
+# 	player_from_database = Database.players.get_player(player_info.n)
+# 	player_from_database.n = player_from_database.ming
+# 	player_from_database.c = player_from_database.color
+# 	player_from_database.erase("ming")
+# 	player_from_database.erase("color")
+# 	rpc_id(0, "spawn_player", player_id, Vector2(randi() % 50, randi() % 50), player_from_database)
 
 remote func receive_player_state(player_state):
 	var player_id = get_tree().get_rpc_sender_id()

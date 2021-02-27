@@ -8,7 +8,7 @@ onready var ok_button_timer = $HBoxContainer/VBoxContainer/HBoxContainer/OKButto
 onready var reset_button = $HBoxContainer/VBoxContainer/HBoxContainer/ResetButton
 onready var username = $HBoxContainer/VBoxContainer/Username
 onready var password = $HBoxContainer/VBoxContainer/Password
-onready var color_picker = $HBoxContainer/ColorPicker
+onready var confirm_password = $HBoxContainer/VBoxContainer/ConfirmPassword
 onready var new_account_check = $HBoxContainer/VBoxContainer/HBoxContainer/NewAccountCheck
 onready var error_display = $HBoxContainer/VBoxContainer/ErrorDisplay
 onready var error_display_tween = $HBoxContainer/VBoxContainer/ErrorDisplay/Tween
@@ -35,7 +35,21 @@ func ip_address_text_entered(text):
 
 
 func ok_button_pressed():
-	if not logged_in:
+	if new_account_check.pressed:
+		if username.text == "":
+			show_error("Please provide a valid username!")
+		elif password.text == "":
+			show_error("Please provide a valid password!")
+		elif confirm_password.text == "":
+			show_error("Please confirm your password!")
+		elif password.text != confirm_password.text:
+			show_error("Passwords do not match!")
+		elif password.text.length() <= 6:
+			show_error("Passwords must contain at least 7 characters")
+		else:
+			Gateway.connect_to_server(self, username.text, password.text, true)
+		ok_button_timer.start()
+	elif not logged_in:
 		if username.text == "" or password.text == "":
 			show_error("Please enter a valid username/password")
 			return
@@ -56,13 +70,15 @@ func reset_button_pressed():
 	username.text = ""
 	ip_address.text = ""
 	password.text = ""
-	new_account_check.pressed = false
-	color_picker.color = Color.white
+	confirm_password.text = ""
+	# new_account_check.pressed = false
 
 
 func new_account_checked_toggled(yes):
 	# color_picker.visible = yes
 	title.text = "Create an Account" if yes else "Login"
+	confirm_password.visible = yes
+	reset_button_pressed()
 
 
 func show_error(text):
@@ -89,6 +105,7 @@ func disable_ui(yes):
 	ip_address.editable = ! yes
 	username.editable = ! yes
 	password.editable = ! yes
+	confirm_password.editable = ! yes
 	new_account_check.disabled = yes
 
 
@@ -99,13 +116,17 @@ func on_failed_connect_to_server():
 	title_timer.stop()
 
 
-func on_account_creation_received(error):
-	match error:
+func on_received_account_request(result):
+	match result:
 		OK:
-			show_error("Account successfully created!")
-
+			show_error("Account created. Please log in.")
+			reset_button_pressed()
+			new_account_check.pressed = false
 		FAILED:
-			show_error("Account already exists!")
+			show_error("Could not create the account!")
+		ERR_ALREADY_EXISTS:
+			show_error("Username already exists!")
+	title_timer.stop()
 
 
 func on_login_received(result, token):

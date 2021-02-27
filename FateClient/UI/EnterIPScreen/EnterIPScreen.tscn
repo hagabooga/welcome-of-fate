@@ -65,6 +65,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ConfirmPassword" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
+visible = false
+margin_top = 250.0
+margin_right = 450.0
+margin_bottom = 283.0
+custom_fonts/font = ExtResource( 3 )
+align = 1
+max_length = 16
+secret = true
+placeholder_text = "Confirm Password"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="IPAddress" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
 margin_top = 269.0
 margin_right = 450.0
@@ -120,15 +134,3 @@ custom_fonts/font = ExtResource( 2 )
 align = 1
 
 [node name="Tween" type="Tween" parent="HBoxContainer/VBoxContainer/ErrorDisplay"]
-
-[node name="ColorPicker" type="ColorPicker" parent="HBoxContainer"]
-visible = false
-margin_left = 442.0
-margin_right = 750.0
-margin_bottom = 540.0
-edit_alpha = false
-presets_enabled = false
-presets_visible = false
-__meta__ = {
-"_edit_use_anchors_": false
-}

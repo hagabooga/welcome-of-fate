@@ -41,12 +41,25 @@ func _peer_disconnected(player_id):
 	print("User " + str(player_id) + " disconnected.")
 
 
-remote func login_request(username, password):
-	print("login request recieved")
-	var player_id = custom_multiplayer.get_rpc_sender_id()
-	Authenticate.authenticate_player(username, password, player_id)
+func return_create_account_request(player_id, result):
+	rpc_id(player_id, "return_create_account_request", result)
+	network.disconnect_peer(player_id)
 
 
 func return_login_request(result, player_id, token):
 	rpc_id(player_id, "return_login_request", result, token)
 	network.disconnect_peer(player_id)
+
+
+remote func create_account_request(username, password):
+	var player_id = custom_multiplayer.get_rpc_sender_id()
+	var bad = username == "" or password == "" or password.length() <= 6
+	if bad:
+		return_create_account_request(player_id, FAILED)
+	else:
+		Authenticate.create_account(player_id, username.to_lower(), password)
+
+remote func login_request(username, password):
+	print("login request recieved")
+	var player_id = custom_multiplayer.get_rpc_sender_id()
+	Authenticate.authenticate_player(username, password, player_id)

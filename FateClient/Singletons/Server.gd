@@ -102,9 +102,6 @@ func try_create_new_account(enter_ip_screen, username, color):
 	rpc_id(1, "create_new_account", username, color.to_html(false))
 
 
-# func try_login(enter_ip_screen, username):
-# 	rpc_id(1, "login", username)
-
 remote func spawn_player(player_id, data):
 	yield(get_tree().create_timer(0.0000001), "timeout")
 	get_tree().current_scene.spawn_player(player_id, data.loc)
@@ -127,20 +124,6 @@ remote func receive_attack(player_id, position, direction_vector, animation_stat
 		attack_dict.position = position
 		attack_dict.direction_vector = direction_vector
 		attack_dict.animation_state = animation_state
-
-# remote func receive_login(player_id, other_infos):
-# 	# print(other_infos)
-# 	if other_infos == null:
-# 		emit_signal("login_received", FAILED)
-# 	else:
-# 		emit_signal("login_received", OK)
-# 		for player_id in other_infos:
-# 			AllPlayersInfo.basics[player_id] = BasicPlayerInfo.new(
-# 				other_infos[player_id].n, other_infos[player_id].c
-# 			)
-# 		if player_id == get_tree().get_network_unique_id():
-# 			logged_in = true
-# 			get_tree().change_scene_to(test_map)
 
 remote func receive_world_state(world_state):
 	# print(world_state)
