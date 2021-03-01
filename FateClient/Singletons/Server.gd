@@ -15,12 +15,15 @@ var latency_array = []
 var latency = 0
 var latency_delta = 0
 
-var logged_in = false
+var in_map = false
 var token
 
 var logged_in_players = {}
 
-onready var test_map = preload("res://Map/TestMap.tscn")
+onready var preloaded_scenes = {
+	Enums.SCENE_TEST_MAP: preload("res://Map/TestMap.tscn"),
+	Enums.SCENE_CREATE_CHARACTER: preload("res://Map/TestMap.tscn")
+}
 
 
 func _physics_process(delta):  #0.01667
@@ -79,16 +82,14 @@ remote func fetch_token():
 remote func receive_new_player_logged_in(player_id, info):
 	logged_in_players[player_id] = info
 
-remote func return_token_verification_results(result, logged_in_players):
+remote func return_token_verification_results(result, logged_in_players, scene_to_load):
 	match result:
 		OK:
 			# delete login screen
 			print("WE IN BOIZ")
 			self.logged_in_players = logged_in_players
-			logged_in = true
-			get_tree().change_scene_to(test_map)
-			rpc_id(1, "client_ready")
-
+			get_tree().change_scene_to(preloaded_scenes[scene_to_load])
+			# rpc_id(1, "client_ready")
 		FAILED:
 			# try again
 			print("try again")
@@ -103,13 +104,12 @@ func send_player_state(player_state):
 	rpc_unreliable_id(1, "receive_player_state", player_state)
 
 
-func try_create_new_account(enter_ip_screen, username, color):
-	if not is_connected(
-		"account_creation_received", enter_ip_screen, "on_account_creation_received"
-	):
-		connect("account_creation_received", enter_ip_screen, "on_account_creation_received")
-	rpc_id(1, "create_new_account", username, color.to_html(false))
-
+# func try_create_new_account(enter_ip_screen, username, color):
+# 	if not is_connected(
+# 		"account_creation_received", enter_ip_screen, "on_account_creation_received"
+# 	):
+# 		connect("account_creation_received", enter_ip_screen, "on_account_creation_received")
+# 	rpc_id(1, "create_new_account", username, color.to_html(false))
 
 remote func spawn_player(player_id):
 	get_tree().current_scene.spawn_player(player_id)
@@ -135,7 +135,7 @@ remote func receive_attack(player_id, position, direction_vector, animation_stat
 
 remote func receive_world_state(world_state):
 	# print(world_state)
-	if logged_in:
+	if in_map:
 		get_tree().current_scene.update_world_state(world_state)
 
 remote func return_skill(s_skill, requester):

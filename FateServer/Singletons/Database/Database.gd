@@ -12,7 +12,7 @@ var players: PlayerDatabase
 func _ready():
 	db = SQLite.new()
 	db.path = db_name
-	# db.verbose_mode = true
+	db.verbose_mode = true
 	db.foreign_keys = true
 	db.open_db()
 
@@ -29,20 +29,35 @@ func _ready():
 	)
 
 	db.create_table(
-		"players",
+		"players_basic_info",
 		{
-			"ming":
+			"username":
 			{
 				"data_type": "text",
 				"not_null": true,
 				"unique": true,
 				"primary_key": true,
 			},
-			"color": {"data_type": "text", "not_null": true},
-			"max_hp": {"data_type": "int", "not_null": true},
-			"hp": {"data_type": "int", "not_null": true},
-			"armor": {"data_type": "int", "not_null": true},
-			"resist": {"data_type": "int", "not_null": true},
+			"body": {"data_type": "int", "not_null": true},
+			"eyes": {"data_type": "int", "not_null": true},
+		}
+	)
+
+	db.create_table(
+		"players_stats",
+		{
+			"username":
+			{
+				"data_type": "text",
+				"not_null": true,
+				"unique": true,
+				"primary_key": true,
+				"foreign_key": "players_basic_info.username"
+			},
+			"str": {"data_type": "int", "not_null": true},
+			"int": {"data_type": "int", "not_null": true},
+			"agi": {"data_type": "int", "not_null": true},
+			"luc": {"data_type": "int", "not_null": true},
 		}
 	)
 

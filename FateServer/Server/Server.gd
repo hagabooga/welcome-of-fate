@@ -50,8 +50,6 @@ func on_token_expiration_timeout():
 func peer_connected(player_id):
 	print("User " + str(player_id) + " connected.")
 	PlayerVerification.start(player_id)
-	# Obtain player info
-	# rpc_id(0, "return_basic_player_info", player_id, player_info_dict)
 
 
 func peer_disconnected(player_id):
@@ -72,12 +70,32 @@ func return_token_verification_results(player_id, result, username):
 	if result == OK:
 		print("SPAWNING PLAYER: ", username)
 		# INFO NEEDS TO BE GET FROM DATABASE
-		var info = {}
-		info.loc = Vector2(randi() % 50, randi() % 50)
-		info.un = username
-		logged_in_players[player_id] = info
-		rpc_id(0, "receive_new_player_logged_in", player_id, info)
-		rpc_id(player_id, "return_token_verification_results", result, logged_in_players)
+		var basic = Database.players.get_basic(username)
+		var scene_to_load = Enums.SCENE_TEST_MAP
+		if basic == null:
+			scene_to_load = Enums.SCENE_CREATE_CHARACTER
+			rpc_id(
+				player_id,
+				"return_token_verification_results",
+				result,
+				logged_in_players,
+				scene_to_load
+			)
+		else:
+			var info = {}
+			info.loc = Vector2(randi() % 50, randi() % 50)
+			info.un = username
+			logged_in_players[player_id] = info
+			# Give this new player logged in to all other players
+			rpc_id(0, "receive_new_player_logged_in", player_id, info)
+			# Give already logged in players to player 
+			rpc_id(
+				player_id,
+				"return_token_verification_results",
+				result,
+				logged_in_players,
+				scene_to_load
+			)
 	else:
 		rpc_id(player_id, "return_token_verification_results", result, null)
 
