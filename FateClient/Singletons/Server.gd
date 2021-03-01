@@ -18,6 +18,8 @@ var latency_delta = 0
 var logged_in = false
 var token
 
+var logged_in_players = {}
+
 onready var test_map = preload("res://Map/TestMap.tscn")
 
 
@@ -74,15 +76,22 @@ func fetch_skill(skill_name, requester):
 remote func fetch_token():
 	rpc_id(1, "return_token", token)
 
-remote func return_token_verification_results(good):
-	if good:
-		# delete login screen
-		print("WE IN BOIZ")
-		get_tree().change_scene_to(test_map)
+remote func receive_new_player_logged_in(player_id, info):
+	logged_in_players[player_id] = info
 
-	else:
-		# try again
-		print("try again")
+remote func return_token_verification_results(result, logged_in_players):
+	match result:
+		OK:
+			# delete login screen
+			print("WE IN BOIZ")
+			self.logged_in_players = logged_in_players
+			logged_in = true
+			get_tree().change_scene_to(test_map)
+			rpc_id(1, "client_ready")
+
+		FAILED:
+			# try again
+			print("try again")
 
 
 func send_attack(position, direction_vector, animation_state):
@@ -102,9 +111,8 @@ func try_create_new_account(enter_ip_screen, username, color):
 	rpc_id(1, "create_new_account", username, color.to_html(false))
 
 
-remote func spawn_player(player_id, data):
-	yield(get_tree().create_timer(0.0000001), "timeout")
-	get_tree().current_scene.spawn_player(player_id, data.loc)
+remote func spawn_player(player_id):
+	get_tree().current_scene.spawn_player(player_id)
 	# print("spawning player ", player_id, spawn_position)
 
 remote func despawn_player(player_id):

@@ -23,7 +23,6 @@ func erase_enemy(id):
 
 func _physics_process(delta):
 	var render_time = Server.client_clock - INTERPOLATION_OFFSET
-	# print(world_state_buffer)
 	if world_state_buffer.size() > 1:
 		while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].t:
 			world_state_buffer.remove(0)
@@ -38,8 +37,6 @@ func _physics_process(delta):
 
 
 func spawn_enemy(enemy_id, enemy_data):
-	if not Server.logged_in:
-		return
 	var enemy = worm.instance()
 	enemy.init(enemy_data)
 	enemy.id = enemy_id
@@ -48,25 +45,28 @@ func spawn_enemy(enemy_id, enemy_data):
 	enemies[enemy_id] = enemy
 
 
-func spawn_player(player_id, spawn_position):
+func spawn_player(player_id, loc = null):
+	if loc != null:
+		if not player_id in Server.logged_in_players:
+			return
+		Server.logged_in_players[player_id].loc = loc
 	if get_tree().get_network_unique_id() == player_id and not player_id in players_dict:
 		# The client user 
 		#print("Spawning client user")
-		instance_player(player_id, spawn_position, player_actual)
+		instance_player(player_id, player_actual)
 	else:
 		# Spawn other players
 		if not player_id in players_dict:
 			#print("spawning ", player_id)
-			instance_player(player_id, spawn_position, player_template)
+			instance_player(player_id, player_template)
 
 
-func instance_player(player_id, spawn_position, scene):
+func instance_player(player_id, scene):
 	var player = scene.instance()
 	if scene == player_actual:
 		pass
-		# player.set_script(load("res://Entity/Mage.gd"))
-	var basic = AllPlayersInfo.basics[player_id]
-	player.init(player_id, spawn_position, basic)
+	var info = Server.logged_in_players[player_id]
+	player.init(player_id, info.loc, BasicPlayerInfo.new(info.un, Color.white))
 	players.add_child(player)
 	players_dict[player_id] = player
 

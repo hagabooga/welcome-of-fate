@@ -29,15 +29,15 @@ func _ready():
 
 
 func peer_connected(server_id):
-	print("Server" + str(server_id) + " connected.")
+	print("Server " + str(server_id) + " connected.")
 	servers["server1"] = server_id
 	print(servers)
 
 
 func peer_disconnected(server_id):
-	print("Server" + str(server_id) + " disconnected.")
+	print("Server " + str(server_id) + " disconnected.")
 
 
-func distribute_login_token(token, server):
+func distribute_login_token(token, server, username):
 	var server_id = servers[server]
-	rpc_id(server_id, "receive_login_token", token)
+	rpc_id(server_id, "receive_login_token", token, username)

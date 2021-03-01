@@ -5,9 +5,11 @@ var port = 1909
 var max_players = 100
 
 var player_state_dict = {}
-var player_info_dict = {}
 
-var expected_tokens = []
+var logged_in_players = {}
+
+# token : basic_player_info
+var expected_tokens = {}
 
 onready var map = $Map
 onready var token_expiration_timer = $TokenExpiration
@@ -31,14 +33,18 @@ func start_server():
 func on_token_expiration_timeout():
 	var current_time = OS.get_unix_time()
 	var token_time
-	if expected_tokens == []:
+	if expected_tokens.size() == 0:
 		pass
 	else:
-		for i in range(expected_tokens.size() - 1, -1, -1):
-			token_time = int(expected_tokens[i].right(64))
+		for token in expected_tokens.keys():
+			token_time = int(token.right(64))
 			if current_time - token_time >= 30:
-				expected_tokens.remove(i)
-	print("Expected tokens: ", expected_tokens)
+				expected_tokens.erase(token)
+		# for i in range(expected_tokens.size() - 1, -1, -1):
+		# 	token_time = int(expected_tokens[i].right(64))
+		# 	if current_time - token_time >= 30:
+		# 		expected_tokens.remove(i)
+	# print("Expected tokens: ", expected_tokens)
 
 
 func peer_connected(player_id):
@@ -51,6 +57,8 @@ func peer_connected(player_id):
 func peer_disconnected(player_id):
 	var str_player_id = str(player_id)
 	print("User " + str_player_id + " disconnected.")
+	if player_id in logged_in_players:
+		logged_in_players.erase(player_id)
 	if player_state_dict.has(player_id):
 		player_state_dict.erase(player_id)
 		rpc_id(0, "despawn_player", player_id)
@@ -60,8 +68,24 @@ func fetch_token(player_id):
 	rpc_id(player_id, "fetch_token")
 
 
-func return_token_verification_results(player_id, good):
-	rpc_id(player_id, "return_token_verification_results", good)
+func return_token_verification_results(player_id, result, username):
+	if result == OK:
+		print("SPAWNING PLAYER: ", username)
+		# INFO NEEDS TO BE GET FROM DATABASE
+		var info = {}
+		info.loc = Vector2(randi() % 50, randi() % 50)
+		info.un = username
+		logged_in_players[player_id] = info
+		rpc_id(0, "receive_new_player_logged_in", player_id, info)
+		rpc_id(player_id, "return_token_verification_results", result, logged_in_players)
+	else:
+		rpc_id(player_id, "return_token_verification_results", result, null)
+
+
+remote func client_ready():
+	var player_id = get_tree().get_rpc_sender_id()
+	yield(get_tree().create_timer(0.0001), "timeout")
+	rpc_id(0, "spawn_player", player_id)
 
 
 func send_world_state(world_state):

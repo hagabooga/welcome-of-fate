@@ -5,6 +5,8 @@ const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
 var db: SQLite
 var db_name := "res://Database/"
 
+var columns = ["username", "password", "salt"]
+
 
 func _ready():
 	db = SQLite.new()
@@ -24,21 +26,23 @@ func _ready():
 				"primary_key": true,
 			},
 			"password": {"data_type": "text", "not_null": true},
+			"salt": {"data_type": "text", "not_null": true},
 		}
 	)
 
 
 func get(username):
-	var rows = db.select_rows("accounts", 'username == "%s"' % [username], ["username", "password"])
+	var rows = db.select_rows("accounts", 'username == "%s"' % [username], columns)
 	if rows == []:
 		return null
 	return rows[0]
 
 
-func create(username, password):
+func create(username, password, salt):
 	var row = {}
 	row.username = username
 	row.password = password
+	row.salt = salt
 	db.insert_row("accounts", row)
 
 

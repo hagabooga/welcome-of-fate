@@ -13,7 +13,7 @@ onready var body_animations = $BodyAnimations
 func init(player_id, spawn_position, basic):
 	name = str(player_id)
 	ming = basic.display_name
-	color = basic.color
+	color = Color.white
 
 
 func _ready():

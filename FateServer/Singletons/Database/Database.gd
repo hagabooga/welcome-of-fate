@@ -12,7 +12,7 @@ var players: PlayerDatabase
 func _ready():
 	db = SQLite.new()
 	db.path = db_name
-	db.verbose_mode = true
+	# db.verbose_mode = true
 	db.foreign_keys = true
 	db.open_db()
 

@@ -6,7 +6,7 @@ signal received_account_request(result)
 var network
 var gateway_api
 # var ip = "127.0.0.1"
-var port = 1910
+var port = 1969
 
 var username
 var password
@@ -70,14 +70,14 @@ func connection_failed():
 
 func request_create_account():
 	print("Requesting new account")
-	rpc_id(1, "create_account_request", username, password)
+	rpc_id(1, "create_account_request", username, password.sha256_text())
 	username = ""
 	password = ""
 
 
 func request_login():
 	print("Connecting to gateway to request login")
-	rpc_id(1, "login_request", username, password)
+	rpc_id(1, "login_request", username, password.sha256_text())
 	username = ""
 	password = ""
 

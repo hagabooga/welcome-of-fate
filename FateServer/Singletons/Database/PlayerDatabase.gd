@@ -8,14 +8,14 @@ func _init(x).(x):
 	pass
 
 
-func get_player(ming):
+func get(ming):
 	var stats = Database.db.select_rows("players", 'ming == "%s"' % [ming], column_names)
 	if stats.size() == 0:
 		return null
 	return stats[0]
 
 
-func create_account(ming, color):
+func create(ming, color):
 	var info = {}
 	info.ming = ming
 	info.color = color

@@ -47,21 +47,29 @@ func ok_button_pressed():
 		elif password.text.length() <= 6:
 			show_error("Passwords must contain at least 7 characters")
 		else:
-			Gateway.connect_to_server(self, username.text, password.text, true)
-		ok_button_timer.start()
+			if ip_address.text == "":
+				Gateway.connect_to_server(self, username.text, password.text, true)
+			elif not ip_address.text.is_valid_ip_address():
+				show_error("Not a valid IP adrress!")
+			else:
+				Gateway.connect_to_server(self, username.text, password.text, true, ip_address.text)
 	elif not logged_in:
 		if username.text == "" or password.text == "":
 			show_error("Please enter a valid username/password")
 			return
 		else:
 			if ip_address.text == "":
+				print("local host")
 				Gateway.connect_to_server(self, username.text, password.text)
 			elif not ip_address.text.is_valid_ip_address():
 				show_error("Not a valid IP adrress!")
 				return
 
 			else:
-				Gateway.connect_to_server(self, username.text, password.text, ip_address.text)
+				print("external ip")
+				Gateway.connect_to_server(
+					self, username.text, password.text, false, ip_address.text
+				)
 			title_timer.start()
 	disable_ui(true)
 
@@ -89,6 +97,7 @@ func show_error(text):
 		self, "change_error_text_color_helper", Color.white, Color.transparent, 1, 0, 2, 0.5
 	)
 	error_display_tween.start()
+	ok_button_timer.start()
 
 
 func change_error_text_color_helper(color):

@@ -20,18 +20,20 @@ func start(player_id):
 
 
 func verify(player_id, token):
-	var good = false
+	var result = FAILED
+	var username
 	while OS.get_unix_time() - int(token.right(64)) <= 30:
 		if token in server.expected_tokens:
-			good = true
+			result = OK
 			print(player_id, " success verification")
 			# create player container
+			username = server.expected_tokens[token]
 			awaiting_verification.erase(player_id)
 			server.expected_tokens.erase(token)
 			break
 		yield(get_tree().create_timer(2), "timeout")
-	server.return_token_verification_results(player_id, good)
-	if not good:  # Make sure people are disconnected
+	server.return_token_verification_results(player_id, result, username)
+	if result != OK:  # Make sure people are disconnected
 		awaiting_verification.erase(player_id)
 		server.network.disconnect_peer(player_id)
 
@@ -50,4 +52,4 @@ func on_verification_expireation_timeout():
 				if key in connected_peers:
 					server.return_token_verification_results(key, false)
 					server.network.disconnect_peer(key)
-	print("awaiting verifications: ", awaiting_verification)
+	# print("awaiting verifications: ", awaiting_verification)

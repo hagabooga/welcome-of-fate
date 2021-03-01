@@ -36,5 +36,5 @@ func connection_failed():
 	print("Unable to connect to SERVER HUB")
 
 
-remote func receive_login_token(token):
-	server.expected_tokens.append(token)
+remote func receive_login_token(token, username):
+	server.expected_tokens[token] = username
