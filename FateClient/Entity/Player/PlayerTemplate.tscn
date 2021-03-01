@@ -16,7 +16,14 @@ script = ExtResource( 2 )
 
 [node name="BodyAnimations" type="Node2D" parent="." index="0"]
 
-[node name="SpriteWithBodyAnimation" parent="BodyAnimations" index="0" instance=ExtResource( 4 )]
+[node name="Body" parent="BodyAnimations" index="0" instance=ExtResource( 4 )]
+texture = null
+frame = 26
+
+[node name="Hair" parent="BodyAnimations" index="1" instance=ExtResource( 4 )]
+frame = 26
+
+[node name="Eyes" parent="BodyAnimations" index="2" instance=ExtResource( 4 )]
 frame = 26
 
 [node name="Sprite" parent="." index="1"]

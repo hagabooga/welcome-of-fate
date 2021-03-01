@@ -1,6 +1,8 @@
 class_name PlayerTemplate
 extends Entity
 
+const sprite_path = "res://UI/CreateCharacterScreen/Sprites/"
+
 var color
 
 var facing = Enums.DIRECTION_DOWN
@@ -9,17 +11,28 @@ var attack_dict = {}
 onready var snake_bite = preload("res://Projectile/SnakeBite/SnakeBite.tscn")
 onready var body_animations = $BodyAnimations
 
+var basic_info
 
-func init(player_id, spawn_position, basic):
+
+func init(player_id, spawn_position, basic_info):
 	name = str(player_id)
-	ming = basic.display_name
+	ming = basic_info.username
 	color = Color.white
+	self.basic_info = basic_info
 
 
 func _ready():
 	# print("template", name)
 	set_display_name(ming)
 	change_color(color)
+	var path = sprite_path + ("Male" if basic_info.gender == Enums.GENDER_MALE else "Female") + "/"
+	print(path)
+	for body_anim in body_animations.get_children():
+		var sprite_name = basic_info[body_anim.name.to_lower()]
+		body_anim.texture = load(path + body_anim.name + "/" + sprite_name + ".png")
+		var color_key = body_anim.name.to_lower() + "_color"
+		if color_key in basic_info:
+			body_anim.self_modulate = basic_info[color_key]
 
 
 func _physics_process(delta):

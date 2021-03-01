@@ -22,7 +22,8 @@ var logged_in_players = {}
 
 onready var preloaded_scenes = {
 	Enums.SCENE_TEST_MAP: preload("res://Map/TestMap.tscn"),
-	Enums.SCENE_CREATE_CHARACTER: preload("res://Map/TestMap.tscn")
+	Enums.SCENE_CREATE_CHARACTER:
+	preload("res://UI/CreateCharacterScreen/CreateCharacterScreen.tscn")
 }
 
 
@@ -76,6 +77,10 @@ func fetch_skill(skill_name, requester):
 	rpc_id(1, "fetch_skill", skill_name, requester)
 
 
+func send_new_character_data(data):
+	rpc_id(1, "receive_create_account_request", data)
+
+
 remote func fetch_token():
 	rpc_id(1, "return_token", token)
 
@@ -84,15 +89,19 @@ remote func receive_new_player_logged_in(player_id, info):
 
 remote func return_token_verification_results(result, logged_in_players, scene_to_load):
 	match result:
-		OK:
+		OK:  # Enter map
 			# delete login screen
 			print("WE IN BOIZ")
 			self.logged_in_players = logged_in_players
 			get_tree().change_scene_to(preloaded_scenes[scene_to_load])
-			# rpc_id(1, "client_ready")
+			rpc_id(1, "client_ready")
 		FAILED:
 			# try again
 			print("try again")
+		ERR_DOES_NOT_EXIST:
+			# new account
+			get_tree().change_scene_to(preloaded_scenes[scene_to_load])
+			self.logged_in_players = logged_in_players
 
 
 func send_attack(position, direction_vector, animation_state):
@@ -113,6 +122,8 @@ func send_player_state(player_state):
 
 remote func spawn_player(player_id):
 	get_tree().current_scene.spawn_player(player_id)
+	if player_id == get_tree().get_network_unique_id():
+		in_map = true
 	# print("spawning player ", player_id, spawn_position)
 
 remote func despawn_player(player_id):

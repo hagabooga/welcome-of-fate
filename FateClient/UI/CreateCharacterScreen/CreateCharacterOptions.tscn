@@ -1,0 +1,69 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://UI/CreateCharacterScreen/SelectSpriteComponent.tscn" type="PackedScene" id=1]
+[ext_resource path="res://UI/CreateCharacterScreen/CreateCharacterOptions.gd" type="Script" id=2]
+[ext_resource path="res://segoeuil16.tres" type="DynamicFont" id=3]
+
+[sub_resource type="Theme" id=1]
+default_font = ExtResource( 3 )
+Fonts/fonts/large = null
+Fonts/fonts/normal = null
+
+[node name="CreateCharacterOptions" type="HBoxContainer"]
+margin_left = 519.0
+margin_right = 519.0
+margin_bottom = 72.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Body" parent="." instance=ExtResource( 1 )]
+margin_left = 0.0
+margin_right = 114.0
+margin_bottom = 446.0
+rect_min_size = Vector2( 0, 100 )
+
+[node name="Eyes" parent="." instance=ExtResource( 1 )]
+margin_left = 118.0
+margin_right = 232.0
+margin_bottom = 446.0
+rect_min_size = Vector2( 0, 100 )
+
+[node name="Hair" parent="." instance=ExtResource( 1 )]
+margin_left = 236.0
+margin_right = 350.0
+margin_bottom = 446.0
+rect_min_size = Vector2( 0, 100 )
+
+[node name="PickColors" type="HBoxContainer" parent="."]
+margin_left = 354.0
+margin_right = 780.0
+margin_bottom = 446.0
+
+[node name="ColorOptions" type="VBoxContainer" parent="PickColors"]
+margin_right = 107.0
+margin_bottom = 446.0
+
+[node name="TitleContainer2" type="PanelContainer" parent="PickColors/ColorOptions"]
+margin_right = 107.0
+margin_bottom = 37.0
+
+[node name="Title" type="Label" parent="PickColors/ColorOptions/TitleContainer2"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 100.0
+margin_bottom = 30.0
+custom_fonts/font = ExtResource( 3 )
+text = "Change Color"
+align = 1
+valign = 1
+
+[node name="ColorPicker" type="ColorPicker" parent="PickColors"]
+margin_left = 111.0
+margin_right = 426.0
+margin_bottom = 446.0
+theme = SubResource( 1 )
+edit_alpha = false
+presets_enabled = false
+presets_visible = false

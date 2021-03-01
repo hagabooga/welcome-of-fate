@@ -65,8 +65,8 @@ func instance_player(player_id, scene):
 	var player = scene.instance()
 	if scene == player_actual:
 		pass
-	var info = Server.logged_in_players[player_id]
-	player.init(player_id, info.loc, BasicPlayerInfo.new(info.un, Color.white))
+	var basic_info = Server.logged_in_players[player_id]
+	player.init(player_id, basic_info.loc, BasicPlayerInfo.new(basic_info, Color.white))
 	players.add_child(player)
 	players_dict[player_id] = player
 

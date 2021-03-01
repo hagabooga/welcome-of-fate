@@ -8,6 +8,9 @@ var player_state_dict = {}
 
 var logged_in_players = {}
 
+#id to username
+var connected_players = {}
+
 # token : basic_player_info
 var expected_tokens = {}
 
@@ -57,9 +60,13 @@ func peer_disconnected(player_id):
 	print("User " + str_player_id + " disconnected.")
 	if player_id in logged_in_players:
 		logged_in_players.erase(player_id)
+
 	if player_state_dict.has(player_id):
 		player_state_dict.erase(player_id)
 		rpc_id(0, "despawn_player", player_id)
+
+	if player_id in connected_players:
+		connected_players.erase(player_id)
 
 
 func fetch_token(player_id):
@@ -68,6 +75,7 @@ func fetch_token(player_id):
 
 func return_token_verification_results(player_id, result, username):
 	if result == OK:
+		connected_players[player_id] = username
 		print("SPAWNING PLAYER: ", username)
 		# INFO NEEDS TO BE GET FROM DATABASE
 		var basic = Database.players.get_basic(username)
@@ -77,27 +85,28 @@ func return_token_verification_results(player_id, result, username):
 			rpc_id(
 				player_id,
 				"return_token_verification_results",
-				result,
+				ERR_DOES_NOT_EXIST,
 				logged_in_players,
 				scene_to_load
 			)
 		else:
-			var info = {}
-			info.loc = Vector2(randi() % 50, randi() % 50)
-			info.un = username
-			logged_in_players[player_id] = info
-			# Give this new player logged in to all other players
-			rpc_id(0, "receive_new_player_logged_in", player_id, info)
-			# Give already logged in players to player 
-			rpc_id(
-				player_id,
-				"return_token_verification_results",
-				result,
-				logged_in_players,
-				scene_to_load
-			)
+			spawn_player(player_id, Database.players.get_basic(username), result)
 	else:
 		rpc_id(player_id, "return_token_verification_results", result, null)
+
+
+func spawn_player(player_id, data, result):
+	logged_in_players[player_id] = data
+	# Give this new player logged in to all other players
+	rpc_id(0, "receive_new_player_logged_in", player_id, data)
+	# Give already logged in players to player 
+	rpc_id(
+		player_id,
+		"return_token_verification_results",
+		result,
+		logged_in_players,
+		Enums.SCENE_TEST_MAP
+	)
 
 
 remote func client_ready():
@@ -114,15 +123,6 @@ remote func attack(position, direction_vector, animation_state, spawn_time):
 	var player_id = get_tree().get_rpc_sender_id()
 	map.spawn_projectile(player_id, position, direction_vector, animation_state, spawn_time)
 	rpc_id(0, "receive_attack", player_id, position, direction_vector, animation_state, spawn_time)
-
-# remote func create_new_account(username, color):
-# 	var player_id = get_tree().get_rpc_sender_id()
-# 	var player_from_database = Database.players.get_player(username)
-# 	if player_from_database == null:
-# 		Database.players.create_account(username, color)
-# 		rpc_id(player_id, "receive_account_creation", OK)
-# 	else:
-# 		rpc_id(player_id, "receive_account_creation", FAILED)
 
 remote func determine_latency(client_time):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -143,18 +143,11 @@ remote func return_token(token):
 	PlayerVerification.verify(player_id, token)
 	print("verifying: ", player_id, " with token: ", token)
 
-# remote func receive_basic_player_info(player_info):
-# 	var player_id = get_tree().get_rpc_sender_id()
-# 	player_info_dict[player_id] = player_info
-# 	var player_from_database = Database.players.get_player(player_info.n)
-# 	if player_from_database == null:
-# 		Database.players.create_account(player_info.n, player_info.c)
-# 	player_from_database = Database.players.get_player(player_info.n)
-# 	player_from_database.n = player_from_database.ming
-# 	player_from_database.c = player_from_database.color
-# 	player_from_database.erase("ming")
-# 	player_from_database.erase("color")
-# 	rpc_id(0, "spawn_player", player_id, Vector2(randi() % 50, randi() % 50), player_from_database)
+remote func receive_create_account_request(data):
+	var player_id = get_tree().get_rpc_sender_id()
+	Database.players.create_basic(connected_players[player_id], data)
+	var basic = Database.players.get_basic(connected_players[player_id])
+	spawn_player(player_id, basic, OK)
 
 remote func receive_player_state(player_state):
 	var player_id = get_tree().get_rpc_sender_id()

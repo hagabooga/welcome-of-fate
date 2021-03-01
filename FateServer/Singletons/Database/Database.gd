@@ -38,8 +38,12 @@ func _ready():
 				"unique": true,
 				"primary_key": true,
 			},
-			"body": {"data_type": "int", "not_null": true},
-			"eyes": {"data_type": "int", "not_null": true},
+			"body": {"data_type": "text", "not_null": true},
+			"eyes": {"data_type": "text", "not_null": true},
+			"hair": {"data_type": "text", "not_null": true},
+			"eyes_color": {"data_type": "text", "not_null": true},
+			"hair_color": {"data_type": "text", "not_null": true},
+			"gender": {"data_type": "int", "not_null": true},
 		}
 	)
 

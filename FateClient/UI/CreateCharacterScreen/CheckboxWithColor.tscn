@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://segoeuil16.tres" type="DynamicFont" id=1]
+[ext_resource path="res://UI/CreateCharacterScreen/CheckboxWithColor.gd" type="Script" id=2]
+
+[node name="CheckboxWithColor" type="HBoxContainer"]
+margin_top = 41.0
+margin_right = 107.0
+margin_bottom = 72.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox" type="CheckBox" parent="."]
+margin_right = 80.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 80, 0 )
+focus_mode = 0
+custom_fonts/font = ExtResource( 1 )
+text = "Eyes"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = 84.0
+margin_right = 115.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 31, 0 )
