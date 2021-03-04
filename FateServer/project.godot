@@ -110,6 +110,7 @@ StateProcessing="*res://Singletons/StateProcessing.gd"
 Database="*res://Singletons/Database/Database.gd"
 HubConnection="*res://Singletons/HubConnection.gd"
 PlayerVerification="*res://Singletons/PlayerVerification.gd"
+Utility="*res://Utility/Utility.gd"
 
 [editor_plugins]
 

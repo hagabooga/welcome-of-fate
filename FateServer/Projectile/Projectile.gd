@@ -49,4 +49,4 @@ func hit_entity(body):
 		return
 	var entity = body.get_parent()
 	if entity.is_in_group("Enemies"):
-		get_parent().enemy_hit(entity.get_meta("id"), damage)
+		get_parent().enemy_hit(player_id, entity.instance_id, damage)

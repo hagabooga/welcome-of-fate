@@ -10,10 +10,16 @@ var speed = 70
 var attack_position_start
 var attack_position_end
 var attack_speed = 1
+var move_direction = Enums.DIRECTION_DOWN
+var current_animation = Enums.ANIMATION_IDLE
+
+var map
+var instance_id
 
 onready var collision_box = $Collisionbox
 onready var range_of_sight = $RangeOfSight
 onready var attack_range = $AttackRange
+onready var deaggro_range = $DeaggroRange
 onready var tween = $Tween
 
 
@@ -21,6 +27,7 @@ func _ready():
 	range_of_sight.connect("body_entered", self, "on_range_of_sight_body_entered")
 	attack_range.connect("body_entered", self, "on_attack_range_body_entered")
 	attack_range.connect("body_exited", self, "on_attack_range_body_exited")
+	deaggro_range.connect("body_exited", self, "on_deaggro_range_body_exited")
 
 
 # 	tween.connect("tween_started", self, "on_tween_started")
@@ -34,6 +41,7 @@ func _ready():
 
 
 func _physics_process(delta):
+	current_animation = Enums.ANIMATION_IDLE
 	if current_target == null:
 		return
 	if in_attack_range:
@@ -60,9 +68,21 @@ func _physics_process(delta):
 			attack_speed * 0.1
 		)
 		tween.start()
+		map.player_hit(current_target.instance_id, instance_id)
 		return
-	var move_direction = global_position.direction_to(current_target.global_position)
-	move_and_slide(speed * move_direction)
+	if tween.is_active() and current_target != null:
+		return
+	var move_vector = global_position.direction_to(current_target.global_position)
+	move_and_slide(speed * move_vector)
+	move_direction = Utility.get_direction(move_vector.angle(), 55, true)
+	current_animation = Enums.ANIMATION_WALK
+
+
+func init(map, location, instance_id):
+	self.map = map
+	global_position = location
+	name = str(instance_id)
+	self.instance_id = instance_id
 
 
 func on_range_of_sight_body_entered(body):
@@ -79,6 +99,10 @@ func on_attack_range_body_exited(body):
 	if body == current_target:
 		in_attack_range = false
 
+
+func on_deaggro_range_body_exited(body):
+	if body == current_target:
+		current_target = null
 # var ming
 # var hp
 # var armor

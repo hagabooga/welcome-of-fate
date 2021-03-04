@@ -96,9 +96,11 @@ func return_token_verification_results(player_id, result, username):
 
 
 func spawn_player(player_id, data, result):
-	logged_in_players[player_id] = data
+	logged_in_players[player_id] = {}
+	logged_in_players[player_id].basic = data
+	logged_in_players[player_id].stats = Database.players.get_stats(data.username)
 	# Give this new player logged in to all other players
-	rpc_id(0, "receive_new_player_logged_in", player_id, data)
+	rpc_id(0, "receive_new_player_logged_in", player_id, logged_in_players[player_id])
 	# Give already logged in players to player 
 	rpc_id(
 		player_id,
@@ -107,13 +109,16 @@ func spawn_player(player_id, data, result):
 		logged_in_players,
 		Enums.SCENE_TEST_MAP
 	)
-	map.spawn_player(player_id, data.loc)
+	var stats = Database.players.get_stats(data.username)
+	if stats == null:
+		Database.players.create_stats(data.username)
+	map.spawn_player(player_id, data.loc, Database.players.get_stats(data.username))
 
 
 remote func client_ready():
 	var player_id = get_tree().get_rpc_sender_id()
 	yield(get_tree().create_timer(0.0001), "timeout")
-	rpc_id(0, "spawn_player", player_id)
+	rpc_id(0, "spawn_player", player_id, Database.players.get_stats(connected_players[player_id]))
 
 
 func send_world_state(world_state):

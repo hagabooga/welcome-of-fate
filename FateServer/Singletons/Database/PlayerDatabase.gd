@@ -19,11 +19,13 @@ func get_stats(username):
 	return stats[0]
 
 
-func create_stats(ming, body, eyes):
+func create_stats(username):
 	var info = {}
-	info.ming = ming
-	info.body = body
-	info.eyes = eyes
+	info.username = username
+	info.str = 4
+	info.int = 4
+	info.agi = 4
+	info.luc = 4
 	Database.db.insert_row("players_stats", info)
 
 

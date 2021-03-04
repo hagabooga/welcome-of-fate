@@ -112,8 +112,8 @@ func send_player_state(player_state):
 	rpc_unreliable_id(1, "receive_player_state", player_state)
 
 
-remote func spawn_player(player_id):
-	get_tree().current_scene.spawn_player(player_id)
+remote func spawn_player(player_id, stats):
+	get_tree().current_scene.spawn_player(player_id, stats)
 	if player_id == get_tree().get_network_unique_id():
 		in_map = true
 	# print("spawning player ", player_id, spawn_position)

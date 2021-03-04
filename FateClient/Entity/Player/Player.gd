@@ -10,12 +10,10 @@ var max_speed = 150
 onready var turn_axis = $TurnAxis
 onready var cast_point = $TurnAxis/CastPoint
 
-
-func _ready():
-	self.max_hp = 100
-	self.hp = self.max_hp
-	connect("on_hp_change", self, "update_hp_bar")
-	full_hp()
+# func _ready():
+# 	self.max_hp = 100
+# 	# connect("on_hp_change", self, "update_hp_bar")
+# 	# full_hp()
 
 
 func _process(delta):
@@ -86,15 +84,9 @@ func get_animation_state():
 
 func turn_towards_mouse() -> float:
 	var rad_angle = body_animations.global_position.angle_to_point(get_global_mouse_position())
-	var angle = rad2deg(rad_angle)
-	var cutoff = 55
-	var opp = 180 - cutoff
-	if -cutoff < angle and angle < cutoff:
-		self.facing = Enums.DIRECTION_LEFT
-	elif -opp < angle and angle <= -cutoff:
-		self.facing = Enums.DIRECTION_DOWN
-	elif (-180 <= angle and angle <= -opp) or (opp < angle and angle <= 180):
-		self.facing = Enums.DIRECTION_RIGHT
-	elif cutoff <= angle and angle <= opp:
-		self.facing = Enums.DIRECTION_UP
+	self.facing = Utility.get_direction(rad_angle)
 	return rad_angle + PI
+
+
+func die():
+	play_all_body_anims(Enums.ANIMATION_DIE, null, 1, false)

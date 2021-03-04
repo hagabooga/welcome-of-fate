@@ -1,7 +1,37 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Entity/Enemy/Enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Entity/Enemy/SmallWorm/SmallWormMovement.png" type="Texture" id=2]
+
+[sub_resource type="Animation" id=3]
+resource_name = "Down"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Up"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 7.50222
@@ -16,7 +46,10 @@ input_pickable = true
 texture = ExtResource( 2 )
 vframes = 4
 hframes = 3
-frame = 6
+
+[node name="AnimationPlayer" parent="Sprite" index="0"]
+anims/Down = SubResource( 3 )
+anims/Up = SubResource( 5 )
 
 [node name="Collisionbox" parent="." index="1"]
 position = Vector2( 0.26487, 5.29732 )

@@ -78,6 +78,7 @@ Server="*res://Singletons/Server.gd"
 InputToggles="*res://Singletons/InputToggles.gd"
 Enums="*res://Singletons/Enums.gd"
 Gateway="*res://Singletons/Gateway.gd"
+Utility="*res://Utility/Utility.gd"
 
 [debug]
 

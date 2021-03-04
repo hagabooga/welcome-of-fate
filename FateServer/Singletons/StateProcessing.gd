@@ -18,7 +18,7 @@ func _physics_process(delta):
 		for player_id in world_state:
 			world_state[player_id].erase("t")
 		world_state.t = OS.get_system_time_msecs()
-
+		# print(world_state)
 		world_state.enemies = server.map.enemy_datas
 		# Verifications
 		# Anti-Cheat

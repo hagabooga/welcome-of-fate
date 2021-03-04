@@ -32,14 +32,16 @@ func _ready():
 	get_parent().network.connect("peer_disconnected", self, "despawn_player")
 
 
-func _physics_process(delta):
+func _process(delta):
 	var player_state_dict = get_tree().current_scene.player_state_dict
 	for player_id in player_state_dict.keys():
 		player_objects[player_id].global_position = player_state_dict[player_id].p
-
+		get_tree().current_scene.player_state_dict[player_id].hp = player_objects[player_id].hp
 	for enemy_id in enemy_datas:
 		if enemy_datas[enemy_id].hp > 0:
 			enemy_datas[enemy_id].p = enemy_objects[enemy_id].global_position
+			enemy_datas[enemy_id].d = enemy_objects[enemy_id].move_direction
+			enemy_datas[enemy_id].a = enemy_objects[enemy_id].current_animation
 
 
 func despawn_player(player_id):
@@ -47,10 +49,10 @@ func despawn_player(player_id):
 	player_objects.erase(player_id)
 
 
-func spawn_player(player_id, loc):
+func spawn_player(player_id, loc, data):
 	var player = server_player.instance()
+	player.init(player_id, loc, data)
 	player_objects[player_id] = player
-	player.global_position = loc
 	players_parent.add_child(player)
 
 
@@ -79,9 +81,20 @@ func spawn_enemy():
 				enemy.time_out -= 1
 
 
-func enemy_hit(enemy_id, damage):
+func player_hit(player_id, enemy_id):
+	print("HIT")
+	player_objects[player_id].hp -= 10
+	if player_objects[player_id].hp <= 0:
+		player_objects[player_id].die()
+		enemy_objects[enemy_id].in_attack_range = false
+		# player_objects[player_id].queue_free()
+		# player_objects.erase(player_id)
+
+
+func enemy_hit(player_id, enemy_id, damage):
 	var enemy = enemy_datas[enemy_id]
 	if enemy.hp > 0:
+		enemy_objects[enemy_id].current_target = player_objects[player_id]
 		enemy.hp -= damage
 		if enemy.hp <= 0:
 			enemy_objects[enemy_id].queue_free()
@@ -110,8 +123,6 @@ func instance_enemy(enemy_id, location):
 	enemy_datas[enemy_id].time_out = 1
 	enemy_datas[enemy_id].id = enemy_id
 
-	# enemy.init(enemy_id, location)
-	enemy.position = location
-	enemy.name = str(enemy_id)
-	enemy.set_meta("id", enemy_id)
+	enemy.init(self, location, enemy_id)
+
 	enemies_parent.add_child(enemy, true)

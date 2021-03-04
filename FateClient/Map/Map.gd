@@ -45,28 +45,33 @@ func spawn_enemy(enemy_id, enemy_data):
 	enemies[enemy_id] = enemy
 
 
-func spawn_player(player_id, loc = null):
+func spawn_player(player_id, stats, loc = null):
 	if loc != null:
 		if not player_id in Server.logged_in_players:
 			return
-		Server.logged_in_players[player_id].loc = loc
+		Server.logged_in_players[player_id].basic.loc = loc
 	if get_tree().get_network_unique_id() == player_id and not player_id in players_dict:
 		# The client user 
 		#print("Spawning client user")
-		instance_player(player_id, player_actual)
+		instance_player(player_id, stats, player_actual)
 	else:
 		# Spawn other players
 		if not player_id in players_dict:
 			#print("spawning ", player_id)
-			instance_player(player_id, player_template)
+			instance_player(player_id, stats, player_template)
 
 
-func instance_player(player_id, scene):
+func instance_player(player_id, stats, scene):
 	var player = scene.instance()
 	if scene == player_actual:
 		pass
-	var basic_info = Server.logged_in_players[player_id]
-	player.init(player_id, basic_info.loc, BasicPlayerInfo.new(basic_info, Color.white))
+	var basic_info = Server.logged_in_players[player_id].basic
+	player.init(
+		player_id,
+		basic_info.loc,
+		BasicPlayerInfo.new(basic_info, Color.white),
+		Server.logged_in_players[player_id].stats
+	)
 	players.add_child(player)
 	players_dict[player_id] = player
 
@@ -93,11 +98,11 @@ func world_state_buffer_interpolate(render_time):
 	)
 	# Player
 	for player_id in world_state_buffer[2]:
-		if (
-			str(player_id) in ["t", "enemies"]
-			or player_id == get_tree().get_network_unique_id()
-			or not world_state_buffer[0].has(player_id)
-		):
+		if str(player_id) in ["t", "enemies"] or not world_state_buffer[0].has(player_id):
+			continue
+		if player_id == get_tree().get_network_unique_id():
+			if players_dict[player_id].hp > 0:
+				players_dict[player_id].hp = world_state_buffer[2][player_id].hp
 			continue
 		if player_id in players_dict:
 			var position = lerp(
@@ -106,9 +111,14 @@ func world_state_buffer_interpolate(render_time):
 				interpolation_factor
 			)
 			var animation_data = world_state_buffer[2][player_id].a
+			if players_dict[player_id].hp > 0:
+				players_dict[player_id].hp = world_state_buffer[2][player_id].hp
 			players_dict[player_id].move_player(position, animation_data)
 		else:
-			spawn_player(player_id, world_state_buffer[2][player_id].p)
+			var stats = {}
+			stats.hp = world_state_buffer[2][player_id].hp
+			stats.loc = world_state_buffer[2][player_id].p
+			spawn_player(player_id, stats)
 	# Enemy
 	for enemy_id in world_state_buffer[2].enemies:
 		if not enemy_id in world_state_buffer[1].enemies:
@@ -120,10 +130,12 @@ func world_state_buffer_interpolate(render_time):
 				interpolation_factor
 			)
 			# move enemy and add health
-			enemies[enemy_id].move_enemy(new_position)
+			var move_dir = world_state_buffer[2].enemies[enemy_id].d
+			var anim = world_state_buffer[2].enemies[enemy_id].a
+			enemies[enemy_id].move_enemy(new_position, move_dir, anim)
 			if enemies[enemy_id].hp > 0:
-				if enemies[enemy_id].hp != world_state_buffer[1].enemies[enemy_id].hp:
-					enemies[enemy_id].hp = world_state_buffer[1].enemies[enemy_id].hp
+				if enemies[enemy_id].hp != world_state_buffer[2].enemies[enemy_id].hp:
+					enemies[enemy_id].hp = world_state_buffer[2].enemies[enemy_id].hp
 		else:
 			if world_state_buffer[2].enemies[enemy_id].hp > 0:
 				#print("spawning enemy in interpolation... ")
@@ -140,11 +152,11 @@ func world_state_buffer_extrapolate(render_time):
 	)
 	# Player
 	for player_id in world_state_buffer[1]:
-		if (
-			str(player_id) in ["t", "enemies"]
-			or player_id == get_tree().get_network_unique_id()
-			or not world_state_buffer[0].has(player_id)
-		):
+		if str(player_id) in ["t", "enemies"] or not world_state_buffer[0].has(player_id):
+			continue
+		if player_id == get_tree().get_network_unique_id():
+			if players_dict[player_id].hp > 0:
+				players_dict[player_id].hp = world_state_buffer[1][player_id].hp
 			continue
 		if player_id in players_dict:
 			var position_delta = (
@@ -156,6 +168,8 @@ func world_state_buffer_extrapolate(render_time):
 				+ (position_delta * extrapolation_factor)
 			)
 			var animation_data = world_state_buffer[1][player_id].a
+			if players_dict[player_id].hp > 0:
+				players_dict[player_id].hp = world_state_buffer[1][player_id].hp
 			players_dict[player_id].move_player(position, animation_data)
 
 	# Enemy
@@ -172,5 +186,6 @@ func world_state_buffer_extrapolate(render_time):
 				world_state_buffer[1].enemies[enemy_id].p
 				+ (position_delta * extrapolation_factor)
 			)
-			# var animation_data = world_state_buffer[1].enemies[enemy_id].a
-			enemies[enemy_id].move_enemy(position)
+			var move_dir = world_state_buffer[1].enemies[enemy_id].d
+			var anim = world_state_buffer[1].enemies[enemy_id].a
+			enemies[enemy_id].move_enemy(position, move_dir, anim)

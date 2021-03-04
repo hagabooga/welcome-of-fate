@@ -8,11 +8,25 @@ onready var display_name_panel = $EntityUI/DisplayNamePanel
 onready var display_name = $EntityUI/DisplayNamePanel/DisplayName
 onready var hp_bar = $EntityUI/HPBar
 onready var hp_bar_tween = $EntityUI/HPBar/Tween
+onready var anim_player = $Sprite/AnimationPlayer
 
 # var move_speed = 100
 
 var ming
 var id
+
+
+func _ready():
+	connect("on_hp_change", self, "check_hp")
+
+
+func check_hp(max_hp, hp):
+	if hp <= 0:
+		die()
+
+
+func die():
+	pass
 
 
 func change_color(color):
