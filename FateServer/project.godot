@@ -44,11 +44,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entity/Mage.gd"
 }, {
-"base": "Node2D",
-"class": "Map",
-"language": "GDScript",
-"path": "res://Server/Map.gd"
-}, {
 "base": "PlayerTemplate",
 "class": "Player",
 "language": "GDScript",
@@ -92,7 +87,6 @@ _global_script_class_icons={
 "EnemyDatabase": "",
 "Entity": "",
 "Mage": "",
-"Map": "",
 "Player": "",
 "PlayerDatabase": "",
 "PlayerTemplate": "",

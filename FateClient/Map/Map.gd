@@ -40,7 +40,7 @@ func spawn_enemy(enemy_id, enemy_data):
 	var enemy = worm.instance()
 	enemy.init(enemy_data)
 	enemy.id = enemy_id
-	enemy.position = enemy_data.loc
+	enemy.global_position = enemy_data.p
 	enemies_node.add_child(enemy)
 	enemies[enemy_id] = enemy
 
@@ -91,6 +91,7 @@ func world_state_buffer_interpolate(render_time):
 		float(render_time - world_state_buffer[1].t)
 		/ float(world_state_buffer[2].t - world_state_buffer[1].t)
 	)
+	# Player
 	for player_id in world_state_buffer[2]:
 		if (
 			str(player_id) in ["t", "enemies"]
@@ -108,16 +109,18 @@ func world_state_buffer_interpolate(render_time):
 			players_dict[player_id].move_player(position, animation_data)
 		else:
 			spawn_player(player_id, world_state_buffer[2][player_id].p)
+	# Enemy
 	for enemy_id in world_state_buffer[2].enemies:
 		if not enemy_id in world_state_buffer[1].enemies:
 			continue
 		if enemy_id in enemies:
 			var new_position = lerp(
-				world_state_buffer[1].enemies[enemy_id].loc,
-				world_state_buffer[2].enemies[enemy_id].loc,
+				world_state_buffer[1].enemies[enemy_id].p,
+				world_state_buffer[2].enemies[enemy_id].p,
 				interpolation_factor
 			)
 			# move enemy and add health
+			enemies[enemy_id].move_enemy(new_position)
 			if enemies[enemy_id].hp > 0:
 				if enemies[enemy_id].hp != world_state_buffer[1].enemies[enemy_id].hp:
 					enemies[enemy_id].hp = world_state_buffer[1].enemies[enemy_id].hp
@@ -135,6 +138,7 @@ func world_state_buffer_extrapolate(render_time):
 		)
 		- 1.0
 	)
+	# Player
 	for player_id in world_state_buffer[1]:
 		if (
 			str(player_id) in ["t", "enemies"]
@@ -153,3 +157,20 @@ func world_state_buffer_extrapolate(render_time):
 			)
 			var animation_data = world_state_buffer[1][player_id].a
 			players_dict[player_id].move_player(position, animation_data)
+
+	# Enemy
+	for enemy_id in world_state_buffer[1].enemies:
+		if not enemy_id in world_state_buffer[0].enemies:
+			continue
+
+		if enemy_id in enemies:
+			var position_delta = (
+				world_state_buffer[1].enemies[enemy_id].p
+				- world_state_buffer[0].enemies[enemy_id].p
+			)
+			var position = (
+				world_state_buffer[1].enemies[enemy_id].p
+				+ (position_delta * extrapolation_factor)
+			)
+			# var animation_data = world_state_buffer[1].enemies[enemy_id].a
+			enemies[enemy_id].move_enemy(position)

@@ -1,20 +1,20 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 7.50222
+radius = 8.89231
 
-[sub_resource type="CapsuleShape2D" id=2]
-radius = 4.40502
+[sub_resource type="CircleShape2D" id=2]
+radius = 10.3738
 
-[node name="SmallWorm" type="KinematicBody2D"]
-input_pickable = true
-script = ExtResource( 3 )
+[node name="PlayerTemplate" type="KinematicBody2D"]
 
 [node name="Collisionbox" type="CollisionShape2D" parent="."]
-position = Vector2( 0.26487, 5.29732 )
+position = Vector2( 0, 0.529 )
 shape = SubResource( 1 )
 
 [node name="Hurtbox" type="Area2D" parent="."]
+position = Vector2( 0, -16 )
 
 [node name="HurtboxShape" type="CollisionShape2D" parent="Hurtbox"]
+modulate = Color( 1, 0.447059, 0, 1 )
 shape = SubResource( 2 )

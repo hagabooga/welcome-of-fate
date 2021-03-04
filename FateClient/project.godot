@@ -75,7 +75,6 @@ config/icon="res://icon.png"
 [autoload]
 
 Server="*res://Singletons/Server.gd"
-AllPlayersInfo="*res://Singletons/AllPlayersInfo.gd"
 InputToggles="*res://Singletons/InputToggles.gd"
 Enums="*res://Singletons/Enums.gd"
 Gateway="*res://Singletons/Gateway.gd"

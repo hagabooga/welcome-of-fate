@@ -35,3 +35,7 @@ func die():
 	timer.connect("timeout", self, "queue_free")
 	timer.connect("timeout", get_tree().current_scene, "erase_enemy", [id])
 	yield(get_tree().create_timer(0.2), "timeout")
+
+
+func move_enemy(pos):
+	global_position = pos

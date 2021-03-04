@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 8.89231
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 10.3738
+
+[node name="ServerPlayer" type="KinematicBody2D" groups=[
+"Player",
+]]
+
+[node name="Collisionbox" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 0.529 )
+shape = SubResource( 1 )
+
+[node name="Hurtbox" type="Area2D" parent="."]
+position = Vector2( 0, -16 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="HurtboxShape" type="CollisionShape2D" parent="Hurtbox"]
+modulate = Color( 1, 0.447059, 0, 1 )
+shape = SubResource( 2 )

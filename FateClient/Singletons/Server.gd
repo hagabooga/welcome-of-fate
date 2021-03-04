@@ -37,7 +37,6 @@ func _physics_process(delta):  #0.01667
 
 
 func connect_to_server(enter_ip_screen, ip = "127.0.0.1"):
-	# AllPlayersInfo.user_basic = BasicPlayerInfo.new(display_name, color)
 	network = NetworkedMultiplayerENet.new()
 	network.create_client(ip, port)
 	get_tree().network_peer = network
@@ -112,13 +111,6 @@ func send_player_state(player_state):
 	# print("Sending player state to server: ", player_state)
 	rpc_unreliable_id(1, "receive_player_state", player_state)
 
-
-# func try_create_new_account(enter_ip_screen, username, color):
-# 	if not is_connected(
-# 		"account_creation_received", enter_ip_screen, "on_account_creation_received"
-# 	):
-# 		connect("account_creation_received", enter_ip_screen, "on_account_creation_received")
-# 	rpc_id(1, "create_new_account", username, color.to_html(false))
 
 remote func spawn_player(player_id):
 	get_tree().current_scene.spawn_player(player_id)

@@ -45,6 +45,8 @@ func _on_animation_finished(anim_name):
 
 
 func hit_entity(body):
+	if not body.is_in_group("Hurtbox"):
+		return
 	var entity = body.get_parent()
 	if entity.is_in_group("Enemies"):
 		get_parent().enemy_hit(entity.get_meta("id"), damage)

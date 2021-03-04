@@ -107,6 +107,7 @@ func spawn_player(player_id, data, result):
 		logged_in_players,
 		Enums.SCENE_TEST_MAP
 	)
+	map.spawn_player(player_id, data.loc)
 
 
 remote func client_ready():

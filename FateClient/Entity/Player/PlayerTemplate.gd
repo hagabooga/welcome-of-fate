@@ -6,6 +6,8 @@ const sprite_path = "res://UI/CreateCharacterScreen/Sprites/"
 var color
 
 var facing = Enums.DIRECTION_DOWN
+var can_move = true
+
 var attack_dict = {}
 
 onready var snake_bite = preload("res://Projectile/SnakeBite/SnakeBite.tscn")
@@ -22,11 +24,13 @@ func init(player_id, spawn_position, basic_info):
 
 
 func _ready():
+	body_animations.get_child(0).anim_player.connect(
+		"animation_finished", self, "on_body_anim_finished"
+	)
 	# print("template", name)
 	set_display_name(ming)
 	change_color(color)
 	var path = sprite_path + ("Male" if basic_info.gender == Enums.GENDER_MALE else "Female") + "/"
-	print(path)
 	for body_anim in body_animations.get_children():
 		var sprite_name = basic_info[body_anim.name.to_lower()]
 		body_anim.texture = load(path + body_anim.name + "/" + sprite_name + ".png")
@@ -40,6 +44,7 @@ func _physics_process(delta):
 		attack()
 
 
+# Allow other players to "attack"
 func attack():
 	for time_stamp in attack_dict:
 		if time_stamp <= Server.client_clock:
@@ -53,7 +58,8 @@ func attack():
 			attack_dict.erase(time_stamp)
 
 
-func play_all_body_anims(anim, dir = null, speed_ratio = 1, can_mv = true):
+func play_all_body_anims(anim, dir = null, speed_ratio = 1, can_move = true):
+	self.can_move = can_move
 	for x in body_animations.get_children():
 		if dir == null:
 			x.play_anim(anim, x.current_dir, speed_ratio)
@@ -78,3 +84,8 @@ func instance_projectile(proj, position, direction_vector):
 	proj.global_position = position
 	proj.direction = facing
 	get_tree().current_scene.add_child(proj)
+
+
+func on_body_anim_finished(anim_name):
+	if anim_name != "die":
+		can_move = true

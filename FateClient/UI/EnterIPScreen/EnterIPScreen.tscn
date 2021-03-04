@@ -54,8 +54,6 @@ __meta__ = {
 }
 
 [node name="Password" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
-anchor_left = 0.00222222
-anchor_right = 0.00222222
 margin_top = 232.0
 margin_right = 450.0
 margin_bottom = 265.0

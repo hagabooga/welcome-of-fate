@@ -36,7 +36,9 @@ func load_sprites():
 			if not dir.current_is_dir() and file_name.ends_with(".png.import"):
 				var sprite = load(sprites_path + file_name.get_basename())
 				loaded_sprites.append(sprite)
-				menu_button.get_popup().add_item(file_name.get_basename().get_basename().capitalize())
+				menu_button.get_popup().add_item(
+					file_name.get_basename().get_basename().capitalize()
+				)
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")

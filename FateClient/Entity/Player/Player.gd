@@ -2,7 +2,7 @@ class_name Player
 extends PlayerTemplate
 
 var move_direction = Vector2.ZERO
-var speed
+var speed = 0
 var acceleration = 1000
 var max_speed = 150
 
@@ -19,8 +19,11 @@ func _ready():
 
 
 func _process(delta):
+	if not can_move:
+		return
 	turn_towards_mouse()
 	if Input.is_action_just_pressed("Attack"):
+		play_all_body_anims(Enums.ANIMATION_CAST, facing, 1, false)
 		var angle = turn_towards_mouse()
 		var direction_vector = Vector2(cos(angle), sin(angle))
 		turn_axis.rotation = get_angle_to(get_global_mouse_position())
@@ -34,6 +37,8 @@ func _physics_process(delta):
 
 
 func movement_loop(delta):
+	if not can_move:
+		return
 	move_direction = Vector2.ZERO
 	if Input.is_action_pressed("ui_left"):
 		move_direction.x -= 1
