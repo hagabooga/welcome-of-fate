@@ -1,11 +1,24 @@
+class_name StateProcessing
 extends Node
 
-var world_state = {}
+# { player_id: username }
+var connected_players := {}
 
-# onready var map = get_parent().find_node("Map")
-onready var server = get_tree().current_scene
+# { player_id: { basic, stats } }
+var logged_in_players := {}
+var world_state := {}
+var player_states := {}
 
-var sync_clock_counter = 0
+var map
+var database: Database
+
+var sync_clock_counter := 0
+
+
+func _init(map, database: Database):
+	self.map = map
+	self.database = database
+	name = "StateProcessing"
 
 
 func _physics_process(delta):
@@ -13,16 +26,27 @@ func _physics_process(delta):
 	if sync_clock_counter != 3:
 		return
 	sync_clock_counter = 0
-	if not server.player_state_dict.empty():
-		world_state = server.player_state_dict.duplicate(true)
+	# print(player_states)
+	if not player_states.empty():
+		world_state = player_states.duplicate(true)
 		for player_id in world_state:
 			world_state[player_id].erase("t")
 		world_state.t = OS.get_system_time_msecs()
 		# print(world_state)
-		world_state.enemies = server.map.enemy_datas
+		world_state.enemies = map.enemy_datas
 		# Verifications
 		# Anti-Cheat
 		# Cuts
 		# Physics checks
 		# Anything else you have to do
-		server.send_world_state(world_state)
+		rpc_unreliable_id(0, "receive_world_state", world_state)
+
+
+remote func receive_player_state(player_state):
+	var player_id = get_tree().get_rpc_sender_id()
+	print(player_state)
+	if player_id in player_states:
+		if player_states[player_id].t < player_state.t:
+			player_states[player_id] = player_state
+	else:
+		player_states[player_id] = player_state

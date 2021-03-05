@@ -2,6 +2,7 @@ class_name PlayerVerification
 extends Node
 
 var database: Database
+var state_processing: StateProcessing
 var network: NetworkedMultiplayerENet
 var awaiting_verification := {}
 var expected_tokens := {}
@@ -9,9 +10,14 @@ var expected_tokens := {}
 var verification_expiration: Timer
 var token_expiration_timer: Timer
 
+var map
 
-func _init(database):
+
+func _init(database: Database, state_processing: StateProcessing, network: NetworkedMultiplayerENet):
+	self.map = map
 	self.database = database
+	self.state_processing = state_processing
+	self.network = network
 	name = "PlayerVerification"
 	verification_expiration = Timer.new()
 	verification_expiration.autostart = true
@@ -29,11 +35,12 @@ func start(player_id):
 
 func return_token_verification_results(player_id, result, username):
 	if result == OK:
-		database.connected_players[player_id] = username
+		state_processing.connected_players[player_id] = username
 		print("SPAWNING PLAYER: ", username)
 		# INFO NEEDS TO BE GET FROM DATABASE
 		print(username)
 		var basic = database.player_basics.select(username)
+		basic.loc = Vector2.ONE * (randi() % 100 - 50)
 		print(basic)
 		var scene_to_load = Enums.SCENE_TEST_MAP
 		if basic == null:
@@ -52,17 +59,22 @@ func return_token_verification_results(player_id, result, username):
 
 
 func spawn_player(player_id, data, result):
-	database.logged_in_players[player_id] = {}
-	database.logged_in_players[player_id].basic = data
-	database.logged_in_players[player_id].stats = database.player_stats.select(data.username)
+	state_processing.logged_in_players[player_id] = {}
+	state_processing.logged_in_players[player_id].basic = data
+	state_processing.logged_in_players[player_id].stats = database.player_stats.select(
+		data.username
+	)
 	# Give this new player logged in to all other players
-	rpc_id(0, "receive_new_player_logged_in", player_id, database.logged_in_players[player_id])
+	rpc_id(
+		0, "receive_new_player_logged_in", player_id, state_processing.logged_in_players[player_id]
+	)
 	# Give already logged in players to player 
+	print("state", state_processing.player_states)
 	rpc_id(
 		player_id,
 		"return_token_verification_results",
 		result,
-		database.logged_in_players,
+		state_processing.logged_in_players,
 		Enums.SCENE_TEST_MAP
 	)
 	var stats = database.player_stats.select(data.username)
@@ -74,7 +86,9 @@ func spawn_player(player_id, data, result):
 		test_data.agi = 4
 		test_data.luc = 4
 		database.player_stats.insert(test_data)
-	# map.spawn_player(player_id, data.loc, Database.players.get_stats(data.username))
+	state_processing.map.spawn_player(
+		player_id, Vector2.ZERO, database.player_stats.select(data.username)
+	)
 
 
 func verify(player_id, token):
@@ -129,3 +143,17 @@ remote func return_token(token):
 	var player_id = get_tree().get_rpc_sender_id()
 	verify(player_id, token)
 	print("verifying: ", player_id, " with token: ", token)
+
+remote func receive_create_account_request(data):
+	var player_id = get_tree().get_rpc_sender_id()
+	data.username = state_processing.connected_players[player_id]
+	database.player_basics.insert(data)
+	var basic = database.player_basics.get(data.username)
+	spawn_player(player_id, basic, OK)
+
+remote func client_ready():
+	var player_id = get_tree().get_rpc_sender_id()
+	yield(get_tree().create_timer(0.0001), "timeout")
+	var stats = database.player_stats.select(state_processing.connected_players[player_id])
+	stats.loc = Vector2.ZERO
+	rpc_id(0, "spawn_player", player_id, stats)

@@ -147,7 +147,7 @@ func on_received_account_request(result):
 func on_login_received(result, token):
 	match result:
 		OK:
-			server.server_data.token = token
+			server.database.token = token
 			title_timer.start()
 			title.text = "Login"
 			if ip_address.text == "":

@@ -21,6 +21,15 @@ var spawn_locations = [Vector2(100, 100), Vector2(200, 50), Vector2(0, 100)]
 
 onready var server_player = preload("res://SupportScenes/ServerPlayer.tscn")
 
+var database: Database
+var state_processing: StateProcessing
+
+
+func init(database: Database, state_processing: StateProcessing, network: NetworkedMultiplayerENet):
+	self.database = database
+	self.state_processing = state_processing
+	network.connect("peer_disconnected", self, "despawn_player")
+
 
 func _ready():
 	var timer = Timer.new()
@@ -29,14 +38,12 @@ func _ready():
 	timer.connect("timeout", self, "spawn_enemy")
 	add_child(timer)
 	open_locations = range(spawn_locations.size())
-	get_parent().network.connect("peer_disconnected", self, "despawn_player")
 
 
 func _process(delta):
-	var player_state_dict = get_tree().current_scene.player_state_dict
-	for player_id in player_state_dict.keys():
-		player_objects[player_id].global_position = player_state_dict[player_id].p
-		get_tree().current_scene.player_state_dict[player_id].hp = player_objects[player_id].hp
+	for player_id in state_processing.player_states.keys():
+		player_objects[player_id].global_position = state_processing.player_states[player_id].p
+		state_processing.player_states[player_id].hp = player_objects[player_id].hp
 	for enemy_id in enemy_datas:
 		if enemy_datas[enemy_id].hp > 0:
 			enemy_datas[enemy_id].p = enemy_objects[enemy_id].global_position
@@ -118,7 +125,8 @@ func spawn_projectile(player_id, position, direction_vector, animation_state, sp
 func instance_enemy(enemy_id, location):
 	var enemy = small_worm.instance()
 	enemy_objects[enemy_id] = enemy
-	enemy_datas[enemy_id] = Database.enemies.get_enemy(enemy.id)
+	enemy_datas[enemy_id] = database.enemies.select(enemy.id)
+	enemy_datas[enemy_id].max_hp = enemy_datas[enemy_id].hp
 	enemy_datas[enemy_id].p = location
 	enemy_datas[enemy_id].time_out = 1
 	enemy_datas[enemy_id].id = enemy_id

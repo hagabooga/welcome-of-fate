@@ -5,10 +5,12 @@ const sprite_path = "res://UI/CreateCharacterScreen/Sprites/"
 
 var color
 
-var facing = Enums.DIRECTION_DOWN
-var can_move = true
+var facing := Enums.DIRECTION_DOWN
+var can_move := true
 
 var attack_dict = {}
+
+var state_processing: StateProcessing
 
 onready var snake_bite = preload("res://Projectile/SnakeBite/SnakeBite.tscn")
 onready var body_animations = $BodyAnimations
@@ -16,11 +18,12 @@ onready var body_animations = $BodyAnimations
 var basic_info
 
 
-func init(player_id, spawn_position, basic_info, stats):
+func init(player_id, spawn_position, basic_info, stats, state_processing):
 	name = str(player_id)
 	ming = basic_info.username
 	color = Color.white
 	self.basic_info = basic_info
+	self.state_processing = state_processing
 	print(stats)
 	hp = stats.str * 25
 	max_hp = stats.str * 25
@@ -52,6 +55,8 @@ func _physics_process(delta):
 # Allow other players to "attack"
 func attack():
 	pass
+
+
 #	for time_stamp in attack_dict:
 #		if time_stamp <= Server.client_clock:
 #			# state attack

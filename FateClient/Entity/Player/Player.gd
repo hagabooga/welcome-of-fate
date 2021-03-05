@@ -26,6 +26,8 @@ func _process(delta):
 		var direction_vector = Vector2(cos(angle), sin(angle))
 		turn_axis.rotation = get_angle_to(get_global_mouse_position())
 		instance_projectile(snake_bite, cast_point.global_position, direction_vector)
+
+
 #		Server.send_attack(cast_point.global_position, direction_vector, get_animation_state())
 
 
@@ -69,10 +71,10 @@ func movement_loop(delta):
 func send_player_state_to_server():
 	# We want to reduce the amount of bytes to send
 	var player_state = {}
-#	player_state.t = Server.client_clock
 	player_state.p = global_position
 	player_state.a = get_animation_state()
-#	Server.send_player_state(player_state)
+	state_processing.send_player_state(player_state)
+	# Server.send_player_state(player_state)
 
 
 func get_animation_state():

@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Server/Server.gd" type="Script" id=2]
+[ext_resource path="res://Map/ServerTestMap.tscn" type="PackedScene" id=4]
 
 [node name="Server" type="Node"]
 script = ExtResource( 2 )
+
+[node name="Map" parent="." instance=ExtResource( 4 )]

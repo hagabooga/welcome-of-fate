@@ -24,6 +24,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entity/Player/BasicPlayerInfo.gd"
 }, {
+"base": "Node",
+"class": "Clock",
+"language": "GDScript",
+"path": "res://Server/Clock.gd"
+}, {
+"base": "Node",
+"class": "Database",
+"language": "GDScript",
+"path": "res://Server/Database.gd"
+}, {
 "base": "Entity",
 "class": "Enemy",
 "language": "GDScript",
@@ -59,20 +69,22 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Server/Server.gd"
 }, {
-"base": "Node",
-"class": "ServerData",
-"language": "GDScript",
-"path": "res://Server/ServerData.gd"
-}, {
 "base": "Sprite",
 "class": "SpriteWithBodyAnimation",
 "language": "GDScript",
 "path": "res://Entity/Player/Sprites/SpriteWithBodyAnimation.gd"
+}, {
+"base": "Node",
+"class": "StateProcessing",
+"language": "GDScript",
+"path": "res://Server/StateProcessing.gd"
 } ]
 _global_script_class_icons={
 "Attributes": "",
 "BaseStat": "",
 "BasicPlayerInfo": "",
+"Clock": "",
+"Database": "",
 "Enemy": "",
 "Entity": "",
 "Player": "",
@@ -80,8 +92,8 @@ _global_script_class_icons={
 "PlayerVerification": "",
 "Projectile": "",
 "Server": "",
-"ServerData": "",
-"SpriteWithBodyAnimation": ""
+"SpriteWithBodyAnimation": "",
+"StateProcessing": ""
 }
 
 [application]

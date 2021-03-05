@@ -25,6 +25,11 @@ _global_script_classes=[ {
 "path": "res://Entity/Player/BasicPlayerInfo.gd"
 }, {
 "base": "Node",
+"class": "Clock",
+"language": "GDScript",
+"path": "res://Server/Clock.gd"
+}, {
+"base": "Node",
 "class": "Database",
 "language": "GDScript",
 "path": "res://Singletons/Database/Database.gd"
@@ -79,6 +84,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entity/Rogue.gd"
 }, {
+"base": "Node",
+"class": "StateProcessing",
+"language": "GDScript",
+"path": "res://Singletons/StateProcessing.gd"
+}, {
 "base": "Player",
 "class": "Warrior",
 "language": "GDScript",
@@ -88,6 +98,7 @@ _global_script_class_icons={
 "Attributes": "",
 "BaseStat": "",
 "BasicPlayerInfo": "",
+"Clock": "",
 "Database": "",
 "DatabaseTable": "",
 "Enemy": "",
@@ -99,6 +110,7 @@ _global_script_class_icons={
 "PlayerVerification": "",
 "Projectile": "",
 "Rogue": "",
+"StateProcessing": "",
 "Warrior": ""
 }
 
@@ -112,7 +124,6 @@ config/icon="res://icon.png"
 
 ServerData="*res://Singletons/ServerData.gd"
 Enums="*res://Singletons/Enums.gd"
-StateProcessing="*res://Singletons/StateProcessing.gd"
 Utility="*res://Utility/Utility.gd"
 Plugins="*res://Utility/Plugins.gd"
 

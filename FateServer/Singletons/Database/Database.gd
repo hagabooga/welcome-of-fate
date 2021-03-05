@@ -4,12 +4,6 @@ extends Node
 var db: Plugins.SQLite
 var db_name := "res://Singletons/Database/"
 
-# { player_id: username }
-var connected_players: Dictionary = {}
-
-# { player_id: { basic, stats } }
-var logged_in_players: Dictionary = {}
-
 var enemies: DatabaseTable
 var player_basics: DatabaseTable
 var player_stats: DatabaseTable
@@ -74,13 +68,3 @@ func _init():
 			"luc": {"data_type": "int", "not_null": true},
 		}
 	)
-
-	# var enemy_data = File.new()
-	# enemy_data.open("res://Singletons/Database/Enemies.json", File.READ)
-	# enemy_data = parse_json(enemy_data.get_as_text())
-	# for i in range(len(enemy_data)):
-	# 	enemy_data[i].id = i
-	# 	db.insert_row("enemies", enemy_data[i])
-	# print(db.select_rows("enemies", "", ["id", "hp", "ming"]))
-#	enemies = EnemyDatabase.new(db)
-#	players = PlayerDatabase.new(db)
