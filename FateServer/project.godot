@@ -24,20 +24,30 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entity/Player/BasicPlayerInfo.gd"
 }, {
+"base": "Node",
+"class": "Database",
+"language": "GDScript",
+"path": "res://Singletons/Database/Database.gd"
+}, {
+"base": "Reference",
+"class": "DatabaseTable",
+"language": "GDScript",
+"path": "res://Singletons/Database/DatabaseTable.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Enemy",
 "language": "GDScript",
 "path": "res://Enemies/Enemy.gd"
 }, {
-"base": "SpecificDatabase",
-"class": "EnemyDatabase",
-"language": "GDScript",
-"path": "res://Singletons/Database/EnemyDatabase.gd"
-}, {
 "base": "Attributes",
 "class": "Entity",
 "language": "GDScript",
 "path": "res://Entity/Entity.gd"
+}, {
+"base": "Node",
+"class": "HubConnection",
+"language": "GDScript",
+"path": "res://Singletons/HubConnection.gd"
 }, {
 "base": "Player",
 "class": "Mage",
@@ -49,15 +59,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entity/Player/Player.gd"
 }, {
-"base": "SpecificDatabase",
-"class": "PlayerDatabase",
-"language": "GDScript",
-"path": "res://Singletons/Database/PlayerDatabase.gd"
-}, {
 "base": "Entity",
 "class": "PlayerTemplate",
 "language": "GDScript",
 "path": "res://Entity/Player/PlayerTemplate.gd"
+}, {
+"base": "Node",
+"class": "PlayerVerification",
+"language": "GDScript",
+"path": "res://Singletons/PlayerVerification.gd"
 }, {
 "base": "Node2D",
 "class": "Projectile",
@@ -69,11 +79,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entity/Rogue.gd"
 }, {
-"base": "Node",
-"class": "SpecificDatabase",
-"language": "GDScript",
-"path": "res://Singletons/Database/SpecificDatabase.gd"
-}, {
 "base": "Player",
 "class": "Warrior",
 "language": "GDScript",
@@ -83,16 +88,17 @@ _global_script_class_icons={
 "Attributes": "",
 "BaseStat": "",
 "BasicPlayerInfo": "",
+"Database": "",
+"DatabaseTable": "",
 "Enemy": "",
-"EnemyDatabase": "",
 "Entity": "",
+"HubConnection": "",
 "Mage": "",
 "Player": "",
-"PlayerDatabase": "",
 "PlayerTemplate": "",
+"PlayerVerification": "",
 "Projectile": "",
 "Rogue": "",
-"SpecificDatabase": "",
 "Warrior": ""
 }
 
@@ -107,10 +113,8 @@ config/icon="res://icon.png"
 ServerData="*res://Singletons/ServerData.gd"
 Enums="*res://Singletons/Enums.gd"
 StateProcessing="*res://Singletons/StateProcessing.gd"
-Database="*res://Singletons/Database/Database.gd"
-HubConnection="*res://Singletons/HubConnection.gd"
-PlayerVerification="*res://Singletons/PlayerVerification.gd"
 Utility="*res://Utility/Utility.gd"
+Plugins="*res://Utility/Plugins.gd"
 
 [editor_plugins]
 

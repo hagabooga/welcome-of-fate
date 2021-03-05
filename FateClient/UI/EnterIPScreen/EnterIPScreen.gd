@@ -14,9 +14,15 @@ onready var error_display = $HBoxContainer/VBoxContainer/ErrorDisplay
 onready var error_display_tween = $HBoxContainer/VBoxContainer/ErrorDisplay/Tween
 
 var logged_in = false
+var server
+
+
+func init(server):
+	self.server = server
 
 
 func _ready():
+	print(server)
 	title.text = "Login"
 	ip_address.connect("text_entered", self, "ip_address_text_entered")
 	ok_button.connect("pressed", self, "ok_button_pressed")
@@ -141,13 +147,13 @@ func on_received_account_request(result):
 func on_login_received(result, token):
 	match result:
 		OK:
-			Server.token = token
+			server.server_data.token = token
 			title_timer.start()
 			title.text = "Login"
 			if ip_address.text == "":
-				Server.connect_to_server(self)
+				server.connect_to_server(self)
 			else:
-				Server.connect_to_server(self, ip_address.text)
+				server.connect_to_server(self, ip_address.text)
 
 		FAILED:
 			show_error("Please provide correct username/password!")

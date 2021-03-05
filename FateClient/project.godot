@@ -44,10 +44,25 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Entity/Player/PlayerTemplate.gd"
 }, {
+"base": "Node",
+"class": "PlayerVerification",
+"language": "GDScript",
+"path": "res://Server/PlayerVerification.gd"
+}, {
 "base": "Node2D",
 "class": "Projectile",
 "language": "GDScript",
 "path": "res://Projectile/Projectile.gd"
+}, {
+"base": "Node",
+"class": "Server",
+"language": "GDScript",
+"path": "res://Server/Server.gd"
+}, {
+"base": "Node",
+"class": "ServerData",
+"language": "GDScript",
+"path": "res://Server/ServerData.gd"
 }, {
 "base": "Sprite",
 "class": "SpriteWithBodyAnimation",
@@ -62,19 +77,21 @@ _global_script_class_icons={
 "Entity": "",
 "Player": "",
 "PlayerTemplate": "",
+"PlayerVerification": "",
 "Projectile": "",
+"Server": "",
+"ServerData": "",
 "SpriteWithBodyAnimation": ""
 }
 
 [application]
 
 config/name="Fate Client"
-run/main_scene="res://UI/EnterIPScreen/EnterIPScreen.tscn"
+run/main_scene="res://Server/Server.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Server="*res://Singletons/Server.gd"
 InputToggles="*res://Singletons/InputToggles.gd"
 Enums="*res://Singletons/Enums.gd"
 Gateway="*res://Singletons/Gateway.gd"

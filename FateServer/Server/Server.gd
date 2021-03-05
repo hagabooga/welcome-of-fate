@@ -12,47 +12,35 @@ var logged_in_players = {}
 var connected_players = {}
 
 # token : basic_player_info
-var expected_tokens = {}
+# var expected_tokens = {}
+
+#onready var map = $Map
 
 onready var map = $Map
-onready var token_expiration_timer = $TokenExpiration
-# onready var test_map = $ServerTestMap
+
+var database: Database
+var player_verification: PlayerVerification
+var hub_connection: HubConnection
 
 
 # rpc_id(0, ...) calls function to all clients
 func _ready():
-	start_server()
+	database = Database.new()
+	player_verification = PlayerVerification.new(database)
+	hub_connection = HubConnection.new(player_verification)
+	for x in [database, player_verification, hub_connection]:
+		add_child(x)
 
-
-func start_server():
 	network.create_server(port, max_players)
 	get_tree().set_network_peer(network)
 	print("Server Started")
 	network.connect("peer_connected", self, "peer_connected")
 	network.connect("peer_disconnected", self, "peer_disconnected")
-	token_expiration_timer.connect("timeout", self, "on_token_expiration_timeout")
-
-
-func on_token_expiration_timeout():
-	var current_time = OS.get_unix_time()
-	var token_time
-	if expected_tokens.size() == 0:
-		pass
-	else:
-		for token in expected_tokens.keys():
-			token_time = int(token.right(64))
-			if current_time - token_time >= 30:
-				expected_tokens.erase(token)
-		# for i in range(expected_tokens.size() - 1, -1, -1):
-		# 	token_time = int(expected_tokens[i].right(64))
-		# 	if current_time - token_time >= 30:
-		# 		expected_tokens.remove(i)
-	# print("Expected tokens: ", expected_tokens)
 
 
 func peer_connected(player_id):
 	print("User " + str(player_id) + " connected.")
-	PlayerVerification.start(player_id)
+	player_verification.start(player_id)
 
 
 func peer_disconnected(player_id):
@@ -69,30 +57,29 @@ func peer_disconnected(player_id):
 		connected_players.erase(player_id)
 
 
-func fetch_token(player_id):
-	rpc_id(player_id, "fetch_token")
+#func fetch_token(player_id):
+#	rpc_id(player_id, "fetch_token")
 
-
-func return_token_verification_results(player_id, result, username):
-	if result == OK:
-		connected_players[player_id] = username
-		print("SPAWNING PLAYER: ", username)
-		# INFO NEEDS TO BE GET FROM DATABASE
-		var basic = Database.players.get_basic(username)
-		var scene_to_load = Enums.SCENE_TEST_MAP
-		if basic == null:
-			scene_to_load = Enums.SCENE_CREATE_CHARACTER
-			rpc_id(
-				player_id,
-				"return_token_verification_results",
-				ERR_DOES_NOT_EXIST,
-				logged_in_players,
-				scene_to_load
-			)
-		else:
-			spawn_player(player_id, Database.players.get_basic(username), result)
-	else:
-		rpc_id(player_id, "return_token_verification_results", result, null)
+# func return_token_verification_results(player_id, result, username):
+# 	if result == OK:
+# 		connected_players[player_id] = username
+# 		print("SPAWNING PLAYER: ", username)
+# 		# INFO NEEDS TO BE GET FROM DATABASE
+# 		var basic = Database.players.get_basic(username)
+# 		var scene_to_load = Enums.SCENE_TEST_MAP
+# 		if basic == null:
+# 			scene_to_load = Enums.SCENE_CREATE_CHARACTER
+# 			rpc_id(
+# 				player_id,
+# 				"return_token_verification_results",
+# 				ERR_DOES_NOT_EXIST,
+# 				logged_in_players,
+# 				scene_to_load
+# 			)
+# 		else:
+# 			spawn_player(player_id, Database.players.get_basic(username), result)
+# 	else:
+# 		rpc_id(player_id, "return_token_verification_results", result, null)
 
 
 func spawn_player(player_id, data, result):
@@ -143,11 +130,6 @@ remote func fetch_skill(skill_name, requester):
 remote func fetch_server_time(client_time):
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "return_server_time", OS.get_system_time_msecs(), client_time)
-
-remote func return_token(token):
-	var player_id = get_tree().get_rpc_sender_id()
-	PlayerVerification.verify(player_id, token)
-	print("verifying: ", player_id, " with token: ", token)
 
 remote func receive_create_account_request(data):
 	var player_id = get_tree().get_rpc_sender_id()

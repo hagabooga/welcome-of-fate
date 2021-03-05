@@ -15,6 +15,7 @@ onready var enemies_node = $Objects/Enemies
 onready var worm = preload("res://Entity/Enemy/SmallWorm/SmallWorm.tscn")
 
 var enemies = {}
+var server
 
 
 func erase_enemy(id):
@@ -22,7 +23,7 @@ func erase_enemy(id):
 
 
 func _physics_process(delta):
-	var render_time = Server.client_clock - INTERPOLATION_OFFSET
+	var render_time = server.client_clock - INTERPOLATION_OFFSET
 	if world_state_buffer.size() > 1:
 		while world_state_buffer.size() > 2 and render_time > world_state_buffer[2].t:
 			world_state_buffer.remove(0)
@@ -47,9 +48,9 @@ func spawn_enemy(enemy_id, enemy_data):
 
 func spawn_player(player_id, stats, loc = null):
 	if loc != null:
-		if not player_id in Server.logged_in_players:
+		if not player_id in server.logged_in_players:
 			return
-		Server.logged_in_players[player_id].basic.loc = loc
+		server.logged_in_players[player_id].basic.loc = loc
 	if get_tree().get_network_unique_id() == player_id and not player_id in players_dict:
 		# The client user 
 		#print("Spawning client user")
@@ -65,12 +66,12 @@ func instance_player(player_id, stats, scene):
 	var player = scene.instance()
 	if scene == player_actual:
 		pass
-	var basic_info = Server.logged_in_players[player_id].basic
+	var basic_info = server.logged_in_players[player_id].basic
 	player.init(
 		player_id,
 		basic_info.loc,
 		BasicPlayerInfo.new(basic_info, Color.white),
-		Server.logged_in_players[player_id].stats
+		server.logged_in_players[player_id].stats
 	)
 	players.add_child(player)
 	players_dict[player_id] = player

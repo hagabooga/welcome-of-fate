@@ -1,3 +1,4 @@
+class_name Server
 extends Node
 
 signal account_creation_received(error)
@@ -16,15 +17,31 @@ var latency = 0
 var latency_delta = 0
 
 var in_map = false
-var token
 
 var logged_in_players = {}
 
+var server_data: ServerData
+var player_verification: PlayerVerification
+
 onready var preloaded_scenes = {
+	Enums.SCENE_ENTER_IP: preload("res://UI/EnterIPScreen/EnterIPScreen.tscn"),
 	Enums.SCENE_TEST_MAP: preload("res://Map/TestMap.tscn"),
 	Enums.SCENE_CREATE_CHARACTER:
 	preload("res://UI/CreateCharacterScreen/CreateCharacterScreen.tscn")
 }
+
+
+func _ready():
+	server_data = ServerData.new()
+	player_verification = PlayerVerification.new(server_data)
+	for x in [player_verification]:
+		add_child(x)
+
+	yield(get_tree().create_timer(0.001), "timeout")
+	var starting_scene = preloaded_scenes[Enums.SCENE_ENTER_IP].instance()
+	starting_scene.init(self)
+	get_tree().get_root().add_child(starting_scene)
+	get_tree().current_scene = starting_scene
 
 
 func _physics_process(delta):  #0.01667
@@ -80,27 +97,27 @@ func send_new_character_data(data):
 	rpc_id(1, "receive_create_account_request", data)
 
 
-remote func fetch_token():
-	rpc_id(1, "return_token", token)
+# remote func fetch_token():
+# 	rpc_id(1, "return_token", token)
 
-remote func receive_new_player_logged_in(player_id, info):
-	logged_in_players[player_id] = info
+# remote func receive_new_player_logged_in(player_id, info):
+# 	logged_in_players[player_id] = info
 
-remote func return_token_verification_results(result, logged_in_players, scene_to_load):
-	match result:
-		OK:  # Enter map
-			# delete login screen
-			print("WE IN BOIZ")
-			self.logged_in_players = logged_in_players
-			get_tree().change_scene_to(preloaded_scenes[scene_to_load])
-			rpc_id(1, "client_ready")
-		FAILED:
-			# try again
-			print("try again")
-		ERR_DOES_NOT_EXIST:
-			# new account
-			get_tree().change_scene_to(preloaded_scenes[scene_to_load])
-			self.logged_in_players = logged_in_players
+# remote func return_token_verification_results(result, logged_in_players, scene_to_load):
+# 	match result:
+# 		OK:  # Enter map
+# 			# delete login screen
+# 			print("WE IN BOIZ")
+# 			self.logged_in_players = logged_in_players
+# 			get_tree().change_scene_to(preloaded_scenes[scene_to_load])
+# 			rpc_id(1, "client_ready")
+# 		FAILED:
+# 			# try again
+# 			print("try again")
+# 		ERR_DOES_NOT_EXIST:
+# 			# new account
+# 			get_tree().change_scene_to(preloaded_scenes[scene_to_load])
+# 			self.logged_in_players = logged_in_players
 
 
 func send_attack(position, direction_vector, animation_state):

@@ -14,6 +14,7 @@ onready var buttons = $Screen/VBoxContainer/Buttons
 onready var gender_check = $Screen/VBoxContainer/Buttons/SelectGender/GenderCheck
 onready var confirm_button = $Screen/VBoxContainer/SpritesWithAnimPreview/Confirm
 
+var server
 
 func _ready():
 	for path in ["Male", "Female"]:
@@ -48,7 +49,7 @@ func on_confirm_pressed():
 	var data = options[1] if gender_check.pressed else options[0]
 	data = data.get_character_data()
 	data.gender = Enums.GENDER_FEMALE if gender_check.pressed else Enums.GENDER_MALE
-	Server.send_new_character_data(data)
+	server.send_new_character_data(data)
 
 
 func gender_toggle(female):

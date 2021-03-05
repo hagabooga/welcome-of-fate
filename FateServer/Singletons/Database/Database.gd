@@ -1,22 +1,30 @@
+class_name Database
 extends Node
 
-const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
-
-var db: SQLite
+var db: Plugins.SQLite
 var db_name := "res://Singletons/Database/"
 
-var enemies: EnemyDatabase
-var players: PlayerDatabase
+# { player_id: username }
+var connected_players: Dictionary = {}
+
+# { player_id: { basic, stats } }
+var logged_in_players: Dictionary = {}
+
+var enemies: DatabaseTable
+var player_basics: DatabaseTable
+var player_stats: DatabaseTable
 
 
-func _ready():
-	db = SQLite.new()
+func _init():
+	name = "Database"
+	db = Plugins.SQLite.new()
 	db.path = db_name
-	db.verbose_mode = true
+	# db.verbose_mode = true
 	db.foreign_keys = true
 	db.open_db()
 
-	db.create_table(
+	enemies = DatabaseTable.new(
+		db,
 		"enemies",
 		{
 			"id": {"data_type": "int", "primary_key": true, "not_null": true},
@@ -28,8 +36,9 @@ func _ready():
 		}
 	)
 
-	db.create_table(
-		"players_basic_info",
+	player_basics = DatabaseTable.new(
+		db,
+		"player_basics",
 		{
 			"username":
 			{
@@ -47,7 +56,8 @@ func _ready():
 		}
 	)
 
-	db.create_table(
+	player_stats = DatabaseTable.new(
+		db,
 		"players_stats",
 		{
 			"username":
@@ -56,7 +66,7 @@ func _ready():
 				"not_null": true,
 				"unique": true,
 				"primary_key": true,
-				"foreign_key": "players_basic_info.username"
+				"foreign_key": "player_basics.username"
 			},
 			"str": {"data_type": "int", "not_null": true},
 			"int": {"data_type": "int", "not_null": true},
@@ -65,12 +75,12 @@ func _ready():
 		}
 	)
 
-	var enemy_data = File.new()
-	enemy_data.open("res://Singletons/Database/Enemies.json", File.READ)
-	enemy_data = parse_json(enemy_data.get_as_text())
-	for i in range(len(enemy_data)):
-		enemy_data[i].id = i
-		db.insert_row("enemies", enemy_data[i])
+	# var enemy_data = File.new()
+	# enemy_data.open("res://Singletons/Database/Enemies.json", File.READ)
+	# enemy_data = parse_json(enemy_data.get_as_text())
+	# for i in range(len(enemy_data)):
+	# 	enemy_data[i].id = i
+	# 	db.insert_row("enemies", enemy_data[i])
 	# print(db.select_rows("enemies", "", ["id", "hp", "ming"]))
-	enemies = EnemyDatabase.new(db)
-	players = PlayerDatabase.new(db)
+#	enemies = EnemyDatabase.new(db)
+#	players = PlayerDatabase.new(db)
