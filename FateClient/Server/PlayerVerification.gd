@@ -4,12 +4,16 @@ extends Node
 var clock: Clock
 var database: Database
 var state_processing: StateProcessing
+var scene_manager: SceneManager
 
 
-func _init(clock: Clock, database: Database, state_processing: StateProcessing):
+func _init(
+	clock: Clock, database: Database, state_processing: StateProcessing, scene_manager: SceneManager
+):
 	self.clock = clock
 	self.database = database
 	self.state_processing = state_processing
+	self.scene_manager = scene_manager
 	name = "PlayerVerification"
 
 
@@ -25,11 +29,7 @@ remote func return_token_verification_results(result, logged_in_players, scene_t
 			# delete login screen
 			print("WE IN BOIZ")
 			state_processing.logged_in_players = logged_in_players
-			var map = database.preloaded_scenes[scene_to_load].instance()
-			map.init(clock, state_processing)
-			get_tree().get_root().add_child(map)
-			get_tree().current_scene.queue_free()
-			get_tree().current_scene = map
+			scene_manager.change_scene_to(Enums.SCENE_TEST_MAP)
 			# get_tree().change_scene_to(database.preloaded_scenes[scene_to_load])
 			print("okok")
 			rpc_id(1, "client_ready")
@@ -39,10 +39,12 @@ remote func return_token_verification_results(result, logged_in_players, scene_t
 		ERR_DOES_NOT_EXIST:
 			# new account
 			print("account creation")
-			# get_tree().change_scene_to(preloaded_scenes[scene_to_load])
+			scene_manager.change_scene_to(Enums.SCENE_CREATE_CHARACTER)
 			state_processing.logged_in_players = logged_in_players
 
 
+
+			
 func send_account_request(data):
 	rpc_id(1, "receive_create_account_request", data)
 

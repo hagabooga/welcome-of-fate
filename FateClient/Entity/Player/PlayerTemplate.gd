@@ -19,11 +19,11 @@ var basic_info
 
 
 func init(player_id, spawn_position, basic_info, state_processing):
+	self.basic_info = basic_info
+	self.state_processing = state_processing
 	name = str(player_id)
 	ming = basic_info.username
 	color = Color.white
-	self.basic_info = basic_info
-	self.state_processing = state_processing
 	hp = state_processing.logged_in_players[player_id].stats.str * 25
 	max_hp = hp
 

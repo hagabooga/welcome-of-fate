@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "AccountCreation",
+"language": "GDScript",
+"path": "res://Server/AccountCreation.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Attributes",
 "language": "GDScript",
@@ -28,6 +33,11 @@ _global_script_classes=[ {
 "class": "Clock",
 "language": "GDScript",
 "path": "res://Server/Clock.gd"
+}, {
+"base": "Node",
+"class": "Combat",
+"language": "GDScript",
+"path": "res://Server/Combat.gd"
 }, {
 "base": "Node",
 "class": "Database",
@@ -65,6 +75,11 @@ _global_script_classes=[ {
 "path": "res://Projectile/Projectile.gd"
 }, {
 "base": "Node",
+"class": "SceneManager",
+"language": "GDScript",
+"path": "res://Server/SceneManager.gd"
+}, {
+"base": "Node",
 "class": "Server",
 "language": "GDScript",
 "path": "res://Server/Server.gd"
@@ -80,10 +95,12 @@ _global_script_classes=[ {
 "path": "res://Server/StateProcessing.gd"
 } ]
 _global_script_class_icons={
+"AccountCreation": "",
 "Attributes": "",
 "BaseStat": "",
 "BasicPlayerInfo": "",
 "Clock": "",
+"Combat": "",
 "Database": "",
 "Enemy": "",
 "Entity": "",
@@ -91,6 +108,7 @@ _global_script_class_icons={
 "PlayerTemplate": "",
 "PlayerVerification": "",
 "Projectile": "",
+"SceneManager": "",
 "Server": "",
 "SpriteWithBodyAnimation": "",
 "StateProcessing": ""

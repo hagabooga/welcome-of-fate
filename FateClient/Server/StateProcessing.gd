@@ -17,6 +17,15 @@ func send_player_state(player_state: Dictionary) -> void:
 	rpc_unreliable_id(1, "receive_player_state", player_state)
 
 
+remote func player_disconnected(player_id: int):
+	print("player_disconnected: ", player_id) 
+	logged_in_players.erase(player_id)
+
+remote func despawn_player(player_id):
+	if in_map:
+		print("despawning player ", player_id)
+		get_tree().current_scene.despawn_player(player_id)
+
 remote func receive_world_state(world_state):
 	# print(world_state)
 	if in_map:

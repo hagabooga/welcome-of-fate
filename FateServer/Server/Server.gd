@@ -13,9 +13,11 @@ onready var map = $Map
 var network: NetworkedMultiplayerENet
 var clock: Clock
 var database: Database
+var combat: Combat
 var player_verification: PlayerVerification
 var hub_connection: HubConnection
 var state_processing: StateProcessing
+var account_creation: AccountCreation
 
 
 # rpc_id(0, ...) calls function to all clients
@@ -23,12 +25,22 @@ func _ready():
 	network = NetworkedMultiplayerENet.new()
 	clock = Clock.new()
 	database = Database.new()
+	combat = Combat.new(map, database)
 	state_processing = StateProcessing.new(map, database)
 	map.init(database, state_processing, network)
 	player_verification = PlayerVerification.new(database, state_processing, network)
 	hub_connection = HubConnection.new(player_verification)
+	account_creation = AccountCreation.new(database, state_processing, player_verification)
 
-	for x in [clock, database, player_verification, hub_connection, state_processing]:
+	for x in [
+		clock,
+		database,
+		combat,
+		player_verification,
+		hub_connection,
+		state_processing,
+		account_creation
+	]:
 		add_child(x)
 
 	network.create_server(port, max_players)
@@ -47,23 +59,15 @@ func peer_disconnected(player_id):
 	var str_player_id = str(player_id)
 	print("User " + str_player_id + " disconnected.")
 
-	
-	for cache in [state_processing.logged_in_players, state_processing.connected_players]:
-		if player_id in cache:
-			state_processing.player_states.erase(player_id)
-			
+	state_processing.logged_in_players.erase(player_id)
+	state_processing.connected_players.erase(player_id)
+
+	state_processing.player_disconnected(player_id)
 
 	if player_id in state_processing.player_states:
 		state_processing.player_states.erase(player_id)
-		rpc_id(0, "despawn_player", player_id)
+		state_processing.despawn_player(player_id)
 
-
-
-
-remote func attack(position, direction_vector, animation_state, spawn_time):
-	var player_id = get_tree().get_rpc_sender_id()
-	map.spawn_projectile(player_id, position, direction_vector, animation_state, spawn_time)
-	rpc_id(0, "receive_attack", player_id, position, direction_vector, animation_state, spawn_time)
 
 remote func fetch_skill(skill_name, requester):
 	var player_id = get_tree().get_rpc_sender_id()

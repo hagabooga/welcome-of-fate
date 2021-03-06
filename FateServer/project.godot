@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "AccountCreation",
+"language": "GDScript",
+"path": "res://Server/AccountCreation.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Attributes",
 "language": "GDScript",
@@ -28,6 +33,11 @@ _global_script_classes=[ {
 "class": "Clock",
 "language": "GDScript",
 "path": "res://Server/Clock.gd"
+}, {
+"base": "Node",
+"class": "Combat",
+"language": "GDScript",
+"path": "res://Server/Combat.gd"
 }, {
 "base": "Node",
 "class": "Database",
@@ -52,7 +62,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "HubConnection",
 "language": "GDScript",
-"path": "res://Singletons/HubConnection.gd"
+"path": "res://Server/HubConnection.gd"
 }, {
 "base": "Player",
 "class": "Mage",
@@ -72,7 +82,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "PlayerVerification",
 "language": "GDScript",
-"path": "res://Singletons/PlayerVerification.gd"
+"path": "res://Server/PlayerVerification.gd"
 }, {
 "base": "Node2D",
 "class": "Projectile",
@@ -87,7 +97,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "StateProcessing",
 "language": "GDScript",
-"path": "res://Singletons/StateProcessing.gd"
+"path": "res://Server/StateProcessing.gd"
 }, {
 "base": "Player",
 "class": "Warrior",
@@ -95,10 +105,12 @@ _global_script_classes=[ {
 "path": "res://Entity/Warrior.gd"
 } ]
 _global_script_class_icons={
+"AccountCreation": "",
 "Attributes": "",
 "BaseStat": "",
 "BasicPlayerInfo": "",
 "Clock": "",
+"Combat": "",
 "Database": "",
 "DatabaseTable": "",
 "Enemy": "",

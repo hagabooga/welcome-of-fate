@@ -14,7 +14,12 @@ onready var buttons = $Screen/VBoxContainer/Buttons
 onready var gender_check = $Screen/VBoxContainer/Buttons/SelectGender/GenderCheck
 onready var confirm_button = $Screen/VBoxContainer/SpritesWithAnimPreview/Confirm
 
-var server
+var account_creation: AccountCreation
+
+
+func init(account_creation: AccountCreation):
+	self.account_creation = account_creation
+
 
 func _ready():
 	for path in ["Male", "Female"]:
@@ -26,7 +31,6 @@ func _ready():
 	options[1].hide()
 
 	play_body_anims(Enums.ANIMATION_WALK, Enums.DIRECTION_DOWN, 1)
-
 	gender_check.connect("toggled", self, "gender_toggle")
 	gender_toggle(false)
 	confirm_button.connect("pressed", self, "on_confirm_pressed")
@@ -49,7 +53,7 @@ func on_confirm_pressed():
 	var data = options[1] if gender_check.pressed else options[0]
 	data = data.get_character_data()
 	data.gender = Enums.GENDER_FEMALE if gender_check.pressed else Enums.GENDER_MALE
-	server.send_new_character_data(data)
+	account_creation.request_new_account(data)
 
 
 func gender_toggle(female):

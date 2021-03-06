@@ -43,19 +43,19 @@ func return_token_verification_results(player_id, result, username):
 		# INFO NEEDS TO BE GET FROM DATABASE
 		print(username)
 		var basic = database.player_basics.select(username)
-		basic.loc = Vector2.ONE * (randi() % 100 - 50)
-		print(basic)
 		var scene_to_load = Enums.SCENE_TEST_MAP
-		if basic == null:
+		print(basic)
+		if not basic:
 			scene_to_load = Enums.SCENE_CREATE_CHARACTER
 			rpc_id(
 				player_id,
 				"return_token_verification_results",
 				ERR_DOES_NOT_EXIST,
-				database.logged_in_players,
+				state_processing.logged_in_players,
 				scene_to_load
 			)
 		else:
+			basic.loc = Vector2.ONE * (randi() % 100 - 50)
 			spawn_player(player_id, database.player_basics.select(username), result)
 	else:
 		rpc_id(player_id, "return_token_verification_results", result, null)
@@ -64,6 +64,15 @@ func return_token_verification_results(player_id, result, username):
 func spawn_player(player_id, data, result):
 	state_processing.logged_in_players[player_id] = {}
 	state_processing.logged_in_players[player_id].basic = data
+	var stats = database.player_stats.select(data.username)
+	if not stats:
+		var test_data = {}
+		test_data.username = data.username
+		test_data.str = 4
+		test_data.int = 4
+		test_data.agi = 4
+		test_data.luc = 4
+		database.player_stats.insert(test_data)
 	state_processing.logged_in_players[player_id].stats = database.player_stats.select(
 		data.username
 	)
@@ -80,15 +89,7 @@ func spawn_player(player_id, data, result):
 		state_processing.logged_in_players,
 		Enums.SCENE_TEST_MAP
 	)
-	var stats = database.player_stats.select(data.username)
-	if not stats:
-		var test_data = {}
-		test_data.username = data.username
-		test_data.str = 4
-		test_data.int = 4
-		test_data.agi = 4
-		test_data.luc = 4
-		database.player_stats.insert(test_data)
+	
 	state_processing.map.spawn_player(
 		player_id, Vector2.ZERO, database.player_stats.select(data.username)
 	)

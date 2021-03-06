@@ -52,8 +52,9 @@ func _process(delta):
 
 
 func despawn_player(player_id):
-	player_objects[player_id].queue_free()
-	player_objects.erase(player_id)
+	if player_id in state_processing.logged_in_players:
+		player_objects[player_id].queue_free()
+		player_objects.erase(player_id)
 
 
 func spawn_player(player_id, loc, data):
@@ -94,6 +95,7 @@ func player_hit(player_id, enemy_id):
 	if player_objects[player_id].hp <= 0:
 		player_objects[player_id].die()
 		enemy_objects[enemy_id].in_attack_range = false
+		enemy_objects[enemy_id].current_target = null
 		# player_objects[player_id].queue_free()
 		# player_objects.erase(player_id)
 

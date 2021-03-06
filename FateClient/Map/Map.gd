@@ -21,6 +21,7 @@ var state_processing: StateProcessing
 
 
 func init(clock: Clock, state_processing: StateProcessing):
+	print("WTF", clock, state_processing)
 	self.clock = clock
 	self.state_processing = state_processing
 
@@ -76,8 +77,7 @@ func instance_player(player_id, loc, scene):
 	var basic_info = state_processing.logged_in_players[player_id].basic
 	if scene == player_actual:
 		pass
-	player.init(
-		player_id, loc, BasicPlayerInfo.new(basic_info, Color.white), state_processing	)
+	player.init(player_id, loc, BasicPlayerInfo.new(basic_info, Color.white), state_processing)
 	players.add_child(player)
 	players_dict[player_id] = player
 
@@ -124,7 +124,7 @@ func world_state_buffer_interpolate(render_time):
 			var stats = {}
 			# stats.hp = world_state_buffer[2][player_id].hp
 			stats.loc = world_state_buffer[2][player_id].p
-			spawn_player(player_id, stats.loc)
+			spawn_player(player_id, position)
 	# Enemy
 	for enemy_id in world_state_buffer[2].enemies:
 		if not enemy_id in world_state_buffer[1].enemies:

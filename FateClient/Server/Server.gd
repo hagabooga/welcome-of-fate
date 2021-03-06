@@ -1,8 +1,7 @@
 class_name Server
 extends Node
 
-signal account_creation_received(error)
-signal login_received(error)
+# signal login_received(error)
 
 var network
 var port = 1909
@@ -15,6 +14,8 @@ var logged_in_players = {}
 var clock: Clock
 var database: Database
 var state_processing: StateProcessing
+var account_creation: AccountCreation
+var scene_manager: SceneManager
 var player_verification: PlayerVerification
 
 
@@ -22,16 +23,17 @@ func _ready():
 	clock = Clock.new()
 	database = Database.new()
 	state_processing = StateProcessing.new(clock)
-	player_verification = PlayerVerification.new(clock, database, state_processing)
+	account_creation = AccountCreation.new()
+	scene_manager = SceneManager.new(self, clock, database, state_processing, account_creation)
+	player_verification = PlayerVerification.new(clock, database, state_processing, scene_manager)
 
-	for x in [clock, database, state_processing, player_verification]:
+	for x in [
+		clock, database, scene_manager, account_creation, state_processing, player_verification
+	]:
 		add_child(x)
 
-	yield(get_tree().create_timer(0.001), "timeout")
-	var starting_scene = database.preloaded_scenes[Enums.SCENE_ENTER_IP].instance()
-	starting_scene.init(self)
-	get_tree().get_root().add_child(starting_scene)
-	get_tree().current_scene = starting_scene
+	yield(get_tree(), "idle_frame")
+	scene_manager.add_and_set_scene_to(Enums.SCENE_ENTER_IP)
 
 
 func connect_to_server(enter_ip_screen, ip = "127.0.0.1"):
@@ -69,24 +71,6 @@ func send_attack(position, direction_vector, animation_state):
 	print("attacking...")
 	# rpc_id(1, "attack", position, direction_vector, animation_state, client_clock)
 
-
-remote func despawn_player(player_id):
-	print("despawning player ", player_id)
-	get_tree().current_scene.despawn_player(player_id)
-
-remote func receive_account_creation(error):
-	emit_signal("account_creation_received", error)
-
-# Spawn Other player's attack
-remote func receive_attack(player_id, position, direction_vector, animation_state, spawn_time):
-	if player_id == get_tree().get_network_unique_id():
-		pass  # Corect client side predictions
-	else:
-		get_tree().current_scene.players_dict[player_id].attack_dict[spawn_time] = {}
-		var attack_dict = get_tree().current_scene.players_dict[player_id].attack_dict[spawn_time]
-		attack_dict.position = position
-		attack_dict.direction_vector = direction_vector
-		attack_dict.animation_state = animation_state
 
 remote func return_skill(s_skill, requester):
 	print(s_skill)

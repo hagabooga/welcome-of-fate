@@ -42,6 +42,14 @@ func _physics_process(delta):
 		rpc_unreliable_id(0, "receive_world_state", world_state)
 
 
+func player_disconnected(player_id: int):
+	rpc_id(0, "player_disconnected", player_id)
+
+
+func despawn_player(player_id: int):
+	rpc_id(0, "despawn_player", player_id)
+
+
 remote func receive_player_state(player_state):
 	var player_id = get_tree().get_rpc_sender_id()
 	# print(player_state)
