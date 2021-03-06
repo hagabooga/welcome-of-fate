@@ -3,8 +3,6 @@ extends Node
 var port = 1909
 var max_players = 100
 
-var logged_in_players = {}
-
 # token : basic_player_info
 # var expected_tokens = {}
 
@@ -48,15 +46,18 @@ func peer_connected(player_id):
 func peer_disconnected(player_id):
 	var str_player_id = str(player_id)
 	print("User " + str_player_id + " disconnected.")
-	if player_id in logged_in_players:
-		logged_in_players.erase(player_id)
 
-	if state_processing.player_states.has(player_id):
+	
+	for cache in [state_processing.logged_in_players, state_processing.connected_players]:
+		if player_id in cache:
+			state_processing.player_states.erase(player_id)
+			
+
+	if player_id in state_processing.player_states:
 		state_processing.player_states.erase(player_id)
 		rpc_id(0, "despawn_player", player_id)
 
-	if player_id in state_processing.connected_players:
-		state_processing.connected_players.erase(player_id)
+
 
 
 remote func attack(position, direction_vector, animation_state, spawn_time):

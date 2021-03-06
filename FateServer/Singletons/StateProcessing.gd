@@ -44,7 +44,7 @@ func _physics_process(delta):
 
 remote func receive_player_state(player_state):
 	var player_id = get_tree().get_rpc_sender_id()
-	print(player_state)
+	# print(player_state)
 	if player_id in player_states:
 		if player_states[player_id].t < player_state.t:
 			player_states[player_id] = player_state

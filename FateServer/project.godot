@@ -32,12 +32,12 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Database",
 "language": "GDScript",
-"path": "res://Singletons/Database/Database.gd"
+"path": "res://Server/Database.gd"
 }, {
 "base": "Reference",
 "class": "DatabaseTable",
 "language": "GDScript",
-"path": "res://Singletons/Database/DatabaseTable.gd"
+"path": "res://Server/DatabaseTable.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Enemy",

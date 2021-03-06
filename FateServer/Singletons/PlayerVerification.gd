@@ -21,9 +21,12 @@ func _init(database: Database, state_processing: StateProcessing, network: Netwo
 	name = "PlayerVerification"
 	verification_expiration = Timer.new()
 	verification_expiration.autostart = true
+	verification_expiration.name = "VerificationExpiration"
+	add_child(verification_expiration)
 	token_expiration_timer = Timer.new()
 	token_expiration_timer.autostart = true
-
+	token_expiration_timer.name = "TokenExpiration"
+	add_child(token_expiration_timer)
 	verification_expiration.connect("timeout", self, "on_verification_expireation_timeout")
 	token_expiration_timer.connect("timeout", self, "on_token_expiration_timeout")
 
@@ -156,4 +159,4 @@ remote func client_ready():
 	yield(get_tree().create_timer(0.0001), "timeout")
 	var stats = database.player_stats.select(state_processing.connected_players[player_id])
 	stats.loc = Vector2.ZERO
-	rpc_id(0, "spawn_player", player_id, stats)
+	rpc_id(0, "spawn_player", player_id)

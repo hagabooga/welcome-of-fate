@@ -47,8 +47,8 @@ func send_account_request(data):
 	rpc_id(1, "receive_create_account_request", data)
 
 
-remote func spawn_player(player_id, stats):
-	get_tree().current_scene.spawn_player(player_id, stats, null)
+remote func spawn_player(player_id):
+	get_tree().current_scene.spawn_player(player_id, null)
 	if player_id == get_tree().get_network_unique_id():
 		state_processing.in_map = true
 	# print("spawning player ", player_id, spawn_position)
