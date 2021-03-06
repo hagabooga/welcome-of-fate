@@ -26,9 +26,7 @@ func _process(delta):
 		var direction_vector = Vector2(cos(angle), sin(angle))
 		turn_axis.rotation = get_angle_to(get_global_mouse_position())
 		instance_projectile(snake_bite, cast_point.global_position, direction_vector)
-
-
-#		Server.send_attack(cast_point.global_position, direction_vector, get_animation_state())
+		combat.send_attack(cast_point.global_position, direction_vector, get_animation_state())
 
 
 func _physics_process(delta):

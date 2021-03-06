@@ -11,6 +11,7 @@ var can_move := true
 var attack_dict = {}
 
 var state_processing: StateProcessing
+var combat: Combat
 
 onready var snake_bite = preload("res://Projectile/SnakeBite/SnakeBite.tscn")
 onready var body_animations = $BodyAnimations
@@ -18,9 +19,10 @@ onready var body_animations = $BodyAnimations
 var basic_info
 
 
-func init(player_id, spawn_position, basic_info, state_processing):
+func init(player_id, spawn_position, basic_info, state_processing: StateProcessing, combat: Combat):
 	self.basic_info = basic_info
 	self.state_processing = state_processing
+	self.combat = combat
 	name = str(player_id)
 	ming = basic_info.username
 	color = Color.white
@@ -53,19 +55,16 @@ func _physics_process(delta):
 
 # Allow other players to "attack"
 func attack():
-	pass
-
-
-#	for time_stamp in attack_dict:
-#		if time_stamp <= Server.client_clock:
-#			# state attack
-#			var attack = attack_dict[time_stamp]
-#			var spawn_position = attack.position
-#			var direction_vector = attack.direction_vector
-#			var animation_state = attack.animation_state
-#			facing = attack.animation_state.f
-#			instance_projectile(snake_bite, spawn_position, direction_vector)
-#			attack_dict.erase(time_stamp)
+	for time_stamp in attack_dict:
+		if time_stamp <= combat.clock.client_clock:
+			# state attack
+			var attack = attack_dict[time_stamp]
+			var spawn_position = attack.position
+			var direction_vector = attack.direction_vector
+			var animation_state = attack.animation_state
+			facing = attack.animation_state.f
+			instance_projectile(snake_bite, spawn_position, direction_vector)
+			attack_dict.erase(time_stamp)
 
 
 func play_all_body_anims(anim, dir = null, speed_ratio = 1, can_move = true):

@@ -89,7 +89,7 @@ func spawn_player(player_id, data, result):
 		state_processing.logged_in_players,
 		Enums.SCENE_TEST_MAP
 	)
-	
+
 	state_processing.map.spawn_player(
 		player_id, Vector2.ZERO, database.player_stats.select(data.username)
 	)

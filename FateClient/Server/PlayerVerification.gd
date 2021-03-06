@@ -43,8 +43,6 @@ remote func return_token_verification_results(result, logged_in_players, scene_t
 			state_processing.logged_in_players = logged_in_players
 
 
-
-			
 func send_account_request(data):
 	rpc_id(1, "receive_create_account_request", data)
 

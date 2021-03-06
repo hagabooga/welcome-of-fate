@@ -6,6 +6,7 @@ var clock: Clock
 var database: Database
 var state_processing: StateProcessing
 var account_creation: AccountCreation
+var combat: Combat
 
 var preloaded_scenes: Dictionary
 
@@ -15,7 +16,8 @@ func _init(
 	clock: Clock,
 	database: Database,
 	state_processing: StateProcessing,
-	account_creation: AccountCreation
+	account_creation: AccountCreation,
+	combat: Combat
 ):
 	name = "SceneManager"
 	self.server = server
@@ -23,10 +25,12 @@ func _init(
 	self.database = database
 	self.state_processing = state_processing
 	self.account_creation = account_creation
+	self.combat = combat
 
 	preloaded_scenes = {
 		Enums.SCENE_ENTER_IP: [preload("res://UI/EnterIPScreen/EnterIPScreen.tscn"), [server]],
-		Enums.SCENE_TEST_MAP: [preload("res://Map/TestMap.tscn"), [clock, state_processing]],
+		Enums.SCENE_TEST_MAP:
+		[preload("res://Map/TestMap.tscn"), [clock, state_processing, combat]],
 		Enums.SCENE_CREATE_CHARACTER:
 		[preload("res://UI/CreateCharacterScreen/CreateCharacterScreen.tscn"), [account_creation]]
 	}

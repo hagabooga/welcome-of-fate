@@ -18,12 +18,14 @@ var enemies = {}
 
 var clock: Clock
 var state_processing: StateProcessing
+var combat: Combat
 
 
-func init(clock: Clock, state_processing: StateProcessing):
+func init(clock: Clock, state_processing: StateProcessing, combat: Combat):
 	print("WTF", clock, state_processing)
 	self.clock = clock
 	self.state_processing = state_processing
+	self.combat = combat
 
 
 func erase_enemy(id):
@@ -77,7 +79,9 @@ func instance_player(player_id, loc, scene):
 	var basic_info = state_processing.logged_in_players[player_id].basic
 	if scene == player_actual:
 		pass
-	player.init(player_id, loc, BasicPlayerInfo.new(basic_info, Color.white), state_processing)
+	player.init(
+		player_id, loc, BasicPlayerInfo.new(basic_info, Color.white), state_processing, combat
+	)
 	players.add_child(player)
 	players_dict[player_id] = player
 

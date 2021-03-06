@@ -18,7 +18,7 @@ func send_player_state(player_state: Dictionary) -> void:
 
 
 remote func player_disconnected(player_id: int):
-	print("player_disconnected: ", player_id) 
+	print("player_disconnected: ", player_id)
 	logged_in_players.erase(player_id)
 
 remote func despawn_player(player_id):

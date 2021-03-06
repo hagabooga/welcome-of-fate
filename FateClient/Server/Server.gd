@@ -12,6 +12,7 @@ var successfully_connected = false
 var logged_in_players = {}
 
 var clock: Clock
+var combat: Combat
 var database: Database
 var state_processing: StateProcessing
 var account_creation: AccountCreation
@@ -21,14 +22,23 @@ var player_verification: PlayerVerification
 
 func _ready():
 	clock = Clock.new()
+	combat = Combat.new(clock)
 	database = Database.new()
 	state_processing = StateProcessing.new(clock)
 	account_creation = AccountCreation.new()
-	scene_manager = SceneManager.new(self, clock, database, state_processing, account_creation)
+	scene_manager = SceneManager.new(
+		self, clock, database, state_processing, account_creation, combat
+	)
 	player_verification = PlayerVerification.new(clock, database, state_processing, scene_manager)
 
 	for x in [
-		clock, database, scene_manager, account_creation, state_processing, player_verification
+		clock,
+		database,
+		scene_manager,
+		account_creation,
+		state_processing,
+		player_verification,
+		combat
 	]:
 		add_child(x)
 
@@ -65,11 +75,6 @@ func connection_failed():
 
 func fetch_skill(skill_name, requester):
 	rpc_id(1, "fetch_skill", skill_name, requester)
-
-
-func send_attack(position, direction_vector, animation_state):
-	print("attacking...")
-	# rpc_id(1, "attack", position, direction_vector, animation_state, client_clock)
 
 
 remote func return_skill(s_skill, requester):
