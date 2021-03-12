@@ -50,7 +50,7 @@ func _physics_process(delta):
 
 
 func spawn_enemy(enemy_id, enemy_data):
-	var enemy = worm.instance()
+	var enemy: Enemy = worm.instance()
 	enemy.init(enemy_data)
 	enemy.id = enemy_id
 	enemy.global_position = enemy_data.p

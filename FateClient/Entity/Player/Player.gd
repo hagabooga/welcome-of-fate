@@ -9,29 +9,36 @@ var max_speed = 150
 # onready var camera = $Camera2D
 onready var turn_axis = $TurnAxis
 onready var cast_point = $TurnAxis/CastPoint
+onready var ui_controller = $UIController
 
-# func _ready():
-# 	self.max_hp = 100
-# 	# connect("on_hp_change", self, "update_hp_bar")
-# 	# full_hp()
+
+func _ready():
+	self.max_hp = 100
+	ui_controller.mouse_input.connect("left_clicked", self, "on_left_click")
+	# connect("on_hp_change", self, "update_hp_bar")
+	# full_hp()
 
 
 func _process(delta):
 	if not can_move:
 		return
 	turn_towards_mouse()
-	if Input.is_action_just_pressed("Attack"):
-		play_all_body_anims(Enums.ANIMATION_CAST, facing, 1, false)
-		var angle = turn_towards_mouse()
-		var direction_vector = Vector2(cos(angle), sin(angle))
-		turn_axis.rotation = get_angle_to(get_global_mouse_position())
-		instance_projectile(snake_bite, cast_point.global_position, direction_vector)
-		combat.send_attack(cast_point.global_position, direction_vector, get_animation_state())
 
 
 func _physics_process(delta):
 	movement_loop(delta)
 	send_player_state_to_server()
+
+
+func on_left_click():
+	if not can_move:
+		return
+	play_all_body_anims(Enums.ANIMATION_CAST, facing, 1, false)
+	var angle = turn_towards_mouse()
+	var direction_vector = Vector2(cos(angle), sin(angle))
+	turn_axis.rotation = get_angle_to(get_global_mouse_position())
+	instance_projectile(snake_bite, cast_point.global_position, direction_vector)
+	combat.send_attack(cast_point.global_position, direction_vector, get_animation_state())
 
 
 func movement_loop(delta):

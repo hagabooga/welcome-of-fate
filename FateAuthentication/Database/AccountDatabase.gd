@@ -3,7 +3,7 @@ extends Node
 const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
 
 var db: SQLite
-var db_name := "res://Database/"
+onready var db_name := OS.get_executable_path().get_base_dir() + "\\"
 
 var columns = ["username", "password", "salt"]
 
@@ -14,7 +14,7 @@ func _ready():
 	db.verbose_mode = true
 	db.foreign_keys = true
 	db.open_db()
-
+	
 	db.create_table(
 		"accounts",
 		{
