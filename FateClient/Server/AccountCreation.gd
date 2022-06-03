@@ -5,7 +5,7 @@ extends Node
 
 
 func _init():
-	name = "AccountCreation"
+	pass
 
 
 func request_new_account(data: Dictionary) -> void:

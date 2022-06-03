@@ -15,8 +15,11 @@ onready var ui_controller = $UIController
 func _ready():
 	self.max_hp = 100
 	ui_controller.mouse_input.connect("left_clicked", self, "on_left_click")
-	# connect("on_hp_change", self, "update_hp_bar")
-	# full_hp()
+	ui_controller.inventory_ui.init(inventory)
+
+
+# connect("on_hp_change", self, "update_hp_bar")
+# full_hp()
 
 
 func _process(delta):

@@ -18,6 +18,7 @@ var state_processing: StateProcessing
 var account_creation: AccountCreation
 var scene_manager: SceneManager
 var player_verification: PlayerVerification
+var inventory: Inventory
 
 
 func _ready():
@@ -29,7 +30,10 @@ func _ready():
 	scene_manager = SceneManager.new(
 		self, clock, database, state_processing, account_creation, combat
 	)
-	player_verification = PlayerVerification.new(clock, database, state_processing, scene_manager)
+	inventory = Inventory.new()
+	player_verification = PlayerVerification.new(
+		clock, database, state_processing, scene_manager, inventory
+	)
 
 	for x in [
 		clock,
@@ -38,9 +42,11 @@ func _ready():
 		account_creation,
 		state_processing,
 		player_verification,
-		combat
+		combat,
+		inventory
 	]:
 		add_child(x)
+		x.name = x.get_script().get_path().get_file().get_basename()
 
 	yield(get_tree(), "idle_frame")
 	scene_manager.add_and_set_scene_to(Enums.SCENE_ENTER_IP)

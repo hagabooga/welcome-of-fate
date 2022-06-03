@@ -26,6 +26,7 @@ func init(clock: Clock, state_processing: StateProcessing, combat: Combat):
 	self.clock = clock
 	self.state_processing = state_processing
 	self.combat = combat
+#	self.inventory = inventory
 
 
 func erase_enemy(id):
@@ -58,7 +59,7 @@ func spawn_enemy(enemy_id, enemy_data):
 	enemies[enemy_id] = enemy
 
 
-func spawn_player(player_id, loc):
+func spawn_player(player_id, loc, inventory: Inventory):
 	if loc != null:
 		if not player_id in state_processing.logged_in_players:
 			return
@@ -66,22 +67,28 @@ func spawn_player(player_id, loc):
 	if get_tree().get_network_unique_id() == player_id and not player_id in players_dict:
 		# The client user 
 		#print("Spawning client user")
-		instance_player(player_id, loc, player_actual)
+		instance_player(player_id, loc, player_actual, inventory)
 	else:
 		# Spawn other players
 		if not player_id in players_dict:
 			#print("spawning ", player_id)
-			instance_player(player_id, loc, player_template)
+			instance_player(player_id, loc, player_template, null)
 
 
-func instance_player(player_id, loc, scene):
+func instance_player(player_id, loc, scene, inventory: Inventory):
 	var player = scene.instance()
 	var basic_info = state_processing.logged_in_players[player_id].basic
 	if scene == player_actual:
 		pass
 	player.init(
-		player_id, loc, BasicPlayerInfo.new(basic_info, Color.white), state_processing, combat
+		player_id,
+		loc,
+		BasicPlayerInfo.new(basic_info, Color.white),
+		state_processing,
+		combat,
+		inventory
 	)
+#	yield(get_tree().create_timer(0.001), "timeout")
 	players.add_child(player)
 	players_dict[player_id] = player
 
@@ -128,7 +135,7 @@ func world_state_buffer_interpolate(render_time):
 			var stats = {}
 			# stats.hp = world_state_buffer[2][player_id].hp
 			stats.loc = world_state_buffer[2][player_id].p
-			spawn_player(player_id, position)
+			spawn_player(player_id, position, null)
 	# Enemy
 	for enemy_id in world_state_buffer[2].enemies:
 		if not enemy_id in world_state_buffer[1].enemies:

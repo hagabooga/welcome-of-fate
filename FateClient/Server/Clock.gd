@@ -9,7 +9,7 @@ var latencies := []
 
 
 func _init():
-	name = "Clock"
+	pass
 
 
 func _physics_process(delta):  #0.01667

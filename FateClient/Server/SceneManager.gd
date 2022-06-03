@@ -19,7 +19,6 @@ func _init(
 	account_creation: AccountCreation,
 	combat: Combat
 ):
-	name = "SceneManager"
 	self.server = server
 	self.clock = clock
 	self.database = database

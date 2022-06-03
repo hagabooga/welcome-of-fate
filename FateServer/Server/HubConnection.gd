@@ -10,7 +10,6 @@ var port = 1915
 
 
 func _init(player_verification):
-	name = "HubConnection"
 	self.player_verification = player_verification
 	network.create_client(ip, port)
 	custom_multiplayer = gateway_api

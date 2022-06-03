@@ -3,7 +3,7 @@ extends Node
 
 
 func _init():
-	name = "Clock"
+	pass
 
 
 remote func receive_request_server_time_with_client_time(client_time):

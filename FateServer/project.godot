@@ -40,6 +40,11 @@ _global_script_classes=[ {
 "path": "res://Server/Combat.gd"
 }, {
 "base": "Node",
+"class": "DataLoader",
+"language": "GDScript",
+"path": "res://Singletons/Database/DataLoader.gd"
+}, {
+"base": "Node",
 "class": "Database",
 "language": "GDScript",
 "path": "res://Server/Database.gd"
@@ -63,6 +68,11 @@ _global_script_classes=[ {
 "class": "HubConnection",
 "language": "GDScript",
 "path": "res://Server/HubConnection.gd"
+}, {
+"base": "Node",
+"class": "Inventory",
+"language": "GDScript",
+"path": "res://Server/Inventory.gd"
 }, {
 "base": "Player",
 "class": "Mage",
@@ -111,11 +121,13 @@ _global_script_class_icons={
 "BasicPlayerInfo": "",
 "Clock": "",
 "Combat": "",
+"DataLoader": "",
 "Database": "",
 "DatabaseTable": "",
 "Enemy": "",
 "Entity": "",
 "HubConnection": "",
+"Inventory": "",
 "Mage": "",
 "Player": "",
 "PlayerTemplate": "",
@@ -138,6 +150,11 @@ ServerData="*res://Singletons/ServerData.gd"
 Enums="*res://Singletons/Enums.gd"
 Utility="*res://Utility/Utility.gd"
 Plugins="*res://Utility/Plugins.gd"
+
+[debug]
+
+gdscript/warnings/shadowed_variable=false
+gdscript/warnings/return_value_discarded=false
 
 [editor_plugins]
 

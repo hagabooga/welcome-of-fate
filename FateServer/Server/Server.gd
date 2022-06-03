@@ -14,6 +14,7 @@ var network: NetworkedMultiplayerENet
 var clock: Clock
 var database: Database
 var combat: Combat
+var inventory: Inventory
 var player_verification: PlayerVerification
 var hub_connection: HubConnection
 var state_processing: StateProcessing
@@ -28,10 +29,10 @@ func _ready():
 	combat = Combat.new(map, database)
 	state_processing = StateProcessing.new(map, database)
 	map.init(database, state_processing, network)
-	player_verification = PlayerVerification.new(database, state_processing, network)
+	inventory = Inventory.new(database, state_processing)
+	player_verification = PlayerVerification.new(database, state_processing, network, inventory)
 	hub_connection = HubConnection.new(player_verification)
 	account_creation = AccountCreation.new(database, state_processing, player_verification)
-
 	for x in [
 		clock,
 		database,
@@ -39,13 +40,14 @@ func _ready():
 		player_verification,
 		hub_connection,
 		state_processing,
-		account_creation
+		account_creation,
+		inventory,
 	]:
 		add_child(x)
+		x.name = x.get_script().get_path().get_file().get_basename()
 
 	network.create_server(port, max_players)
 	get_tree().set_network_peer(network)
-	print("Server Started")
 	network.connect("peer_connected", self, "peer_connected")
 	network.connect("peer_disconnected", self, "peer_disconnected")
 

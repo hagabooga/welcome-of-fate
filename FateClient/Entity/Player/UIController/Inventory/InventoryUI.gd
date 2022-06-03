@@ -4,6 +4,8 @@ extends Control
 signal item_added(item)
 signal inventory_changed
 
+var inventory: Inventory
+
 var current_hovering_item: Item = null
 var held_items := {}
 var current_hotkey_index := 0
@@ -14,6 +16,12 @@ onready var inventory_items := $InventoryMargin/InventoryPanel/GridContainer.get
 onready var inventory_margin = $InventoryMargin
 onready var tooltip = $Tooltip
 onready var hotkey_selection = $HotkeysMargin/HotkeysPanel/HotkeySelection
+
+
+func init(inventory: Inventory):
+	self.inventory = inventory
+	self.inventory.connect("received_inventory_data", self, "on_received_inventory_data")
+	on_received_inventory_data(self.inventory.data)
 
 
 func _ready() -> void:
@@ -28,36 +36,6 @@ func _ready() -> void:
 		x.connect("left_clicked", item_hold_preview, "on_left_click")
 		x.connect("right_clicked", item_hold_preview, "on_right_click")
 		x.connect("double_clicked", item_hold_preview, "on_double_click")
-
-	for i in range(10):
-		add_item(
-			Item.new(
-				"tomato",
-				{
-					"desc": "A tomato.",
-					"eff_desc": "Consume item to restore 50 HP and 50 MP.",
-					"cost": 135,
-					"type": "plant",
-					"activate": 0,
-					"stats": {"hp": 50, "mp": 50}
-				}
-			)
-		)
-
-	for i in range(15):
-		add_item(
-			Item.new(
-				"turnip",
-				{
-					"desc": "A root vegetable grown in temperate climates.",
-					"eff_desc": "Consume item to restore 60 HP.",
-					"cost": 125,
-					"type": "plant",
-					"activate": 0,
-					"stats": {"hp": 60}
-				}
-			)
-		)
 
 
 func _process(delta) -> void:
@@ -115,3 +93,8 @@ func on_hovering_item(item: Item) -> void:
 	if item == null:
 		return
 	tooltip.visible = true
+
+
+func on_received_inventory_data(data):
+	for x in data:
+		hotkey_items[x.child_index].set_item(Item.new(x.item.ming, x.item), x.quantity)

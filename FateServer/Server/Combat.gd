@@ -8,7 +8,6 @@ var map
 func _init(map, database: Database):
 	self.map = map
 	self.database = database
-	name = "Combat"
 
 
 remote func attack(position, direction_vector, animation_state, spawn_time):

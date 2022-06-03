@@ -5,5 +5,4 @@ var token: String
 
 
 func _init():
-	name = "Database"
 	pass

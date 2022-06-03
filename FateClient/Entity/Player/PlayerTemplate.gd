@@ -12,6 +12,7 @@ var attack_dict = {}
 
 var state_processing: StateProcessing
 var combat: Combat
+var inventory: Inventory
 
 onready var snake_bite = preload("res://Projectile/SnakeBite/SnakeBite.tscn")
 onready var body_animations = $BodyAnimations
@@ -19,10 +20,18 @@ onready var body_animations = $BodyAnimations
 var basic_info
 
 
-func init(player_id, spawn_position, basic_info, state_processing: StateProcessing, combat: Combat):
+func init(
+	player_id,
+	spawn_position,
+	basic_info,
+	state_processing: StateProcessing,
+	combat: Combat,
+	inventory: Inventory
+):
 	self.basic_info = basic_info
 	self.state_processing = state_processing
 	self.combat = combat
+	self.inventory = inventory
 	name = str(player_id)
 	ming = basic_info.username
 	color = Color.white

@@ -8,20 +8,14 @@
 
 config_version=4
 
-_global_script_classes=[  ]
-_global_script_class_icons={
-}
-
 [application]
 
-config/name="Fate Gateway"
-run/main_scene="res://Gateway.tscn"
+config/name="FateAuth"
 config/icon="res://icon.png"
 
-[autoload]
+[physics]
 
-Authenticate="*res://Singletons/Authenticate.gd"
-Gateway="*res://Singletons/Gateway.gd"
+common/enable_pause_aware_picking=true
 
 [rendering]
 

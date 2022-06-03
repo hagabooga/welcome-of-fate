@@ -1,0 +1,498 @@
+[
+    {
+        "activate": 0,
+        "cost": 0,
+        "desc": "Youngest.",
+        "eff_desc": "Aches pee",
+        "ming": "yoonho",
+        "placeable": false,
+        "type": "misc"
+    },
+    {
+        "activate": 0,
+        "cost": 125,
+        "desc": "A root vegetable grown in temperate climates.",
+        "eff_desc": "Consume item to restore 60 HP.",
+        "ming": "turnip",
+        "stats": {
+            "hp": 60
+        },
+        "type": "plant"
+    },
+    {
+        "activate": 0,
+        "cost": 225,
+        "desc": "Grown and consumed throughout the world.",
+        "eff_desc": "Consume item to restore 60 HP and 100 MP.",
+        "ming": "radish",
+        "stats": {
+            "hp": 60,
+            "mp": 100
+        },
+        "type": "plant"
+    },
+    {
+        "activate": 0,
+        "cost": 135,
+        "desc": "A tomato.",
+        "eff_desc": "Consume item to restore 50 HP and 50 MP.",
+        "ming": "tomato",
+        "stats": {
+            "hp": 50,
+            "mp": 50
+        },
+        "type": "plant"
+    },
+    {
+        "activate": 0,
+        "cost": 130,
+        "desc": "A red vegtable",
+        "eff_desc": "Consume item to restore 50 HP.",
+        "ming": "beet",
+        "stats": {
+            "hp": 50
+        },
+        "type": "plant"
+    },
+    {
+        "activate": -1,
+        "cost": 10,
+        "desc": "A branch that fell of a tree.",
+        "ming": "branch",
+        "placeable": true,
+        "type": "misc."
+    },
+    {
+        "activate": -1,
+        "cost": 10,
+        "desc": "A rock found on the ground.",
+        "ming": "rock",
+        "placeable": true,
+        "type": "misc."
+    },
+    {
+        "activate": -1,
+        "cost": 2,
+        "desc": "A plant in the wrong place.",
+        "ming": "weed",
+        "placeable": true,
+        "type": "misc."
+    },
+    {
+        "activate": 1,
+        "base": "tool",
+        "cost": 0,
+        "desc": "Loosen the soil.",
+        "eff_desc": "Allows you to dig the soil for seeds.",
+        "energy": 5,
+        "hack": true,
+        "ming": "hoe",
+        "stats": {
+            "atk speed": 1.5,
+            "physical": 5
+        },
+        "type": "hoe"
+    },
+    {
+        "activate": 1,
+        "base": "tool",
+        "capacity": 10,
+        "cost": 0,
+        "desc": "Water the soil.",
+        "eff_desc": "Allows you to water tilled soil.",
+        "energy": 5,
+        "ming": "watering can",
+        "stats": {
+            "atk speed": 1.1,
+            "physical": 2
+        },
+        "type": "watering can"
+    },
+    {
+        "activate": 1,
+        "base": "tool",
+        "cost": 0,
+        "desc": "Cut vegetation",
+        "eff_desc": "Cut vegetation to make room",
+        "energy": 8,
+        "hack": true,
+        "ming": "sickle",
+        "stats": {
+            "atk speed": 1.8,
+            "physical": 7
+        },
+        "type": "sickle"
+    },
+    {
+        "activate": 1,
+        "base": "tool",
+        "cost": 0,
+        "desc": "Chop branches",
+        "eff_desc": "Chop branches",
+        "energy": 5,
+        "hack": true,
+        "ming": "axe",
+        "stats": {
+            "atk speed": 1.2,
+            "physical": 16
+        },
+        "type": "axe"
+    },
+    {
+        "activate": 1,
+        "base": "tool",
+        "cost": 0,
+        "desc": "Smash rocks",
+        "eff_desc": "Smash rocks",
+        "energy": 5,
+        "hack": true,
+        "ming": "hammer",
+        "stats": {
+            "atk speed": 0.9,
+            "physical": 20
+        },
+        "type": "hammer"
+    },
+    {
+        "activate": 1,
+        "base": "tool",
+        "cost": 50,
+        "desc": "Contains turnip seeds",
+        "eff_desc": "Throw turnip seeds into the soil",
+        "energy": 5,
+        "ming": "turnip seedbag",
+        "type": "seedbag"
+    },
+    {
+        "activate": 1,
+        "base": "tool",
+        "cost": 100,
+        "desc": "Contains radish seeds",
+        "eff_desc": "Throw radish seeds into the soil",
+        "energy": 5,
+        "ming": "radish seedbag",
+        "type": "seedbag"
+    },
+    {
+        "activate": 1,
+        "base": "tool",
+        "cost": 200,
+        "desc": "Contains tomato seeds",
+        "eff_desc": "Throw tomato seeds into the soil",
+        "energy": 5,
+        "ming": "tomato seedbag",
+        "type": "seedbag"
+    },
+    {
+        "activate": 1,
+        "base": "weapon",
+        "cost": 500,
+        "desc": "A magical wand",
+        "eff_desc": "Basic attacks shoots a magical projectile.",
+        "ming": "magic wand",
+        "stats": {
+            "atk speed": 1.1,
+            "intelligence": 1,
+            "magical": 3,
+            "mp": 50,
+            "physical": 2
+        },
+        "type": "wand"
+    },
+    {
+        "activate": 1,
+        "base": "weapon",
+        "cost": 750,
+        "desc": "A sharp sword",
+        "eff_desc": "",
+        "ming": "katana",
+        "stats": {
+            "physical": 75,
+            "strength": 5
+        },
+        "type": "sword"
+    },
+    {
+        "activate": 1,
+        "base": "armor",
+        "cost": 500,
+        "desc": "A simple leather hat",
+        "eff_desc": "",
+        "ming": "leather hat",
+        "stats": {
+            "armor": 12,
+            "mp": 25,
+            "resist": 40
+        },
+        "type": "head"
+    },
+    {
+        "activate": 1,
+        "base": "armor",
+        "cost": 500,
+        "desc": "A simple leather robe",
+        "eff_desc": "",
+        "ming": "leather robe",
+        "stats": {
+            "armor": 10,
+            "intelligence": 2,
+            "resist": 45
+        },
+        "type": "neck"
+    },
+    {
+        "activate": 1,
+        "base": "armor",
+        "cost": 200,
+        "desc": "Simple leather gloves",
+        "eff_desc": "",
+        "ming": "leather gloves",
+        "stats": {
+            "armor": 5,
+            "resist": 10
+        },
+        "type": "gloves"
+    },
+    {
+        "activate": 1,
+        "base": "armor",
+        "cost": 200,
+        "desc": "A blue blouse",
+        "eff_desc": "",
+        "ming": "blue blouse",
+        "stats": {
+            "armor": 25,
+            "resist": 30
+        },
+        "type": "body"
+    },
+    {
+        "activate": 1,
+        "base": "armor",
+        "cost": 1000,
+        "desc": "Feel smart",
+        "eff_desc": "",
+        "ming": "intelligence necklace",
+        "stats": {
+            "intelligence": 15
+        },
+        "type": "accessory"
+    },
+    {
+        "activate": 1,
+        "base": "armor",
+        "cost": 300,
+        "desc": "A simple leather skirt",
+        "eff_desc": "",
+        "ming": "leather skirt",
+        "stats": {
+            "armor": 20,
+            "resist": 20
+        },
+        "type": "bottom"
+    },
+    {
+        "activate": 1,
+        "base": "armor",
+        "cost": 300,
+        "desc": "Simple leather boots",
+        "eff_desc": "",
+        "ming": "leather boots",
+        "stats": {
+            "armor": 30,
+            "resist": 16
+        },
+        "type": "boots"
+    },
+    {
+        "activate": 1,
+        "base": "armor",
+        "cost": 750,
+        "desc": "A shield made out of wood",
+        "eff_desc": "",
+        "ming": "wooden shield",
+        "stats": {
+            "armor": 35,
+            "resist": 54
+        },
+        "type": "shield"
+    },
+    {
+        "activate": -1,
+        "cost": 15,
+        "desc": "Chopped wood",
+        "eff_desc": "",
+        "ming": "wooden plank",
+        "placeable": true,
+        "type": "misc."
+    },
+    {
+        "activate": -1,
+        "cost": 15,
+        "desc": "Broken rocks",
+        "eff_desc": "",
+        "ming": "stone",
+        "placeable": true,
+        "type": "misc."
+    },
+    {
+        "activate": -1,
+        "cost": 150,
+        "desc": "Put stuff in",
+        "eff_desc": "",
+        "ming": "chest",
+        "placeable": true,
+        "type": "misc."
+    },
+    {
+        "activate": -1,
+        "cost": 25,
+        "desc": "Thick but smooth",
+        "eff_desc": "",
+        "ming": "gator skin",
+        "placeable": false,
+        "type": "misc."
+    },
+    {
+        "activate": 0,
+        "cost": 200,
+        "desc": "Restore your spirit",
+        "eff_desc": "Consume item to restore 150 MP and 25 Energy.",
+        "ming": "spirit potion",
+        "stats": {
+            "energy": 25,
+            "mp": 150
+        },
+        "type": "potion"
+    },
+    {
+        "activate": 0,
+        "cost": 100,
+        "desc": "Restore your health",
+        "eff_desc": "Consume item to restore 250 HP.",
+        "ming": "health potion",
+        "stats": {
+            "hp": 250
+        },
+        "type": "potion"
+    },
+    {
+        "activate": 0,
+        "cost": 100,
+        "desc": "Restore your mana",
+        "eff_desc": "Consume item to restore 400 MP.",
+        "ming": "mana potion",
+        "stats": {
+            "mp": 400
+        },
+        "type": "potion"
+    },
+    {
+        "activate": 0,
+        "cost": 200,
+        "desc": "Restore your soul",
+        "eff_desc": "Consume item to restore 350 HP and 450 MP.",
+        "ming": "soul potion",
+        "stats": {
+            "hp": 300,
+            "mp": 300
+        },
+        "type": "potion"
+    },
+    {
+        "activate": 0,
+        "cost": 100,
+        "desc": "Restore your energy",
+        "eff_desc": "Consume item to restore 25 Energy.",
+        "ming": "energy potion",
+        "stats": {
+            "energy": 25
+        },
+        "type": "potion"
+    },
+    {
+        "activate": 0,
+        "cost": 200,
+        "desc": "Restore your vitality",
+        "eff_desc": "Consume item to restore 300 HP and 30 Energy.",
+        "ming": "vitality potion",
+        "stats": {
+            "energy": 25,
+            "hp": 300
+        },
+        "type": "potion"
+    },
+    {
+        "activate": 0,
+        "cost": 50,
+        "desc": "Some berries found on the ground",
+        "eff_desc": "Consume item to restore 75 HP.",
+        "ming": "wild berries",
+        "stats": {
+            "hp": 75
+        },
+        "type": "plant"
+    },
+    {
+        "activate": -1,
+        "cost": 75,
+        "desc": "Stubborn weed.",
+        "eff_desc": "",
+        "ming": "dandelion",
+        "placeable": true,
+        "type": "plant"
+    },
+    {
+        "activate": 0,
+        "cost": 100,
+        "desc": "Edible shoots.",
+        "eff_desc": "Consume item to restore 65 Energy.",
+        "ming": "bamboo shoot",
+        "stats": {
+            "energy": 65
+        },
+        "type": "plant"
+    },
+    {
+        "activate": -1,
+        "cost": 60,
+        "desc": "A simple red flower",
+        "eff_desc": "",
+        "ming": "red flower",
+        "placeable": true,
+        "type": "plant"
+    },
+    {
+        "activate": -1,
+        "cost": 750,
+        "desc": "Make the area brighter.",
+        "eff_desc": "",
+        "ming": "torch",
+        "placeable": true,
+        "type": "Misc."
+    },
+    {
+        "activate": -1,
+        "cost": 100,
+        "desc": "An egg from a chicken.",
+        "eff_desc": "",
+        "ming": "egg",
+        "type": "food"
+    },
+    {
+        "activate": -1,
+        "cost": 5,
+        "desc": "Junk but may be useful.",
+        "eff_desc": "",
+        "ming": "scrap",
+        "type": "Ore"
+    },
+    {
+        "activate": -1,
+        "cost": 100,
+        "desc": "Silver-gray metal",
+        "eff_desc": "",
+        "ming": "iron",
+        "type": "Ore"
+    }
+]

@@ -5,16 +5,21 @@ var clock: Clock
 var database: Database
 var state_processing: StateProcessing
 var scene_manager: SceneManager
+var inventory: Inventory
 
 
 func _init(
-	clock: Clock, database: Database, state_processing: StateProcessing, scene_manager: SceneManager
+	clock: Clock,
+	database: Database,
+	state_processing: StateProcessing,
+	scene_manager: SceneManager,
+	inventory: Inventory
 ):
 	self.clock = clock
 	self.database = database
 	self.state_processing = state_processing
 	self.scene_manager = scene_manager
-	name = "PlayerVerification"
+	self.inventory = inventory
 
 
 remote func fetch_token():
@@ -30,6 +35,7 @@ remote func return_token_verification_results(result, logged_in_players, scene_t
 			print("WE IN BOIZ")
 			state_processing.logged_in_players = logged_in_players
 			scene_manager.change_scene_to(Enums.SCENE_TEST_MAP)
+			# get_tree().current_scene.init(clock,state_processing,combat,inventory)
 			# get_tree().change_scene_to(database.preloaded_scenes[scene_to_load])
 			print("okok")
 			rpc_id(1, "client_ready")
@@ -48,7 +54,7 @@ func send_account_request(data):
 
 
 remote func spawn_player(player_id):
-	get_tree().current_scene.spawn_player(player_id, null)
+	get_tree().current_scene.spawn_player(player_id, null, inventory)
 	if player_id == get_tree().get_network_unique_id():
 		state_processing.in_map = true
 	# print("spawning player ", player_id, spawn_position)

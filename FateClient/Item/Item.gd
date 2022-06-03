@@ -14,9 +14,9 @@ var placeable: bool
 func _init(m: String, data: Dictionary):
 	self.ming = m
 	desc = data.desc
-	eff_desc = data.eff_desc if data.has("eff_desc") else ""
+	eff_desc = data.eff_desc if data.eff_desc != null else ""
 	cost = data.cost
 	type = data.type
-	act = data.activate if data.has("activate") else -1
-	placeable = data.placeable if data.has("placeable") else false
-	base = data.base if data.has("base") else ""
+	act = data.activate
+	placeable = data.placeable != null 
+	base = data.base if data.base != null else "" 

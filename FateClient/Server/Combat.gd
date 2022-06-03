@@ -5,7 +5,6 @@ var clock: Clock
 
 
 func _init(clock: Clock):
-	name = "Combat"
 	self.clock = clock
 
 

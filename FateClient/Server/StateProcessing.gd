@@ -8,7 +8,6 @@ var in_map = false
 
 func _init(clock: Clock):
 	self.clock = clock
-	name = "StateProcessing"
 
 
 func send_player_state(player_state: Dictionary) -> void:

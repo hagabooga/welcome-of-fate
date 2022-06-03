@@ -4,6 +4,8 @@ extends Node
 var database: Database
 var state_processing: StateProcessing
 var network: NetworkedMultiplayerENet
+var inventory: Inventory
+
 var awaiting_verification := {}
 var expected_tokens := {}
 
@@ -13,12 +15,17 @@ var token_expiration_timer: Timer
 var map
 
 
-func _init(database: Database, state_processing: StateProcessing, network: NetworkedMultiplayerENet):
+func _init(
+	database: Database,
+	state_processing: StateProcessing,
+	network: NetworkedMultiplayerENet,
+	inventory: Inventory
+):
 	self.map = map
 	self.database = database
 	self.state_processing = state_processing
 	self.network = network
-	name = "PlayerVerification"
+	self.inventory = inventory
 	verification_expiration = Timer.new()
 	verification_expiration.autostart = true
 	verification_expiration.name = "VerificationExpiration"
@@ -80,8 +87,9 @@ func spawn_player(player_id, data, result):
 	rpc_id(
 		0, "receive_new_player_logged_in", player_id, state_processing.logged_in_players[player_id]
 	)
+	inventory.send_inventory_data(player_id)
 	# Give already logged in players to player 
-	print("state", state_processing.player_states)
+	# print("state", state_processing.player_states)
 	rpc_id(
 		player_id,
 		"return_token_verification_results",

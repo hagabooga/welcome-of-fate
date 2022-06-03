@@ -6,6 +6,7 @@ var connected_players := {}
 
 # { player_id: { basic, stats } }
 var logged_in_players := {}
+
 var world_state := {}
 var player_states := {}
 
@@ -18,7 +19,6 @@ var sync_clock_counter := 0
 func _init(map, database: Database):
 	self.map = map
 	self.database = database
-	name = "StateProcessing"
 
 
 func _physics_process(delta):

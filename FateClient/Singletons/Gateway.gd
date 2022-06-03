@@ -27,7 +27,7 @@ func _process(delta):
 	custom_multiplayer.poll()
 
 
-func connect_to_server(login_screen, username, password, new_account = false, ip = "127.0.0.1"):
+func connect_to_server(login_screen, username, password, new_account = false, ip = "127.0.0.1"):   
 	network = NetworkedMultiplayerENet.new()
 	gateway_api = MultiplayerAPI.new()
 
