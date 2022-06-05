@@ -9,6 +9,7 @@ public abstract class Server : Node
     readonly NetworkedMultiplayerENet network = new NetworkedMultiplayerENet();
     private readonly NetworkedMultiplayerENetServerOptions options;
 
+
     public Server(NetworkedMultiplayerENetServerOptions options)
     {
         this.options = options;
@@ -16,6 +17,7 @@ public abstract class Server : Node
 
     public override void _Ready()
     {
+        Name = GetType().Name;
         CustomMultiplayer = multiplayerApi;
         CustomMultiplayer.RootNode = this;
         CustomMultiplayer.Connect("network_peer_connected", this, nameof(OnNetworkPeerConnected));
@@ -35,13 +37,13 @@ public abstract class Server : Node
         CustomMultiplayer.Poll();
     }
 
-    public void OnNetworkPeerConnected(int id)
+    protected virtual void OnNetworkPeerConnected(int id)
     {
-        Print($"{Name}: Network peer {id} connected.");
+        Print($"Server {Name}: Network peer {id} connected.");
     }
 
-    public void OnNetworkPeerDisconnected(int id)
+    protected virtual void OnNetworkPeerDisconnected(int id)
     {
-        Print($"{Name}: Network peer {id} disconnected.");
+        Print($"Server {Name}: Network peer {id} disconnected.");
     }
 }

@@ -16,6 +16,7 @@ public abstract class Client : Node
 
     public override void _Ready()
     {
+        Name = GetType().Name;
         CustomMultiplayer = multiplayerApi;
         CustomMultiplayer.RootNode = this;
         CustomMultiplayer.Connect("connected_to_server", this, nameof(OnConnectedToServer));
@@ -23,6 +24,7 @@ public abstract class Client : Node
         CustomMultiplayer.Connect("server_disconnected", this, nameof(OnServerDisconnected));
 
         network.CreateClient(options.Ip, options.Port);
+
         CustomMultiplayer.NetworkPeer = network;
         Print($"Client {Name} started.");
     }
@@ -38,12 +40,12 @@ public abstract class Client : Node
 
     protected virtual void OnConnectedToServer()
     {
-        Print("Connected to server.");
+        Print($"Client {Name} has connected to the server.");
     }
 
     protected virtual void OnConnectionFailed()
     {
-        Print("Connection to server failed.");
+        Print($"Client {Name}: Connection to server has failed.");
     }
 
     protected virtual void OnServerDisconnected()
