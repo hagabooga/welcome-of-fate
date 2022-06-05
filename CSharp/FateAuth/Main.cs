@@ -1,17 +1,32 @@
 using Godot;
 using System;
+using static Godot.GD;
 
 public class Main : Node
 {
     public override void _Ready()
     {
-        var container = new SimpleInjector.Container();
+        var serversContainer = new SimpleInjector.Container();
+        serversContainer.RegisterInstance(new NetworkedMultiplayerENetOptions(1915, 100));
+        serversContainer.RegisterSingleton<NetworkedMultiplayerENet>();
+        serversContainer.RegisterSingleton<MultiplayerAPI>();
+        serversContainer.RegisterSingleton<Servers>();
+        serversContainer.Verify();
 
-        container.RegisterInstance(new Authentication.Options(1911, 5));
-        container.RegisterSingleton<NetworkedMultiplayerENet>();
-        container.RegisterInstance(GetTree());
-        container.RegisterSingleton<Authentication>();
+        var authContainer = new SimpleInjector.Container();
+        authContainer.RegisterSingleton<NetworkedMultiplayerENet>();
+        authContainer.RegisterInstance(new NetworkedMultiplayerENetOptions(1911, 5));
+        authContainer.RegisterInstance(GetTree());
+        authContainer.RegisterSingleton<AccountDatabase>();
+        authContainer.RegisterInstance(serversContainer.GetInstance<Servers>());
+        authContainer.RegisterSingleton<Authentication>();
+        authContainer.Verify();
 
+        var servers = authContainer.GetInstance<Servers>();
+        var auth = authContainer.GetInstance<Authentication>();
+
+        AddChild(servers);
+        AddChild(auth);
 
     }
 }
