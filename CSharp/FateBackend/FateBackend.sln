@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FateAuth", "FateAuth.csproj", "{C1A342B4-B522-48CA-801E-7334B53A3A16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FateBackend", "FateBackend.csproj", "{C1A342B4-B522-48CA-801E-7334B53A3A16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

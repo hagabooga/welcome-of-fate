@@ -2,7 +2,7 @@ using Godot;
 using static Godot.GD;
 using Godot.Collections;
 
-public class AccountDatabase : Node
+public class Accounts : Node
 {
     const string CreateStatement = @"
 create table 
@@ -18,7 +18,7 @@ accounts (
     public Script Sqlite { get; }
     public Godot.Object Database { get; }
 
-    public AccountDatabase()
+    public Accounts()
     {
         DatabaseName = Engine.EditorHint ?
             OS.GetExecutablePath().GetBaseDir() + "\\" :
