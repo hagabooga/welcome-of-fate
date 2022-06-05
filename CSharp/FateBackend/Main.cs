@@ -6,27 +6,35 @@ public class Main : Node
 {
     private const int AuthenticationPort = 1911;
 
-
     public override void _Ready()
     {
         Print("Main start.");
         var authContainer = new SimpleInjector.Container();
-        authContainer.RegisterInstance(new Servers(new NetworkedMultiplayerENetServerOptions(1915, 100)));
+        authContainer.RegisterInstance(new Auth.Servers(new NetworkedMultiplayerENetServerOptions(1915, 100)));
         authContainer.RegisterInstance(new NetworkedMultiplayerENetServerOptions(AuthenticationPort, 5));
         authContainer.RegisterSingleton<Accounts>();
-        authContainer.RegisterSingleton<Authentication>();
+        authContainer.RegisterSingleton<Auth.Authentication>();
         authContainer.Verify();
 
-        var servers = authContainer.GetInstance<Servers>();
-        var authentication = authContainer.GetInstance<Authentication>();
+        var main = new SimpleInjector.Container();
+
+
+        var servers = authContainer.GetInstance<Auth.Servers>();
+        var authentication = authContainer.GetInstance<Auth.Authentication>();
         var gatewayAuthentication = new GatewayAuthentication(new NetworkedMultiplayerENetClientOptions("localhost", AuthenticationPort));
 
-        AddChild(servers);
-        AddChild(authentication);
-        AddChild(gatewayAuthentication);
+        var mainStuff = new Node[]{
+            servers,
+            authentication,
+            gatewayAuthentication
+        };
+        foreach (var x in mainStuff)
+        {
+            main.RegisterInstance(x.GetType(), x);
+            AddChild(x);
+        }
 
-
-
+        main.Verify();
         // var serversContainer = new SimpleInjector.Container();
         // serversContainer.RegisterInstance(new NetworkedMultiplayerENetServerOptions(1915, 100));
         // serversContainer.RegisterSingleton<NetworkedMultiplayerENet>();
