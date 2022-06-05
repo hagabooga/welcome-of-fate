@@ -2,17 +2,17 @@ using Godot;
 using System;
 using System.Linq;
 using static Godot.GD;
-public partial class Gateway
+namespace Gateway
 {
-    public class Controller : Node
+    public class Controller : EzNode
     {
-        public Gateway Gateway { get; }
+        public Server Server { get; }
         public Authentication Auth { get; }
-        public Controller(Gateway gateway, Gateway.Authentication auth)
+        public Controller(Server server, Authentication auth)
         {
-            Gateway = gateway;
+            Server = server;
             Auth = auth;
-            AddChild(Gateway);
+            AddChild(Server);
             AddChild(Auth);
         }
 
@@ -28,7 +28,7 @@ public partial class Gateway
         };
             if (checkIfBad.Any())
             {
-                Gateway.ReturnCreateAccountRequest(playerId, Error.Failed);
+                Server.ReturnCreateAccountRequest(playerId, Error.Failed);
             }
             else
             {

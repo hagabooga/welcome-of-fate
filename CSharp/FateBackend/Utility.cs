@@ -3,20 +3,20 @@ using System.Linq;
 using static Godot.GD;
 
 
-public abstract class Client : Node
+public abstract class EzClient : EzNode
 {
-    readonly MultiplayerAPI multiplayerApi = new MultiplayerAPI();
-    readonly NetworkedMultiplayerENet network = new NetworkedMultiplayerENet();
-    private readonly NetworkedMultiplayerENetClientOptions options;
+    protected readonly MultiplayerAPI multiplayerApi = new MultiplayerAPI();
+    protected readonly NetworkedMultiplayerENet network = new NetworkedMultiplayerENet();
+    protected readonly NetworkedMultiplayerENetClientOptions options;
 
-    public Client(NetworkedMultiplayerENetClientOptions options)
+    public EzClient(NetworkedMultiplayerENetClientOptions options)
     {
         this.options = options;
     }
 
     public override void _Ready()
     {
-        Name = GetType().Name;
+        base._Ready();
         CustomMultiplayer = multiplayerApi;
         CustomMultiplayer.RootNode = this;
         CustomMultiplayer.Connect("connected_to_server", this, nameof(OnConnectedToServer));
@@ -53,21 +53,20 @@ public abstract class Client : Node
         Print("Server disconnected.");
     }
 }
-public abstract class Server : Node
+public abstract class EzServer : EzNode
 {
-    readonly MultiplayerAPI multiplayerApi = new MultiplayerAPI();
-    readonly NetworkedMultiplayerENet network = new NetworkedMultiplayerENet();
-    private readonly NetworkedMultiplayerENetServerOptions options;
+    protected readonly MultiplayerAPI multiplayerApi = new MultiplayerAPI();
+    protected readonly NetworkedMultiplayerENet network = new NetworkedMultiplayerENet();
+    protected private readonly NetworkedMultiplayerENetServerOptions options;
 
-
-    public Server(NetworkedMultiplayerENetServerOptions options)
+    public EzServer(NetworkedMultiplayerENetServerOptions options)
     {
         this.options = options;
     }
 
     public override void _Ready()
     {
-        Name = GetType().Name;
+        base._Ready();
         CustomMultiplayer = multiplayerApi;
         CustomMultiplayer.RootNode = this;
         CustomMultiplayer.Connect("network_peer_connected", this, nameof(OnNetworkPeerConnected));
@@ -116,6 +115,7 @@ public static class Extensions
     {
         return SafelySetScript<T>(obj, ResourceLoader.Load(resource));
     }
+
 }
 
 public static class Fast
@@ -171,5 +171,14 @@ public class X509
     {
         Certificate = certificate;
         Key = key;
+    }
+}
+
+
+public abstract class EzNode : Node
+{
+    public override void _Ready()
+    {
+        Name = GetType().FullName;
     }
 }

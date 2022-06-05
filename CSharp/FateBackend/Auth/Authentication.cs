@@ -4,7 +4,7 @@ using static Godot.GD;
 
 namespace Auth
 {
-    public class Authentication : Server
+    public class Authentication : EzServer
     {
         readonly Servers servers;
         readonly Accounts accounts;

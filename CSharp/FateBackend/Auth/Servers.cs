@@ -6,7 +6,7 @@ using static Godot.GD;
 
 namespace Auth
 {
-    public class Servers : Server
+    public class Servers : EzServer
     {
         readonly Dictionary servers = new Dictionary();
 
